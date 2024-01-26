@@ -13,9 +13,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en' className='dark'>
+    <html lang='en'>
       <head>
-        <link href='https://fonts.cdnfonts.com/css/helvetica-neue-55' rel='stylesheet' />
+        <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' />
       </head>
       <body>
         <Providers>{children}</Providers>

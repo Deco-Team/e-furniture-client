@@ -1,0 +1,20 @@
+.flipper {
+  transition: ease-in-out 0.5s;
+  transform-style: preserve-3d;
+}
+
+.front,
+.back {
+  backface-visibility: hidden;
+}
+
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+.back {
+  transform: rotateY(180deg);
+}
+.flip {
+  transform: rotateY(180deg);
+}
