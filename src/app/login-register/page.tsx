@@ -2,8 +2,7 @@ import LoginRegisterCard from '~/components/cards/LoginRegisterCard'
 
 const LoginRegisterPage = () => {
   return (
-    <div>
-      <h1>LoginRegisterPage</h1>
+    <div className='bg-gray-200 flex items-center justify-center min-h-screen overflow-hidden'>
       <LoginRegisterCard />
     </div>
   )
