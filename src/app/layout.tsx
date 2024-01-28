@@ -13,15 +13,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <OAuthProviders>
-      <html lang='en'>
-        <head>
-          <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' />
-        </head>
-        <body>
+    <html lang='en'>
+      <head>
+        <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' />
+      </head>
+      <body>
+        <OAuthProviders>
           <NextUIProviders>{children}</NextUIProviders>
-        </body>
-      </html>
-    </OAuthProviders>
+        </OAuthProviders>
+      </body>
+    </html>
   )
 }
