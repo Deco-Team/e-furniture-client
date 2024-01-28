@@ -1,10 +1,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { NextRequest, NextResponse } from 'next/server'
 import React from 'react'
 import LoginRegisterCard from '~/components/cards/LoginRegisterCard'
 
-const LoginRegisterPage = (request: NextRequest) => {
+const LoginRegisterPage = () => {
   const token = cookies().get('accessToken')
   if (token) redirect('/')
 
