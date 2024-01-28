@@ -1,15 +1,16 @@
-'use client'
-
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { NextRequest, NextResponse } from 'next/server'
 import React from 'react'
 import LoginRegisterCard from '~/components/cards/LoginRegisterCard'
-import ProgressLoading from '~/components/loading/ProgressLoading'
 
-const LoginRegisterPage = () => {
-  const [loading, setLoading] = React.useState(false)
+const LoginRegisterPage = (request: NextRequest) => {
+  const token = cookies().get('accessToken')
+  if (token) redirect('/')
+
   return (
-    <div className='bg-gray-200 flex items-center justify-center min-h-screen overflow-hidden relative'>
-      {loading && <ProgressLoading />}
-      <LoginRegisterCard setLoading={setLoading} />
+    <div className='bg-gray-200 flex items-center justify-center min-h-screen relative'>
+      <LoginRegisterCard />
     </div>
   )
 }
