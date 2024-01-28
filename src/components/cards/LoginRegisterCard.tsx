@@ -10,6 +10,7 @@ import * as yup from 'yup'
 import useLoginRegisterApi from '~/hooks/api/useLoginRegister'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Login } from '~/global/interface'
 
 interface LoginRegisterCardProps {
   setLoading: (loading: boolean) => void
@@ -17,7 +18,7 @@ interface LoginRegisterCardProps {
 
 const LoginRegisterCard = ({ setLoading }: LoginRegisterCardProps) => {
   const router = useRouter()
-  const { login } = useLoginRegisterApi()
+  const { login, loginWithGoogle } = useLoginRegisterApi()
 
   const [isVisibleLogin, setIsVisibleLogin] = React.useState(false)
   const toggleVisibilityLogin = () => setIsVisibleLogin(!isVisibleLogin)
@@ -58,10 +59,11 @@ const LoginRegisterCard = ({ setLoading }: LoginRegisterCardProps) => {
     criteriaMode: 'all'
   })
 
-  const loginSubmit = async (data: any) => {
+  const loginSubmit = async (data: Login) => {
     setLoading(true)
     const result = await login(data)
     if (result) {
+      localStorage.setItem('accessToken', result.data.accessToken)
       router.push('/')
       console.log('Login success')
       setLoading(false)
@@ -69,6 +71,20 @@ const LoginRegisterCard = ({ setLoading }: LoginRegisterCardProps) => {
       console.log('Login failed')
       setLoading(false)
       setError('password', { type: 'loginFailed', message: 'Email hoặc mật khẩu không đúng' })
+    }
+  }
+
+  const loginGoogle = async (data: any) => {
+    setLoading(true)
+    const result = await loginWithGoogle(data.credential)
+    if (result) {
+      localStorage.setItem('accessToken', result.data.accessToken)
+      router.push('/')
+      console.log('Login success')
+      setLoading(false)
+    } else {
+      console.log('Login failed')
+      setLoading(false)
     }
   }
 
@@ -125,8 +141,7 @@ const LoginRegisterCard = ({ setLoading }: LoginRegisterCardProps) => {
             <div className='flex justify-center items-center mb-12'>
               <GoogleLogin
                 onSuccess={(response) => {
-                  localStorage.setItem('accessToken', response.credential as string)
-                  router.push('/')
+                  loginGoogle(response)
                 }}
                 onError={() => console.log('error')}
                 text='signin_with'
