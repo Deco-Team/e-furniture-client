@@ -4,7 +4,7 @@ import { Login, Register } from '~/global/interface'
 
 const useLoginRegisterApi = () => {
   const callApi = useApi()
-  const rootEndpoint = 'auth/customer'
+  const rootEndpoint = '/auth/customer'
 
   const login = React.useCallback(
     async (data: Login) => {
@@ -32,7 +32,20 @@ const useLoginRegisterApi = () => {
     [callApi]
   )
 
-  return { login, register }
+  const loginWithGoogle = React.useCallback(
+    async (token: string) => {
+      const endpoint = `${rootEndpoint}/google`
+      try {
+        const response = await callApi('post', endpoint, {}, {}, { token })
+        return response
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [callApi]
+  )
+
+  return { login, register, loginWithGoogle }
 }
 
 export default useLoginRegisterApi
