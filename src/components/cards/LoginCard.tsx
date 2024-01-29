@@ -34,6 +34,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitted }
   } = useForm({
     mode: 'onSubmit',
@@ -126,7 +127,14 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
       </div>
       <p className='mb-3 text-center absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap'>
         Chưa có tài khoản?{' '}
-        <Link className='text-black cursor-pointer' underline='always' onClick={toggleCard}>
+        <Link
+          className='text-black cursor-pointer'
+          underline='always'
+          onClick={() => {
+            reset()
+            toggleCard()
+          }}
+        >
           Đăng ký
         </Link>
       </p>
