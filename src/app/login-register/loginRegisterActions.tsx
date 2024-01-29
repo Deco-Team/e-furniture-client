@@ -1,6 +1,6 @@
 'use server'
 
-import { Login } from '~/global/interface'
+import { Login, Register } from '~/global/interface'
 import { callApi } from '../actions'
 import { cookies } from 'next/headers'
 
@@ -24,6 +24,18 @@ export const loginWithGoogle = async (credential: string) => {
   try {
     const response = await callApi('post', endpoint, {}, {}, { token: credential })
     cookies().set('accessToken', response.data.accessToken, { httpOnly: true })
+
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+export const registerCustomer = async (data: Register) => {
+  const endpoint = `${rootEndpoint}/register`
+  try {
+    await callApi('post', endpoint, {}, {}, data)
 
     return true
   } catch (error) {
