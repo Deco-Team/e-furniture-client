@@ -10,7 +10,10 @@ export const login = async (data: Login) => {
   const endpoint = `${rootEndpoint}/login`
   try {
     const response = await callApi('post', endpoint, {}, {}, data)
-    cookies().set('accessToken', response.data.accessToken, { httpOnly: true })
+    cookies().set('accessToken', response.data.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 8
+    })
 
     return true
   } catch (error) {
@@ -23,7 +26,10 @@ export const loginWithGoogle = async (credential: string) => {
   const endpoint = `${rootEndpoint}/google`
   try {
     const response = await callApi('post', endpoint, {}, {}, { token: credential })
-    cookies().set('accessToken', response.data.accessToken, { httpOnly: true })
+    cookies().set('accessToken', response.data.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 8
+    })
 
     return true
   } catch (error) {
