@@ -3,17 +3,25 @@
 import { Login, Register } from '~/global/interface'
 import { callApi } from '../actions'
 import { cookies } from 'next/headers'
+import { JwtPayload, decode } from 'jsonwebtoken'
 
-const rootEndpoint = '/auth/customer'
+const ROOT_ENDPOINT = '/auth/customer'
+
+const setToken = (token: string) => {
+  const decodedToken = decode(token) as JwtPayload
+
+  cookies().set('accessToken', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    expires: decodedToken.exp ? decodedToken.exp * 1000 : 60 * 60 * 24 * 7
+  })
+}
 
 export const login = async (data: Login) => {
-  const endpoint = `${rootEndpoint}/login`
+  const endpoint = `${ROOT_ENDPOINT}/login`
   try {
     const response = await callApi('post', endpoint, {}, {}, data)
-    cookies().set('accessToken', response.data.accessToken, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 8
-    })
+    setToken(response.data.accessToken)
 
     return true
   } catch (error) {
@@ -23,13 +31,10 @@ export const login = async (data: Login) => {
 }
 
 export const loginWithGoogle = async (credential: string) => {
-  const endpoint = `${rootEndpoint}/google`
+  const endpoint = `${ROOT_ENDPOINT}/google`
   try {
     const response = await callApi('post', endpoint, {}, {}, { token: credential })
-    cookies().set('accessToken', response.data.accessToken, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 8
-    })
+    setToken(response.data.accessToken)
 
     return true
   } catch (error) {
@@ -39,7 +44,7 @@ export const loginWithGoogle = async (credential: string) => {
 }
 
 export const registerCustomer = async (data: Register) => {
-  const endpoint = `${rootEndpoint}/register`
+  const endpoint = `${ROOT_ENDPOINT}/register`
   try {
     await callApi('post', endpoint, {}, {}, data)
 
