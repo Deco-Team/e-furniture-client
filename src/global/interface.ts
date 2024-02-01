@@ -9,3 +9,9 @@ export interface Register {
   email: string
   password: string
 }
+
+export interface Category {
+  name: string
+  description: string
+  image: string
+}
