@@ -66,7 +66,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
   }
 
   return (
-    <Card className='py-2 px-4 xs:px-7 xs:py-4 max-w-[30rem] max-h-[35rem] w-[min(100%,30rem)] relative h-[35rem] justify-center absolute front'>
+    <Card className='py-2 px-4 xs:px-7 xs:py-4 max-w-[30rem] max-h-[35rem] w-[min(100%,30rem)] h-[35rem] justify-center absolute front'>
       <div className='w-full flex flex-col items-center justify-center'>
         <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
           <h1 className='w-full text-4xl font-extrabold text-center pt-4 pb-8'>Đăng nhập</h1>
