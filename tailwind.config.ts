@@ -13,6 +13,12 @@ const config: Config = {
       screens: {
         xs: '576px'
       }
+    },
+    screens: {
+      xs: '576px',
+      sm: '768px',
+      md: '992px',
+      lg: '1200px'
     }
   },
   darkMode: 'class',
