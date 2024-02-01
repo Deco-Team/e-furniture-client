@@ -4,7 +4,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useRouter } from 'next/navigation'
 
-const client_id = process.env.CLIENT_ID || ''
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
 
 export function NextUIProviders({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -13,5 +13,5 @@ export function NextUIProviders({ children }: { children: React.ReactNode }) {
 }
 
 export function OAuthProviders({ children }: { children: React.ReactNode }) {
-  return <GoogleOAuthProvider clientId={client_id}>{children}</GoogleOAuthProvider>
+  return <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>{children}</GoogleOAuthProvider>
 }

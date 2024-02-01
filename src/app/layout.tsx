@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { NextUIProviders, OAuthProviders } from './providers'
+import { NextUIProviders } from './providers'
 
 export const metadata: Metadata = {
   title: 'eFurnitures',
@@ -18,9 +18,7 @@ export default function RootLayout({
         <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' />
       </head>
       <body>
-        <OAuthProviders>
-          <NextUIProviders>{children}</NextUIProviders>
-        </OAuthProviders>
+        <NextUIProviders>{children}</NextUIProviders>
       </body>
     </html>
   )
