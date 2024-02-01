@@ -1,11 +1,8 @@
 'use server'
 
 import { AxiosResponse } from 'axios'
-import { cookies } from 'next/headers'
 import { get, post, put, remove } from '~/utils/apiCaller'
 
-const token = cookies().get('accessToken')
-const authorization = token ? `Bearer ${token}` : ''
 /**
  * Function Documentation: `callApi`
  *
@@ -27,25 +24,23 @@ export const callApi = async (
   params: object = {},
   body: object = {}
 ) => {
-  const headersDefault = { accept: 'application/json', Authorization: authorization }
-  Object.assign(headersDefault, headers)
   let response: AxiosResponse
   try {
     switch (method) {
       case 'get': {
-        response = await get(endpoint, params, headersDefault)
+        response = await get(endpoint, params, headers)
         break
       }
       case 'post': {
-        response = await post(endpoint, body, params, headersDefault)
+        response = await post(endpoint, body, params, headers)
         break
       }
       case 'put': {
-        response = await put(endpoint, body, params, headersDefault)
+        response = await put(endpoint, body, params, headers)
         break
       }
       case 'delete': {
-        response = await remove(endpoint, body, params, headersDefault)
+        response = await remove(endpoint, body, params, headers)
         break
       }
     }
