@@ -3,13 +3,10 @@
 import { Button, ScrollShadow } from '@nextui-org/react'
 import CategoryCard from '../cards/CategoryCard'
 import React from 'react'
+import { Category } from '~/global/interface'
 
 interface CategoryListProps {
-  categories: {
-    name: string
-    image: string
-    description: string
-  }[]
+  categories: Category[]
 }
 
 const CategoryList = ({ categories }: CategoryListProps) => {
@@ -23,8 +20,8 @@ const CategoryList = ({ categories }: CategoryListProps) => {
   }
   return (
     <>
-      <div className='max-w-screen-lg px-4 w-full'>
-        <h2 className='mb-5 font-bold text-xl sm:text-2xl text-black'>Categories</h2>
+      <div className='max-w-screen-lg p-4 w-full'>
+        <h2 className='mb-5 font-bold text-xl sm:text-2xl text-black'>Danh mục</h2>
         <ScrollShadow orientation='horizontal' offset={0} size={20} className='overflow-x-auto scroll-pl-4 snap-x '>
           <div className='flex sm:hidden gap-4 mb-4'>
             {categories.map((category, index) => (
@@ -54,10 +51,9 @@ const CategoryList = ({ categories }: CategoryListProps) => {
             <Button
               onClick={toggleShowAllCategories}
               variant='bordered'
-              className='bg-[var(--light-orange-color)] font-bold text-[var(--primary-orange-text-color)] rounded-full h-12 mb-4 px-7 mx-auto
-              '
+              className='font-semibold text-[var(--primary-orange-text-color)] border-solid border-1 border-[var(--primary-orange-color)] rounded-full h-12 px-7 mx-auto'
             >
-              {showAllCategories ? 'View fewer categories' : 'View all categories'}
+              {showAllCategories ? 'Thu gọn danh mục' : 'Mở rộng danh mục'}
             </Button>
           </div>
         )}
