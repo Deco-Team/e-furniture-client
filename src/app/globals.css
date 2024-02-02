@@ -21,7 +21,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', sans-serif !important;
+  /* font-family: 'Helvetica Neue', sans-serif !important; */
   /* font-size: 14px; */
 }
 img,
@@ -46,7 +46,7 @@ button {
 body {
   font-weight: 400;
   font-size: 16px;
-  line-height: 1;
+  /* line-height: 1; */
 }
 
 *::-webkit-scrollbar {

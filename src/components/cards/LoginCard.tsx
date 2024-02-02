@@ -69,7 +69,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
     <Card className='py-2 px-4 xs:px-7 xs:py-4 max-w-[30rem] max-h-[35rem] w-[min(100%,30rem)] h-[35rem] justify-center absolute front'>
       <div className='w-full flex flex-col items-center justify-center'>
         <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
-          <h1 className='w-full text-4xl font-extrabold text-center pt-4 pb-8'>Đăng nhập</h1>
+          <h1 className='w-full text-4xl font-bold text-center pt-4 pb-8'>Đăng nhập</h1>
         </CardHeader>
         <CardBody className='overflow-hidden py-2'>
           <form className='flex flex-col items-center' action='POST' onSubmit={handleSubmit(loginSubmit)}>
@@ -107,7 +107,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
             <Button
               type='submit'
               disabled={isSubmitted && (errors.email || errors.password) ? true : false}
-              className='w-full bg-[var(--light-orange-color)] font-extrabold text-[var(--primary-orange-text-color)] h-14 mb-5 disabled:opacity-50 disabled:hover:opacity-50'
+              className='w-full bg-[var(--light-orange-color)] font-semibold text-lg text-[var(--primary-orange-text-color)] h-14 mb-5 disabled:opacity-50 disabled:hover:opacity-50'
             >
               Đăng nhập
             </Button>
