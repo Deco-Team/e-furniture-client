@@ -11,7 +11,7 @@ interface Data {
 }
 
 async function getData(): Promise<Data> {
-  const categories = await getCategories(1, 99, '')
+  const categories = await getCategories(1, 18, '')
   const products = await getProductList(1, 8, '')
   return { categories: categories.docs, products: products.docs }
 }
