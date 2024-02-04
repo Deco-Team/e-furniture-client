@@ -1,88 +1,23 @@
-import CategoryList from '~/components/categoryList/CategoryList'
-import { getCategories } from './home.action'
+import CategoryList from '~/components/category list/CategoryList'
+import { getCategories, getProductList } from './homeAction'
 import { Link } from '@nextui-org/react'
 import { FaLongArrowAltRight } from 'react-icons/fa'
 import ProductList from '~/components/productList/ProductList'
-import { IProduct } from '~/global/interface'
+import { Category, Product } from '~/global/interface'
 
-async function getData() {
-  const res = await getCategories(1, 10, '')
-  return res.docs
+interface Data {
+  categories: Category[]
+  products: Product[]
+}
+
+async function getData(): Promise<Data> {
+  const categories = await getCategories(1, 99, '')
+  const products = await getProductList(1, 8, '')
+  return { categories: categories.docs, products: products.docs }
 }
 
 export default async function Home() {
-  const categories = await getData()
-
-  const dummyData: IProduct[] = [
-    {
-      name: 'Sofa',
-      images: ['https://m.media-amazon.com/images/I/61KtSpR0SfL._AC_UL480_FMwebp_QL65_.jpg'],
-      rate: 0,
-      variants: [
-        {
-          sku: 'EF20241011',
-          price: 100,
-          quantity: 10,
-          dimensions: {
-            height: 36,
-            width: 72,
-            length: 38
-          },
-          keyValue: {
-            color: 'yellow',
-            material: 'cotton'
-          }
-        },
-        {
-          sku: 'EF20241012',
-          price: 200,
-          quantity: 0,
-          dimensions: {
-            height: 36,
-            width: 72,
-            length: 38
-          },
-          keyValue: {
-            color: 'yellow',
-            material: 'cotton'
-          }
-        }
-      ],
-      categories: [
-        {
-          name: 'Ghế',
-          image: 'https://demo.sirv.com/chair.jpg'
-        }
-      ]
-    },
-    {
-      name: 'Sofa Luxury',
-      images: ['https://m.media-amazon.com/images/I/61KtSpR0SfL._AC_UL480_FMwebp_QL65_.jpg'],
-      rate: 0,
-      variants: [
-        {
-          sku: 'EF20241010',
-          price: 10,
-          quantity: 20,
-          dimensions: {
-            height: 36,
-            width: 72,
-            length: 38
-          },
-          keyValue: {
-            color: 'yellow',
-            material: 'cotton'
-          }
-        }
-      ],
-      categories: [
-        {
-          name: 'Chair',
-          image: 'https://www.ikea.com/us/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg?f=s'
-        }
-      ]
-    }
-  ]
+  const { categories, products } = await getData()
 
   return (
     <main className='min-h-screen py-24 flex flex-col items-center'>
@@ -101,7 +36,7 @@ export default async function Home() {
           </Link>
         </div>
 
-        <ProductList products={dummyData} />
+        <ProductList products={products} />
       </div>
     </main>
   )

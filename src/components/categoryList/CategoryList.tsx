@@ -25,25 +25,20 @@ const CategoryList = ({ categories }: CategoryListProps) => {
         <ScrollShadow orientation='horizontal' offset={0} size={20} className='overflow-x-auto scroll-pl-4 snap-x '>
           <div className='flex sm:hidden gap-4 mb-4'>
             {categories.map((category, index) => (
-              <CategoryCard
-                key={index}
-                name={category.name}
-                description={category.description}
-                image={category.image}
-              />
+              <CategoryCard key={index} category={category} />
             ))}
           </div>
         </ScrollShadow>
         <div className='hidden sm:grid sm:grid-cols-3 mb-4 gap-4'>
           {visibleCategories.map((category, index) => (
-            <CategoryCard key={index} name={category.name} description={category.description} image={category.image} />
+            <CategoryCard key={index} category={category} />
           ))}
         </div>
         <div
-          className={`${showAllCategories ? 'max-h-[1000px] pb-4' : 'max-h-0'} sm:grid sm:grid-cols-3 hidden overflow-hidden gap-4 transition-all !duration-400 !ease-linear`}
+          className={`${showAllCategories ? 'max-h-fit pb-4' : 'max-h-0'} sm:grid sm:grid-cols-3 hidden overflow-hidden gap-4 transition-all !duration-400 !ease-linear`}
         >
           {hiddenCategories.map((category, index) => (
-            <CategoryCard key={index} name={category.name} description={category.description} image={category.image} />
+            <CategoryCard key={index} category={category} />
           ))}
         </div>
         {categories.length > 3 && (
