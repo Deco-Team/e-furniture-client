@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import './style.css'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { login, loginWithGoogle, registerCustomer } from '~/app/login-register/loginRegisterActions'
+import { login, loginWithGoogle, registerCustomer } from '~/app/login-register/loginRegister.actions'
 import { Login } from '~/global/interface'
 
 interface RegisterCardProps {

@@ -1,9 +1,9 @@
-import CategoryList from '~/components/category list/CategoryList'
-import { getCategories } from './homeAction'
+import CategoryList from '~/components/categoryList/CategoryList'
+import { getCategories } from './home.action'
 import { Link } from '@nextui-org/react'
 import { FaLongArrowAltRight } from 'react-icons/fa'
 import ProductList from '~/components/productList/ProductList'
-import { Product } from '~/global/interface'
+import { IProduct } from '~/global/interface'
 
 async function getData() {
   const res = await getCategories(1, 10, '')
@@ -13,7 +13,7 @@ async function getData() {
 export default async function Home() {
   const categories = await getData()
 
-  const dummyData: Product[] = [
+  const dummyData: IProduct[] = [
     {
       name: 'Sofa',
       images: ['https://m.media-amazon.com/images/I/61KtSpR0SfL._AC_UL480_FMwebp_QL65_.jpg'],

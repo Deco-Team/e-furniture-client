@@ -1,7 +1,10 @@
 'use server'
 
-import { AxiosResponse } from 'axios'
+import { AxiosResponse, Method } from 'axios'
+import { cookies } from 'next/headers'
 import { get, post, put, remove } from '~/utils/apiCaller'
+
+const token = cookies().get('accessToken')?.value
 
 /**
  * Function Documentation: `callApi`
@@ -18,12 +21,14 @@ import { get, post, put, remove } from '~/utils/apiCaller'
  * @throws {Error} - If an error occurs during the API call.
  */
 export const callApi = async (
-  method: 'get' | 'post' | 'put' | 'delete',
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   endpoint: string,
-  headers: object = {},
+  headers: object = {
+    Authorization: `Bearer ${token}`
+  },
   params: object = {},
   body: object = {}
-) => {
+): Promise<any> => {
   let response: AxiosResponse
   try {
     switch (method) {
@@ -41,6 +46,10 @@ export const callApi = async (
       }
       case 'delete': {
         response = await remove(endpoint, body, params, headers)
+        break
+      }
+      case 'patch': {
+        response = await put(endpoint, body, params, headers)
         break
       }
     }

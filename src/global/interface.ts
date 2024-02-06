@@ -1,40 +1,45 @@
-export interface Login {
+/**
+ * THÊM I- KHI KHAI BÁO INTERFACE:
+ * Ex: Cart -> ICart
+ */
+
+export interface ILogin {
   email: string
   password: string
 }
 
-export interface Register {
+export interface IRegister {
   firstName: string
   lastName: string
   email: string
   password: string
 }
 
-export interface Category {
+export interface ICategory {
   name: string
   description?: string
   image: string
 }
-export interface Variant {
+export interface IVariant {
   sku: string
   price: number
   quantity: number
-  dimensions: Dimension
+  dimensions: IDimension
   keyValue: { [key: string]: string }
 }
 
-export interface Dimension {
+export interface IDimension {
   height: number
   width: number
   length: number
 }
 
-export interface Product {
+export interface IProduct {
   name: string
   description?: string
   images: string[]
   rate: number
   brand?: string
-  variants: Variant[]
-  categories: Category[]
+  variants: IVariant[]
+  categories: ICategory[]
 }

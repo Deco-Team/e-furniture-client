@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, Method } from 'axios'
 
 /**
  * Creates an Axios instance for making HTTP requests.
@@ -12,7 +12,7 @@ import axios, { AxiosResponse } from 'axios'
  */
 export const request = (
   endpoint: string,
-  method: string,
+  method: Method,
   headers: object = {},
   params: object = {},
   body: object = {}
@@ -71,6 +71,24 @@ export const put = (
   headers: object = {}
 ): Promise<AxiosResponse> => {
   return request(endpoint, 'PUT', headers, params, body)
+}
+
+/**
+ * Sends a PUT request to the specified endpoint.
+ *
+ * @param {string} endpoint - The API endpoint to which the PUT request should be made.
+ * @param {object} [body={}] - An object containing the request body. Default is an empty object.
+ * @param {object} [params={}] - An object containing URL parameters for the request. Default is an empty object.
+ * @param {object} [headers={}] - An object containing custom headers for the request. Default is an empty object.
+ * @returns {Axios} - An Axios instance for making the PUT request.
+ */
+export const patch = (
+  endpoint: string,
+  body: object = {},
+  params: object = {},
+  headers: object = {}
+): Promise<AxiosResponse> => {
+  return request(endpoint, 'PATCH', headers, params, body)
 }
 
 /**

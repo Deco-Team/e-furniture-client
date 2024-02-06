@@ -3,10 +3,10 @@
 import { Button, ScrollShadow } from '@nextui-org/react'
 import CategoryCard from '../cards/CategoryCard'
 import React from 'react'
-import { Category } from '~/global/interface'
+import { ICategory } from '~/global/interface'
 
 interface CategoryListProps {
-  categories: Category[]
+  categories: ICategory[]
 }
 
 const CategoryList = ({ categories }: CategoryListProps) => {

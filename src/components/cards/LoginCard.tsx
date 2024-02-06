@@ -8,7 +8,7 @@ import { Login } from '~/global/interface'
 import { useRouter } from 'next/navigation'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import './style.css'
-import { login, loginWithGoogle } from '~/app/login-register/loginRegisterActions'
+import { login, loginWithGoogle } from '~/app/login-register/loginRegister.actions'
 
 interface LoginCardProps {
   toggleCard: () => void
