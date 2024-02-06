@@ -1,6 +1,6 @@
 'use server'
 
-import { Login, Register } from '~/global/interface'
+import { ILogin, IRegister } from '~/global/interface'
 import { callApi } from '../actions'
 import { cookies } from 'next/headers'
 import { JwtPayload, decode } from 'jsonwebtoken'
@@ -17,7 +17,7 @@ const setToken = (token: string) => {
   })
 }
 
-export const login = async (data: Login) => {
+export const login = async (data: ILogin) => {
   const endpoint = `${ROOT_ENDPOINT}/login`
   try {
     const response = await callApi('post', endpoint, {}, {}, data)
@@ -43,7 +43,7 @@ export const loginWithGoogle = async (credential: string) => {
   }
 }
 
-export const registerCustomer = async (data: Register) => {
+export const registerCustomer = async (data: IRegister) => {
   const endpoint = `${ROOT_ENDPOINT}/register`
   try {
     await callApi('post', endpoint, {}, {}, data)
