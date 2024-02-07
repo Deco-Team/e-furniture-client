@@ -1,7 +1,7 @@
-import { IProduct } from '@global/interface'
+import { IProduct } from '~/global/interface'
 import dynamic from 'next/dynamic'
 
-const ProductCard = dynamic(() => import('@components/cards/ProductCard'), { ssr: true })
+const ProductCard = dynamic(() => import('../cards/ProductCard'), { ssr: true })
 
 interface ProductListProps {
   products: IProduct[]
