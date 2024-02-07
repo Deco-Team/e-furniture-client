@@ -1,7 +1,7 @@
 'use server'
 
 import { ILogin, IRegister } from '~/global/interface'
-import { callApi } from '../action/actions'
+import { callApi } from '~/action/actions'
 import { cookies } from 'next/headers'
 import { JwtPayload, decode } from 'jsonwebtoken'
 
