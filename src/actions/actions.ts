@@ -1,6 +1,8 @@
 'use server'
 
-import { get, post, put, remove } from '@utils/apiCaller'
+import { AxiosResponse, Method } from 'axios'
+import { cookies } from 'next/headers'
+import { get, patch, post, put, remove } from '~/utils/apiCaller'
 
 /**
  * Function Documentation: `callApi`
@@ -46,4 +48,52 @@ export const callApi = async (
     }
   }
   return response.data
+}
+
+export async function callAuthApi<T>(
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch',
+  endpoint: string,
+  params: object = {},
+  body: object = {},
+  headers: object = {}
+) {
+  let response: AxiosResponse<T>
+  const token = cookies().get('accessToken')?.value
+  try {
+    switch (method) {
+      case 'get': {
+        response = await get(endpoint, params, {
+          Authorization: `Bearer ${token}`
+        })
+        break
+      }
+      case 'post': {
+        response = await post(endpoint, body, params, {
+          Authorization: `Bearer ${token}`
+        })
+        break
+      }
+      case 'put': {
+        response = await put(endpoint, body, params, {
+          Authorization: `Bearer ${token}`
+        })
+        break
+      }
+      case 'delete': {
+        response = await remove(endpoint, body, params, {
+          Authorization: `Bearer ${token}`
+        })
+        break
+      }
+      case 'patch': {
+        response = await patch(endpoint, body, params, {
+          Authorization: `Bearer ${token}`
+        })
+        break
+      }
+    }
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
 }

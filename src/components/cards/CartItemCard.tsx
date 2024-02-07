@@ -4,23 +4,83 @@ import { Button, Card, Image, Input } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { FaMinus, FaXmark } from 'react-icons/fa6'
+import { deteleCartItem, updateCartQuantity } from '~/app/(customer)/cart/cart.actions'
 export interface ICartItemCard {
   imageURL: string
   name: string
   price: number
-  isDiscount: boolean
-  quantity: number
+  isDiscount?: boolean
+  quantity: string
   description: string
+  availableQuantity: number
+  productId: string
+  sku: string
+  onUpdate: () => void
 }
 
-const CartItemCard = ({ imageURL, name, price, isDiscount, description, quantity }: ICartItemCard) => {
+const CartItemCard = ({
+  imageURL,
+  name,
+  price,
+  description,
+  availableQuantity,
+  quantity,
+  productId,
+  sku,
+  onUpdate
+}: ICartItemCard) => {
   const [fixQuantity, setFixQuantity] = useState(quantity)
 
-  const handleQuantity = (isPlus: boolean, quantity: number) => {
+  const handleQuantity = async (isPlus: boolean, quantity: string) => {
+    let inputQuantity: number = Number(quantity)
     if (isPlus) {
-      setFixQuantity((quantity) => quantity + 1)
+      if (availableQuantity === Number(quantity)) return
+      setFixQuantity((quantity) => (Number(quantity) + 1).toString())
+      inputQuantity++
+    } else if (Number(quantity) === 1) {
+      setFixQuantity('1')
+      inputQuantity = 1
     } else {
-      quantity === 0 ? setFixQuantity(0) : setFixQuantity((quantity) => quantity - 1)
+      setFixQuantity((quantity) => (Number(quantity) - 1).toString())
+      inputQuantity--
+    }
+    handleUpdateCartQuantity(inputQuantity)
+  }
+
+  const handleInputQuantity = (quantity: string) => {
+    let inputQuantity: number
+    if (availableQuantity <= Number(quantity)) {
+      setFixQuantity(availableQuantity.toString())
+      inputQuantity = availableQuantity
+    } else {
+      setFixQuantity(quantity)
+      inputQuantity = Number(quantity)
+    }
+    handleUpdateCartQuantity(inputQuantity)
+  }
+
+  const handleUpdateCartQuantity = async (quantity: number) => {
+    try {
+      await updateCartQuantity({
+        productId: productId,
+        sku: sku,
+        quantity: quantity
+      })
+      onUpdate()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDeteleCartItem = async () => {
+    try {
+      await deteleCartItem({
+        productId: productId,
+        sku: sku
+      })
+      onUpdate()
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -33,7 +93,7 @@ const CartItemCard = ({ imageURL, name, price, isDiscount, description, quantity
             <p className='text-xl font-semibold'>{name}</p>
             <p className='text-gray-500'>Art: {description}</p>
           </div>
-          <Button size='sm' isIconOnly>
+          <Button size='sm' isIconOnly onClick={handleDeteleCartItem}>
             <FaXmark />
           </Button>
         </div>
@@ -46,10 +106,11 @@ const CartItemCard = ({ imageURL, name, price, isDiscount, description, quantity
               variant='bordered'
               size='sm'
               classNames={{
-                inputWrapper: ['p-0 px-2 w-10', 'h-fit']
+                inputWrapper: ['p-0 px-2 w-16', 'h-fit']
               }}
               type='number'
               value={String(fixQuantity)}
+              onValueChange={handleInputQuantity}
             />
             <Button onClick={() => handleQuantity(true, fixQuantity)} size='sm' isIconOnly>
               <FaPlus />

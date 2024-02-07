@@ -4,11 +4,11 @@ import { GoogleLogin } from '@react-oauth/google'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ILogin } from '@global/interface'
+import { ILogin } from '~/global/interface'
 import { useRouter } from 'next/navigation'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import './style.css'
-import { login, loginWithGoogle } from '@actions/auth/auth.actions'
+import { login, loginWithGoogle } from '~/app/login-register/loginRegister.actions'
 
 interface LoginCardProps {
   toggleCard: () => void

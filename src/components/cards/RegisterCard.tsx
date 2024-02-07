@@ -7,8 +7,8 @@ import * as yup from 'yup'
 import './style.css'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { login, loginWithGoogle, registerCustomer } from '@actions/auth/auth.actions'
-import { ILogin } from '@global/interface'
+import { login, loginWithGoogle, registerCustomer } from '~/app/login-register/loginRegister.actions'
+import { ILogin } from '~/global/interface'
 
 interface RegisterCardProps {
   toggleCard: () => void
