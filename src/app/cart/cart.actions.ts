@@ -1,6 +1,6 @@
 'use server'
 
-import { callApi } from '../action/actions'
+import { callApi } from '~/action/actions'
 
 const ROOT_ENDPOINT = '/carts'
 
