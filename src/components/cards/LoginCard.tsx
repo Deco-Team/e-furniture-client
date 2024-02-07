@@ -4,7 +4,7 @@ import { GoogleLogin } from '@react-oauth/google'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Login } from '~/global/interface'
+import { ILogin } from '~/global/interface'
 import { useRouter } from 'next/navigation'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import './style.css'
@@ -44,7 +44,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
     criteriaMode: 'all'
   })
 
-  const loginSubmit = async (data: Login) => {
+  const loginSubmit = async (data: ILogin) => {
     const result = await login(data)
     if (result) {
       router.push('/')

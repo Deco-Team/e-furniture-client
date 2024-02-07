@@ -8,7 +8,7 @@ import './style.css'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { login, loginWithGoogle, registerCustomer } from '~/app/login-register/loginRegister.actions'
-import { Login } from '~/global/interface'
+import { ILogin } from '~/global/interface'
 
 interface RegisterCardProps {
   toggleCard: () => void
@@ -65,7 +65,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
     const result = await registerCustomer(data)
     if (result) {
       console.log('Register success')
-      const dataLogin: Login = {
+      const dataLogin: ILogin = {
         email: data.email,
         password: data.password
       }

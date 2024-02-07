@@ -1,10 +1,10 @@
-import { Product } from '~/global/interface'
+import { IProduct } from '~/global/interface'
 import dynamic from 'next/dynamic'
 
 const ProductCard = dynamic(() => import('../cards/ProductCard'), { ssr: true })
 
 interface ProductListProps {
-  products: Product[]
+  products: IProduct[]
 }
 
 export default function ProductList({ products }: ProductListProps) {

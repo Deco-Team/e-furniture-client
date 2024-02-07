@@ -1,8 +1,8 @@
 import { Card, CardBody, Image } from '@nextui-org/react'
-import { Category } from '~/global/interface'
+import { ICategory } from '~/global/interface'
 
 interface CategoryCardProps {
-  category: Category
+  category: ICategory
 }
 
 const CategoryCard = ({ category }: CategoryCardProps) => {

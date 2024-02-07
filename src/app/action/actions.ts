@@ -1,10 +1,10 @@
 'use server'
 
 import { AxiosResponse, Method } from 'axios'
-import { cookies } from 'next/headers'
+// import { cookies } from 'next/headers'
 import { get, post, put, remove } from '~/utils/apiCaller'
 
-const token = cookies().get('accessToken')?.value
+// const token = cookies().get('accessToken')?.value
 
 /**
  * Function Documentation: `callApi`
@@ -24,7 +24,7 @@ export const callApi = async (
   method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   endpoint: string,
   headers: object = {
-    Authorization: `Bearer ${token}`
+    // Authorization: `Bearer ${token}`
   },
   params: object = {},
   body: object = {}
