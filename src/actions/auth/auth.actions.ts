@@ -1,11 +1,16 @@
 'use server'
 
-import { ILogin, IRegister } from '~/global/interface'
-import { callApi } from '~/action/actions'
+import { ILogin, IRegister } from '@global/interface'
+import { callApi } from '@actions/actions'
 import { cookies } from 'next/headers'
 import { JwtPayload, decode } from 'jsonwebtoken'
 
 const ROOT_ENDPOINT = '/auth/customer'
+
+interface LoginResponseData {
+  accessToken: string
+  refreshToken: string
+}
 
 const setToken = (token: string) => {
   const decodedToken = decode(token) as JwtPayload
@@ -17,11 +22,11 @@ const setToken = (token: string) => {
   })
 }
 
-export const login = async (data: ILogin) => {
+export const login = async (loginData: ILogin) => {
   const endpoint = `${ROOT_ENDPOINT}/login`
   try {
-    const response = await callApi('post', endpoint, {}, {}, data)
-    setToken(response.data.accessToken)
+    const { data } = await callApi('post', endpoint, {}, {}, loginData)
+    setToken((data as LoginResponseData).accessToken)
 
     return true
   } catch (error) {
@@ -33,8 +38,8 @@ export const login = async (data: ILogin) => {
 export const loginWithGoogle = async (credential: string) => {
   const endpoint = `${ROOT_ENDPOINT}/google`
   try {
-    const response = await callApi('post', endpoint, {}, {}, { token: credential })
-    setToken(response.data.accessToken)
+    const { data } = await callApi('post', endpoint, {}, {}, { token: credential })
+    setToken((data as LoginResponseData).accessToken)
 
     return true
   } catch (error) {

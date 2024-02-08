@@ -1,6 +1,6 @@
 'use server'
 
-import { callApi } from '../actions'
+import { callApi } from '@actions/actions'
 
 const ROOT_ENDPOINT_CATEGORIES = '/categories/customer'
 
@@ -12,5 +12,6 @@ export const getCategories = async (page: number, limit: number, sort?: string) 
     return response.data
   } catch (error) {
     console.log(error)
+    return null
   }
 }

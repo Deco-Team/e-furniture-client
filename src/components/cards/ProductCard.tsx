@@ -2,7 +2,7 @@
 
 import { Button, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { FaCartPlus } from 'react-icons/fa'
-import { IProduct } from '~/global/interface'
+import { IProduct } from '@global/interface'
 
 interface ProductCardProps {
   product: IProduct

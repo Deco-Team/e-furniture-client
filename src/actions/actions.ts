@@ -1,10 +1,6 @@
 'use server'
 
-import { AxiosResponse, Method } from 'axios'
-// import { cookies } from 'next/headers'
-import { get, post, put, remove } from '~/utils/apiCaller'
-
-// const token = cookies().get('accessToken')?.value
+import { get, post, put, remove } from '@utils/apiCaller'
 
 /**
  * Function Documentation: `callApi`
@@ -23,38 +19,31 @@ import { get, post, put, remove } from '~/utils/apiCaller'
 export const callApi = async (
   method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   endpoint: string,
-  headers: object = {
-    // Authorization: `Bearer ${token}`
-  },
+  headers: object = {},
   params: object = {},
   body: object = {}
-): Promise<any> => {
-  let response: AxiosResponse
-  try {
-    switch (method) {
-      case 'get': {
-        response = await get(endpoint, params, headers)
-        break
-      }
-      case 'post': {
-        response = await post(endpoint, body, params, headers)
-        break
-      }
-      case 'put': {
-        response = await put(endpoint, body, params, headers)
-        break
-      }
-      case 'delete': {
-        response = await remove(endpoint, body, params, headers)
-        break
-      }
-      case 'patch': {
-        response = await put(endpoint, body, params, headers)
-        break
-      }
+): Promise<{ data: unknown }> => {
+  let response
+  switch (method) {
+    case 'post': {
+      response = await post(endpoint, body, params, headers)
+      break
     }
-    return response.data
-  } catch (error) {
-    console.log(error)
+    case 'put': {
+      response = await put(endpoint, body, params, headers)
+      break
+    }
+    case 'delete': {
+      response = await remove(endpoint, body, params, headers)
+      break
+    }
+    case 'patch': {
+      response = await put(endpoint, body, params, headers)
+      break
+    }
+    default: {
+      response = await get(endpoint, params, headers)
+    }
   }
+  return response.data
 }

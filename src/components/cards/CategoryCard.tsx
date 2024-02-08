@@ -1,5 +1,5 @@
 import { Card, CardBody, Image } from '@nextui-org/react'
-import { ICategory } from '~/global/interface'
+import { ICategory } from '@global/interface'
 
 interface CategoryCardProps {
   category: ICategory

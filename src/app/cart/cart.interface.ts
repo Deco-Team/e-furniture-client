@@ -1,4 +1,4 @@
-import { IProduct } from '~/global/interface'
+import { IProduct } from '@global/interface'
 
 export interface ICart {
   _id: string
