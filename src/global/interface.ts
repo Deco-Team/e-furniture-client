@@ -16,6 +16,7 @@ export interface IRegister {
 }
 
 export interface ICategory {
+  _id?: string
   name: string
   description?: string
   image: string
@@ -35,6 +36,7 @@ export interface IDimension {
 }
 
 export interface IProduct {
+  _id?: string
   name: string
   description?: string
   images: string[]
@@ -42,4 +44,5 @@ export interface IProduct {
   brand?: string
   variants: IVariant[]
   categories: ICategory[]
+  slug: string
 }

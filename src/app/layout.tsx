@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
-import { NextUIProviders } from './providers'
+import '@app/globals.css'
+import { NextUIProviders } from '@app/providers'
 
 export const metadata: Metadata = {
   title: 'eFurniture',

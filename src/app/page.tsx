@@ -1,10 +1,10 @@
-import CategoryList from '~/components/categoryList/CategoryList'
-import { getCategories } from './action/categoriesActions/categories.actions'
-import { getProductList } from './action/productsActions/products.actions'
+import CategoryList from '@components/categoryList/CategoryList'
 import { Link } from '@nextui-org/react'
 import { FaLongArrowAltRight } from 'react-icons/fa'
-import ProductList from '~/components/productList/ProductList'
-import { Category, Product } from '~/global/interface'
+import ProductList from '@components/productList/ProductList'
+import { ICategory, IProduct } from '@global/interface'
+import { getCategories } from '@actions/categories/categories.actions'
+import { getProductList } from '@actions/products/products.actions'
 
 interface Data {
   categories: Category[]
@@ -12,9 +12,12 @@ interface Data {
 }
 
 async function getData(): Promise<Data> {
-  const categories = await getCategories(1, 18)
-  const products = await getProductList(1, 8)
-  return { categories: categories.docs, products: products.docs }
+  const [categories, products] = await Promise.all([getCategories(1, 18), getProductList(1, 8)])
+
+  return {
+    categories: (categories as { docs: ICategory[] }).docs,
+    products: (products as { docs: IProduct[] }).docs
+  }
 }
 
 export default async function Home() {

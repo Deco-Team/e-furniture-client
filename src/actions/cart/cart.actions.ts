@@ -1,6 +1,6 @@
 'use server'
 
-import { callApi } from '~/action/actions'
+import { callApi } from '@actions/actions'
 
 const ROOT_ENDPOINT = '/carts'
 
@@ -10,5 +10,6 @@ export const getCart = async () => {
     return response.data
   } catch (error) {
     console.log(error)
+    return null
   }
 }

@@ -1,8 +1,8 @@
 import { Button, Card, CardHeader } from '@nextui-org/react'
 import React from 'react'
 import { FaArrowLeft } from 'react-icons/fa6'
-import CartItemCard from '~/components/cards/CartItemCard'
-import { getCart } from './cart.actions'
+import { getCart } from '@actions/cart/cart.actions'
+import CartItemCard from '@components/cards/CartItemCard'
 
 const CartPage = () => {
   getCart()

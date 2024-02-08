@@ -7,6 +7,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "baseUrl": "./",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,7 +19,12 @@
       }
     ],
     "paths": {
-      "~/*": ["./src/*"]
+      "@app/*": ["src/app/*"],
+      "@actions/*": ["src/actions/*"],
+      "@global/*": ["src/global/*"],
+      "@utils/*": ["src/utils/*"],
+      "@components/*": ["src/components/*"],
+      "@src/*": ["src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/hooks/useApi.tsx"],
