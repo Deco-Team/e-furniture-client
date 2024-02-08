@@ -1,11 +1,9 @@
-import { IProduct } from '~/global/interface'
+import { IProduct } from '@global/interface'
 
 export interface ICart {
-  data: {
-    _id: string
-    items: ICartItem[]
-    totalAmount: number
-  }
+  _id: string
+  items: ICartItem[]
+  totalAmount: number
 }
 
 export interface ICartItem {
@@ -21,7 +19,7 @@ export interface IUpdateCartQuantity {
   quantity: number
 }
 
-export interface IDeteleCartItem {
+export interface IDeleteCartItem {
   productId: string
   sku: string
 }

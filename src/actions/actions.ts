@@ -1,8 +1,7 @@
 'use server'
 
-import { AxiosResponse, Method } from 'axios'
 import { cookies } from 'next/headers'
-import { get, patch, post, put, remove } from '~/utils/apiCaller'
+import { get, patch, post, put, remove } from '@utils/apiCaller'
 
 /**
  * Function Documentation: `callApi`
@@ -18,13 +17,13 @@ import { get, patch, post, put, remove } from '~/utils/apiCaller'
  * @returns {Promise<any>} - A promise that resolves to the response data from the API.
  * @throws {Error} - If an error occurs during the API call.
  */
-export const callApi = async (
+export const callApi = async <T>(
   method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   endpoint: string,
   headers: object = {},
   params: object = {},
   body: object = {}
-): Promise<{ data: unknown }> => {
+): Promise<{ data: T }> => {
   let response
   switch (method) {
     case 'post': {
@@ -40,7 +39,7 @@ export const callApi = async (
       break
     }
     case 'patch': {
-      response = await put(endpoint, body, params, headers)
+      response = await patch(endpoint, body, params, headers)
       break
     }
     default: {
@@ -50,50 +49,15 @@ export const callApi = async (
   return response.data
 }
 
-export async function callAuthApi<T>(
+export const callAuthApi = <T>(
   method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   endpoint: string,
   params: object = {},
   body: object = {},
   headers: object = {}
-) {
-  let response: AxiosResponse<T>
+): Promise<{ data: T }> => {
   const token = cookies().get('accessToken')?.value
-  try {
-    switch (method) {
-      case 'get': {
-        response = await get(endpoint, params, {
-          Authorization: `Bearer ${token}`
-        })
-        break
-      }
-      case 'post': {
-        response = await post(endpoint, body, params, {
-          Authorization: `Bearer ${token}`
-        })
-        break
-      }
-      case 'put': {
-        response = await put(endpoint, body, params, {
-          Authorization: `Bearer ${token}`
-        })
-        break
-      }
-      case 'delete': {
-        response = await remove(endpoint, body, params, {
-          Authorization: `Bearer ${token}`
-        })
-        break
-      }
-      case 'patch': {
-        response = await patch(endpoint, body, params, {
-          Authorization: `Bearer ${token}`
-        })
-        break
-      }
-    }
-    return response.data
-  } catch (error) {
-    console.log(error)
-  }
+  headers = { ...headers, Authorization: `Bearer ${token}` }
+
+  return callApi<T>(method, endpoint, headers, params, body)
 }

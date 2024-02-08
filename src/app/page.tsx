@@ -2,21 +2,15 @@ import CategoryList from '@components/categoryList/CategoryList'
 import { Link } from '@nextui-org/react'
 import { FaLongArrowAltRight } from 'react-icons/fa'
 import ProductList from '@components/productList/ProductList'
-import { ICategory, IProduct } from '@global/interface'
 import { getCategories } from '@actions/categories/categories.actions'
 import { getProductList } from '@actions/products/products.actions'
 
-interface Data {
-  categories: ICategory[]
-  products: IProduct[]
-}
-
-async function getData(): Promise<Data> {
+const getData = async () => {
   const [categories, products] = await Promise.all([getCategories(1, 18), getProductList(1, 8)])
 
   return {
-    categories: (categories as { docs: ICategory[] }).docs,
-    products: (products as { docs: IProduct[] }).docs
+    categories: categories ? categories.docs : [],
+    products: products ? products.docs : []
   }
 }
 
