@@ -4,7 +4,7 @@ import { Button, Card, Image, Input } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { FaMinus, FaXmark } from 'react-icons/fa6'
-import { deteleCartItem, updateCartQuantity } from '~/app/(customer)/cart/cart.actions'
+import { deleteCartItem, updateCartQuantity } from '@actions/cart/cart.actions'
 export interface ICartItemCard {
   imageURL: string
   name: string
@@ -72,9 +72,9 @@ const CartItemCard = ({
     }
   }
 
-  const handleDeteleCartItem = async () => {
+  const handleDeleteCartItem = async () => {
     try {
-      await deteleCartItem({
+      await deleteCartItem({
         productId: productId,
         sku: sku
       })
@@ -93,7 +93,7 @@ const CartItemCard = ({
             <p className='text-xl font-semibold'>{name}</p>
             <p className='text-gray-500'>Art: {description}</p>
           </div>
-          <Button size='sm' isIconOnly onClick={handleDeteleCartItem}>
+          <Button size='sm' isIconOnly onClick={handleDeleteCartItem}>
             <FaXmark />
           </Button>
         </div>

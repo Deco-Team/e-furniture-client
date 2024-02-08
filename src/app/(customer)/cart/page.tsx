@@ -2,23 +2,17 @@
 import { Button, Card, CardBody, CardHeader, Input, Skeleton } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa6'
-import CartItemCard from '~/components/cards/CartItemCard'
-import { getCart } from './cart.actions'
+import CartItemCard from '@components/cards/CartItemCard'
 import { ICart } from './cart.interface'
-import { useRouter } from 'next/navigation'
+import { getCart } from '@actions/cart/cart.actions'
+import Link from 'next/link'
 
 const CartPage = () => {
-  const [cart, setCart] = useState<ICart>()
-  const router = useRouter()
+  const [cart, setCart] = useState<ICart | null>()
 
   const getData = async () => {
-    return await getCart()
-      .then((value) => {
-        setCart(value)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    const cart = await getCart()
+    setCart(cart)
   }
 
   useEffect(() => {
@@ -30,15 +24,17 @@ const CartPage = () => {
     <>
       <Card className='bg-gray-200 m-4 mb-10 md:p-3 md:mx-10'>
         <CardHeader className='flex gap-3'>
-          <Button isIconOnly onClick={() => router.push('/')}>
-            <FaArrowLeft />
-          </Button>
+          <Link href='/'>
+            <Button isIconOnly>
+              <FaArrowLeft />
+            </Button>
+          </Link>
           <h2 className='font-bold text-2xl md:text-3xl'>Giỏ hàng</h2>
         </CardHeader>
       </Card>
       <div className='flex flex-col md:flex-row'>
         <div className='flex-grow m-4 justify-center items-center'>
-          {!cart?.data.items ? (
+          {!cart?.items ? (
             <>
               <Skeleton
                 className='rounded-xl flex gap-3 m-4 md:mx-10 shadow-none flex-row h-28'
@@ -60,11 +56,11 @@ const CartPage = () => {
               </Skeleton>
             </>
           ) : null}
-          {cart?.data.items.length !== 0 ? (
-            cart?.data.items.map((value) => {
+          {cart?.items.length !== 0 ? (
+            cart?.items.map((value) => {
               return (
                 <CartItemCard
-                  onUpdate={() => getData()}
+                  onUpdate={getData}
                   key={value.productId}
                   productId={value.productId}
                   imageURL={value.product.images[0]}
@@ -87,9 +83,9 @@ const CartPage = () => {
           </CardHeader>
           <CardBody>
             <ul className='ml-10'>
-              <li className='my-2 text-gray-500 text-lg md:text-xl'>Sản phẩm: ${cart?.data.totalAmount || 0}</li>
+              <li className='my-2 text-gray-500 text-lg md:text-xl'>Sản phẩm: ${cart?.totalAmount || 0}</li>
               <li className='my-2 text-gray-500 text-lg md:text-xl'>Phí giao hàng: $2</li>
-              <li className=' my-2 text-lg md:text-xl'>Tổng cộng: ${Number(cart?.data.totalAmount) + 2 || 0 + 2}</li>
+              <li className=' my-2 text-lg md:text-xl'>Tổng cộng: ${Number(cart?.totalAmount) + 2 || 0 + 2}</li>
             </ul>
             <div className='mt-5 ml-10 flex flex-row gap-2'>
               <Input size='sm' placeholder='Coupon' type='text' />

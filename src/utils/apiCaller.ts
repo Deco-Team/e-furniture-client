@@ -16,7 +16,7 @@ export const request = (
   headers: object = {},
   params: object = {},
   body: object = {}
-): Promise<AxiosResponse<{ data: object }>> => {
+): Promise<AxiosResponse> => {
   return axios({
     url: process.env.API_URL + endpoint,
     method: method,
@@ -33,11 +33,7 @@ export const request = (
  * @param {object} [headers={}] - An object containing custom headers for the request. Default is an empty object.
  * @returns {Axios} - An Axios instance for making the GET request.
  */
-export const get = (
-  endpoint: string,
-  params: object = {},
-  headers: object = {}
-): Promise<AxiosResponse<{ data: object }>> => {
+export const get = (endpoint: string, params: object = {}, headers: object = {}): Promise<AxiosResponse> => {
   return request(endpoint, 'GET', headers, params)
 }
 
@@ -55,7 +51,7 @@ export const post = (
   body: object = {},
   params: object = {},
   headers: object = {}
-): Promise<AxiosResponse<{ data: unknown }>> => {
+): Promise<AxiosResponse> => {
   return request(endpoint, 'POST', headers, params, body)
 }
 
@@ -73,7 +69,7 @@ export const put = (
   body: object = {},
   params: object = {},
   headers: object = {}
-): Promise<AxiosResponse<{ data: unknown }>> => {
+): Promise<AxiosResponse> => {
   return request(endpoint, 'PUT', headers, params, body)
 }
 
@@ -91,7 +87,7 @@ export const patch = (
   body: object = {},
   params: object = {},
   headers: object = {}
-): Promise<AxiosResponse<{ data: unknown }>> => {
+): Promise<AxiosResponse> => {
   return request(endpoint, 'PATCH', headers, params, body)
 }
 
@@ -109,6 +105,6 @@ export const remove = (
   body: object = {},
   params: object = {},
   headers: object = {}
-): Promise<AxiosResponse<{ data: unknown }>> => {
+): Promise<AxiosResponse> => {
   return request(endpoint, 'DELETE', headers, params, body)
 }

@@ -1,7 +1,11 @@
 import { Card, CardBody, Image } from '@nextui-org/react'
-import { ICategory } from '~/global/interface'
+import { ICategory } from '@global/interface'
 
-const CategoryCard = (category: ICategory) => {
+interface CategoryCardProps {
+  category: ICategory
+}
+
+const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
     <Card
       shadow='sm'
