@@ -8,7 +8,7 @@ const CustomerLayout = ({ children }: { children: React.ReactNode }) => {
   const token = cookies().get('accessToken')
   if (!token) redirect('/')
 
-  return <>{children}</>
+  return children
 }
 
 export default CustomerLayout

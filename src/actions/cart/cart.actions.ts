@@ -17,7 +17,7 @@ export const getCart = async () => {
 
 export const updateCartQuantity = async (data: IUpdateCartQuantity) => {
   try {
-    return await callAuthApi<any>('patch', ROOT_ENDPOINT, {}, data)
+    return await callAuthApi<{ success: boolean }>('patch', ROOT_ENDPOINT, {}, data)
   } catch (error) {
     console.log(error)
   }
@@ -25,7 +25,7 @@ export const updateCartQuantity = async (data: IUpdateCartQuantity) => {
 
 export const deleteCartItem = async (data: IDeleteCartItem) => {
   try {
-    return await callAuthApi<any>('delete', ROOT_ENDPOINT, {}, data)
+    return await callAuthApi<{ success: boolean }>('delete', ROOT_ENDPOINT, {}, data)
   } catch (error) {
     console.log(error)
   }
