@@ -31,8 +31,21 @@ const CartItemCard = ({
 }: ICartItemCard) => {
   const [fixQuantity, setFixQuantity] = useState(quantity)
 
+  const handleUpdateCartQuantity = async (quantity: number) => {
+    try {
+      await updateCartQuantity({
+        productId,
+        sku,
+        quantity
+      })
+      onUpdate()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleQuantity = async (isPlus: boolean, quantity: string) => {
-    let inputQuantity: number = Number(quantity)
+    let inputQuantity = Number(quantity)
     if (isPlus) {
       if (availableQuantity === Number(quantity)) return
       setFixQuantity((quantity) => (Number(quantity) + 1).toString())
@@ -44,10 +57,10 @@ const CartItemCard = ({
       setFixQuantity((quantity) => (Number(quantity) - 1).toString())
       inputQuantity--
     }
-    handleUpdateCartQuantity(inputQuantity)
+    await handleUpdateCartQuantity(inputQuantity)
   }
 
-  const handleInputQuantity = (quantity: string) => {
+  const handleInputQuantity = async (quantity: string) => {
     let inputQuantity: number
     if (availableQuantity <= Number(quantity)) {
       setFixQuantity(availableQuantity.toString())
@@ -56,27 +69,14 @@ const CartItemCard = ({
       setFixQuantity(quantity)
       inputQuantity = Number(quantity)
     }
-    handleUpdateCartQuantity(inputQuantity)
-  }
-
-  const handleUpdateCartQuantity = async (quantity: number) => {
-    try {
-      await updateCartQuantity({
-        productId: productId,
-        sku: sku,
-        quantity: quantity
-      })
-      onUpdate()
-    } catch (error) {
-      console.log(error)
-    }
+    await handleUpdateCartQuantity(inputQuantity)
   }
 
   const handleDeleteCartItem = async () => {
     try {
       await deleteCartItem({
-        productId: productId,
-        sku: sku
+        productId,
+        sku
       })
       onUpdate()
     } catch (error) {

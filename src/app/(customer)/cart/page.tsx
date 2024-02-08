@@ -60,15 +60,15 @@ const CartPage = () => {
             cart?.items.map((value) => {
               return (
                 <CartItemCard
-                  onUpdate={getData}
+                  onUpdate={() => getData()}
                   key={value.productId}
                   productId={value.productId}
                   imageURL={value.product.images[0]}
                   name={value.product.name}
                   sku={value.sku}
-                  price={value.product.variants.find((variant) => value.sku === variant.sku)?.price || 0}
+                  price={value.product.variants.find((variant) => value.sku === variant.sku)?.price ?? 0}
                   quantity={value.quantity.toString()}
-                  availableQuantity={value.product.variants.find((variant) => value.sku === variant.sku)?.quantity || 0}
+                  availableQuantity={value.product.variants.find((variant) => value.sku === variant.sku)?.quantity ?? 0}
                   description={value.sku}
                 />
               )
@@ -83,9 +83,9 @@ const CartPage = () => {
           </CardHeader>
           <CardBody>
             <ul className='ml-10'>
-              <li className='my-2 text-gray-500 text-lg md:text-xl'>Sản phẩm: ${cart?.totalAmount || 0}</li>
+              <li className='my-2 text-gray-500 text-lg md:text-xl'>Sản phẩm: ${cart?.totalAmount ?? 0}</li>
               <li className='my-2 text-gray-500 text-lg md:text-xl'>Phí giao hàng: $2</li>
-              <li className=' my-2 text-lg md:text-xl'>Tổng cộng: ${Number(cart?.totalAmount) + 2 || 0 + 2}</li>
+              <li className=' my-2 text-lg md:text-xl'>Tổng cộng: ${Number(cart?.totalAmount) + 2 ?? 2}</li>
             </ul>
             <div className='mt-5 ml-10 flex flex-row gap-2'>
               <Input size='sm' placeholder='Coupon' type='text' />
