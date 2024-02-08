@@ -39,9 +39,9 @@ textarea {
 }
 button {
   cursor: pointer;
-  background-color: transparent;
-  outline: none;
-  border: 0;
+  /* background-color: transparent; */
+  /* outline: none; */
+  /* border: 0; */
 }
 body {
   font-weight: 400;
