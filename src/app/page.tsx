@@ -7,8 +7,8 @@ import { getCategories } from '@actions/categories/categories.actions'
 import { getProductList } from '@actions/products/products.actions'
 
 interface Data {
-  categories: Category[]
-  products: Product[]
+  categories: ICategory[]
+  products: IProduct[]
 }
 
 async function getData(): Promise<Data> {
