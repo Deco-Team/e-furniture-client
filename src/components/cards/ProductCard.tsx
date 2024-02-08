@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, Image, Link } from '@nextui-org/react'
 import { FaCartPlus } from 'react-icons/fa'
 import { IProduct } from '@global/interface'
 
@@ -23,9 +23,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
     <Card
       shadow='sm'
       isBlurred
+      as={Link}
+      href={`/products/${product.slug}`}
       // isPressable
-      className='min-w-fit max-w-fit bg-gray-100'
-      // onClick={() => console.log('Category clicked')}
+      className='min-w-fit max-w-fit bg-gray-100 cursor-pointer'
+      onClick={() => console.log('Product detail')}
     >
       <CardBody className='overflow-hidden p-0 relative rounded-large'>
         <Image
