@@ -1,32 +1,25 @@
-import { getProduct, getProductList } from '@actions/products/products.actions'
+import { getProduct } from '@actions/products/products.actions'
 import ErrorPage from '@components/error/error'
 import ProductDetail from '@components/product/ProductDetail'
-import { IProduct } from '@global/interface'
 
-export async function generateStaticParams() {
-  const products = await getProductList(1, 100)
+const getData = async (slug: string) => {
+  const product = await getProduct(slug)
 
-  return (products as { docs: IProduct[] }).docs.map((product: IProduct) => {
-    return {
-      slug: product.slug
-    }
-  })
+  return product
 }
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const validSlugs = await generateStaticParams()
-  const validSlug = validSlugs.find((validSlug) => validSlug.slug === params.slug)
-
-  if (!validSlug) {
-    // If the requested slug is not found in the list, render a 404 page
-    return <ErrorPage />
-  }
-
-  const product = await getProduct(params.slug)
+  const product = await getData(params.slug)
 
   return (
-    <main className='min-h-screen py-24 flex flex-col items-center'>
-      <ProductDetail product={product as IProduct} />
-    </main>
+    <>
+      {product === null ? (
+        <ErrorPage />
+      ) : (
+        <main className='min-h-screen py-24 flex flex-col items-center'>
+          <ProductDetail product={product} />
+        </main>
+      )}
+    </>
   )
 }

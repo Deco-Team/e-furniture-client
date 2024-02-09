@@ -21,10 +21,11 @@ export const getProductList = async (page: number, limit: number, sort?: string)
 export const getProduct = async (slug: string) => {
   const endpoint = `${ROOT_ENDPOINT_PRODUCT_DETAIL}/${slug}`
   try {
-    const response = await callApi('get', endpoint)
+    const response = await callApi<IProduct>('get', endpoint)
 
     return response.data
   } catch (error) {
     console.log(error)
+    return null
   }
 }
