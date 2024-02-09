@@ -1,7 +1,6 @@
 'use client'
 
 import { Button, Card, CardBody, Image, Input, Tab, Tabs, Tooltip } from '@nextui-org/react'
-import Rating from '../starRating/StartRating'
 import React from 'react'
 import { FaCartPlus, FaMinus, FaPlus } from 'react-icons/fa'
 import { IProduct, IVariant } from '@global/interface'

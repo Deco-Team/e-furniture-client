@@ -11,15 +11,11 @@ const getData = async (slug: string) => {
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const product = await getData(params.slug)
 
-  return (
-    <>
-      {product === null ? (
-        <ErrorPage />
-      ) : (
-        <main className='min-h-screen py-24 flex flex-col items-center'>
-          <ProductDetail product={product} />
-        </main>
-      )}
-    </>
+  return !product ? (
+    <ErrorPage />
+  ) : (
+    <main className='min-h-screen py-24 flex flex-col items-center'>
+      <ProductDetail product={product} />
+    </main>
   )
 }

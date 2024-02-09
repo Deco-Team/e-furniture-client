@@ -1,5 +1,4 @@
 import React from 'react'
-import { FaRegStar, FaStar } from 'react-icons/fa'
 
 interface IconComponentProps {
   type: 'ratingHighlighted' | 'ratingDefault'

@@ -57,7 +57,7 @@ const Rating: React.FC<RatingProps> = (props) => {
     setActiveStar(index)
   }
 
-  const showDefaultStar = (index?: boolean) => {
+  const showDefaultStar = () => {
     return RatingDefault
   }
 
@@ -94,9 +94,10 @@ const Rating: React.FC<RatingProps> = (props) => {
         >
           {RatingHighlighted}
         </div>
-        {showDefaultStar(
+        {/* {showDefaultStar(
           showOutOf ? (nonFraction === 0 ? index < nonFraction : index <= nonFraction) : index <= numberOfStar
-        )}
+        )} */}
+        {showDefaultStar()}
       </div>
     ) : null
   }
