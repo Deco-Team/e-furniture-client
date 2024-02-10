@@ -1,8 +1,9 @@
 'use client'
 
-import { Button, Card, CardBody, CardFooter, Image, Link } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { FaCartPlus } from 'react-icons/fa'
 import { IProduct } from '@global/interface'
+import Link from 'next/link'
 
 interface ProductCardProps {
   product: IProduct
@@ -20,52 +21,52 @@ const ProductCard = ({ product }: ProductCardProps) => {
   )
 
   return (
-    <Card
-      shadow='sm'
-      isBlurred
-      as={Link}
-      href={`/products/${product.slug}`}
-      // isPressable
-      className='min-w-fit max-w-fit bg-gray-100 cursor-pointer'
-      onClick={() => console.log('Product detail')}
-    >
-      <CardBody className='overflow-hidden p-0 relative rounded-large'>
-        <Image
-          isBlurred
-          isZoomed
-          removeWrapper
-          shadow='md'
-          width='100%'
-          alt={product.name}
-          className='w-full max-w-[280px] object-cover aspect-square'
-          src={product.images[0]}
-        />
-        <div className='absolute z-20 bottom-2 right-2 xs:hidden bg-white rounded-xl'>
+    <Link href={`/products/${product.slug}`}>
+      <Card
+        shadow='sm'
+        isBlurred
+        // isPressable
+        className='min-w-fit max-w-fit bg-gray-100 cursor-pointer'
+        onClick={() => console.log('Product detail')}
+      >
+        <CardBody className='overflow-hidden p-0 relative rounded-large'>
+          <Image
+            isBlurred
+            isZoomed
+            removeWrapper
+            shadow='md'
+            width='100%'
+            alt={product.name}
+            className='w-full max-w-[280px] object-cover aspect-square'
+            src={product.images[0]}
+          />
+          <div className='absolute z-20 bottom-2 right-2 xs:hidden bg-white rounded-xl'>
+            <Button
+              isIconOnly
+              className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] h-12 w-12 text-lg'
+              onClick={() => console.log('Add to cart')}
+            >
+              <FaCartPlus />
+            </Button>
+          </div>
+        </CardBody>
+
+        <CardFooter className='p-4 flex justify-between'>
+          <div className='flex flex-col items-start'>
+            <p className='text-xs font-semibold text-gray-400'>{product.categories[0].name}</p>
+            <h3 className='font-normal text-base text-nowrap'>{product.name}</h3>
+            <p className='text-base font-semibold text-nowrap'>{min === max ? `$${min}` : `$${min} - $${max}`}</p>
+          </div>
           <Button
             isIconOnly
-            className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] h-12 w-12 text-lg'
+            className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] h-12 w-12 text-lg hidden xs:flex'
             onClick={() => console.log('Add to cart')}
           >
             <FaCartPlus />
           </Button>
-        </div>
-      </CardBody>
-
-      <CardFooter className='p-4 flex justify-between'>
-        <div className='flex flex-col items-start'>
-          <p className='text-xs font-semibold text-gray-400'>{product.categories[0].name}</p>
-          <h3 className='font-normal text-base text-nowrap'>{product.name}</h3>
-          <p className='text-base font-semibold text-nowrap'>{min === max ? `$${min}` : `$${min} - $${max}`}</p>
-        </div>
-        <Button
-          isIconOnly
-          className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] h-12 w-12 text-lg hidden xs:flex'
-          onClick={() => console.log('Add to cart')}
-        >
-          <FaCartPlus />
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardFooter>
+      </Card>
+    </Link>
   )
 }
 
