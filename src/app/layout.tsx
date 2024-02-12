@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@app/globals.css'
 import { NextUIProviders } from '@app/providers'
+import Toastify from '@components/common/Toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata: Metadata = {
   title: 'eFurniture',
@@ -21,7 +23,9 @@ export default function RootLayout({
         {/* <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' /> */}
       </head>
       <body>
-        <NextUIProviders>{children}</NextUIProviders>
+        <Toastify>
+          <NextUIProviders>{children}</NextUIProviders>
+        </Toastify>
       </body>
     </html>
   )

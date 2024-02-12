@@ -6,9 +6,11 @@ import CartItemCard from '@components/cards/CartItemCard'
 import { ICart } from './cart.interface'
 import { getCart } from '@actions/cart/cart.actions'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const CartPage = () => {
   const [cart, setCart] = useState<ICart | null>()
+  const router = useRouter()
 
   const getData = async () => {
     const cart = await getCart()
@@ -74,7 +76,19 @@ const CartPage = () => {
               )
             })
           ) : (
-            <h2 className='font-bold text-2xl md:text-3xl mt-10 text-center'>Giỏ hàng trống</h2>
+            <div className='flex justify-center items-center flex-col'>
+              <h2 className='font-bold text-2xl md:text-3xl mt-10 text-center mb-5'>
+                Giỏ hàng trống, shopping tiếp nhé! 😊
+              </h2>
+              <Button
+                startContent={<FaArrowLeft />}
+                onClick={() => {
+                  router.push('/')
+                }}
+              >
+                Quay lại trang chủ
+              </Button>
+            </div>
           )}
         </div>
         <Card className='shadow-none md:m-4 mb-10 md:mr-40'>
@@ -93,7 +107,14 @@ const CartPage = () => {
                 Áp dụng
               </Button>
             </div>
-            <Button className='bg-orange-100 my-10 ml-10 text-orange-400 font-bold' size='lg'>
+            <Button
+              onClick={() => {
+                router.push('/order')
+              }}
+              isDisabled={cart?.items.length === 0}
+              className='bg-orange-100 my-10 ml-10 text-orange-400 font-bold'
+              size='lg'
+            >
               Đi đến thanh toán
             </Button>
           </CardBody>
