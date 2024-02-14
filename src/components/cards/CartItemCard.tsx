@@ -2,8 +2,8 @@
 
 import { Button, Card, Image, Input } from '@nextui-org/react'
 import React, { useState } from 'react'
-import { FaPlus } from 'react-icons/fa'
-import { FaMinus, FaXmark } from 'react-icons/fa6'
+import { FaPlus, FaMinus } from 'react-icons/fa'
+import { FaXmark } from 'react-icons/fa6'
 import { deleteCartItem, updateCartQuantity } from '@actions/cart/cart.actions'
 export interface ICartItemCard {
   imageURL: string
@@ -85,38 +85,46 @@ const CartItemCard = ({
   }
 
   return (
-    <Card className='flex gap-3 m-4 md:mx-10 shadow-none flex-row'>
-      <Image loading='eager' width={200} className='md:w-28' src={imageURL} alt='img' />
-      <div className='m-3 ml-0 w-full flex flex-col justify-between max-h-full'>
+    <Card radius='none' className='flex gap-2 md:gap-6 m-4 shadow-none flex-row'>
+      <Image
+        removeWrapper
+        width='100%'
+        className='w-full max-w-[100px] md:max-w-[175px] object-cover aspect-square'
+        src={imageURL}
+        alt='img'
+      />
+      <div className='md:py-6 w-full flex flex-col justify-between max-h-full'>
         <div className='flex flex-row justify-between'>
           <div>
-            <p className='text-xl font-semibold'>{name}</p>
+            <p className='text-base font-semibold'>{name}</p>
             <p className='text-gray-500'>Art: {description}</p>
           </div>
           <Button size='sm' isIconOnly onClick={handleDeleteCartItem}>
             <FaXmark />
           </Button>
         </div>
-        <div className='flex flex-row justify-between'>
-          <div className='flex flex-row gap-1'>
-            <Button onClick={() => handleQuantity(false, fixQuantity)} size='sm' isIconOnly>
+        <div className='flex flex-row justify-between items-center'>
+          <div className='flex flex-row gap-1 items-center'>
+            <Button size='sm' onClick={() => handleQuantity(false, fixQuantity)} radius='sm' variant='solid' isIconOnly>
               <FaMinus />
             </Button>
             <Input
               variant='bordered'
               size='sm'
+              className='max-w-12 min-w-12'
               classNames={{
-                inputWrapper: ['p-0 px-2 w-16', 'h-fit']
+                input: 'text-center',
+                inputWrapper: 'max-h-11 overflow-hidden'
               }}
               type='number'
               value={String(fixQuantity)}
               onValueChange={handleInputQuantity}
             />
-            <Button onClick={() => handleQuantity(true, fixQuantity)} size='sm' isIconOnly>
+            <Button size='sm' onClick={() => handleQuantity(true, fixQuantity)} radius='sm' variant='solid' isIconOnly>
               <FaPlus />
             </Button>
           </div>
-          <p className='text-xl font-semibold'>${price}</p>
+          <p className='text-lg font-semibold'>${price}</p>
         </div>
       </div>
     </Card>
