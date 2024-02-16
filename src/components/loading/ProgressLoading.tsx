@@ -7,7 +7,7 @@ const ProgressLoading = () => {
       isIndeterminate
       aria-label='Loading...'
       classNames={{
-        base: 'max-w-full absolute top-0',
+        base: 'max-w-full sticky z-50 top-[72px] sm:top-24',
         indicator: '!bg-[var(--primary-orange-color)]'
       }}
     />

@@ -4,6 +4,7 @@ import '@app/globals.css'
 import { NextUIProviders } from '@app/providers'
 import Toastify from '@components/common/Toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import NavBar from '@components/navbar/navbar'
 
 export const metadata: Metadata = {
   title: 'eFurniture',
@@ -24,7 +25,10 @@ export default function RootLayout({
       </head>
       <body>
         <Toastify>
-          <NextUIProviders>{children}</NextUIProviders>
+          <NextUIProviders>
+            <NavBar />
+            {children}
+          </NextUIProviders>
         </Toastify>
       </body>
     </html>

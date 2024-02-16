@@ -2,7 +2,7 @@ import { Button, Image, Link } from '@nextui-org/react'
 
 const ErrorPage = () => {
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center'>
+    <div className='min-h-[calc(100vh-72px)] sm:min-h-[calc(100vh-96px)] pb-24 flex flex-col items-center justify-center'>
       <Image width={500} height={400} src='/404.svg' alt='error' />
       <h1 className='font-semibold text-3xl pb-4 text-center'>Bạn đã truy cập đúng đường dẫn chứ?</h1>
       <h1 className='font-medium text-xl pb-4 text-center'>Đường dẫn bạn vừa truy cập hiện không còn khả dụng</h1>

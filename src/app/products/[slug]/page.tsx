@@ -22,7 +22,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   return !product ? (
     <ErrorPage />
   ) : (
-    <main className='min-h-screen py-24 flex flex-col items-center'>
+    <main className='flex pb-24 flex-col items-center'>
       <ProductDetail product={product} />
     </main>
   )

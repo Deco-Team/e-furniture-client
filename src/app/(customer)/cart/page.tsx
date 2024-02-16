@@ -22,7 +22,7 @@ const CartPage = () => {
   }, [])
 
   return (
-    <main className='min-h-screen py-24 flex flex-col items-center'>
+    <main className='flex pb-24 flex-col items-center'>
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
