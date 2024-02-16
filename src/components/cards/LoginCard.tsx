@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ILogin } from '@global/interface'
 import { useRouter } from 'next/navigation'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa'
 import './style.css'
 import { login, loginWithGoogle } from '@actions/auth/auth.actions'
 
@@ -37,7 +37,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
     reset,
     formState: { errors, isSubmitted }
   } = useForm({
-    mode: 'onSubmit',
+    mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: { ...initialLoginValues },
     resolver: yupResolver(validationLogin),
@@ -66,12 +66,20 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
   }
 
   return (
-    <Card className='py-2 px-4 xs:px-7 xs:py-4 max-w-[30rem] max-h-[35rem] w-[min(100%,30rem)] h-[35rem] justify-center absolute front'>
-      <div className='w-full flex flex-col items-center justify-center'>
+    <Card className='py-5 px-5 xs:px-7 xs:py-7 max-w-[32rem] w-[min(100%,32rem)] h-[40rem] justify-center absolute front'>
+      <div className='w-full h-full flex flex-col items-center justify-center'>
+        <Card className='bg-gray-200 w-full justify-items-start' shadow='none'>
+          <CardHeader className='flex gap-4 p-6'>
+            <Button isIconOnly as={Link} href='/'>
+              <FaArrowLeft />
+            </Button>
+            <h2 className='font-bold text-2xl'>Trang chủ</h2>
+          </CardHeader>
+        </Card>
         <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
-          <h1 className='w-full text-4xl font-bold text-center pt-4 pb-8'>Đăng nhập</h1>
+          <h1 className='w-full text-4xl font-bold text-center py-6'>Đăng nhập</h1>
         </CardHeader>
-        <CardBody className='overflow-hidden py-2'>
+        <CardBody className='overflow-hidden py-2 px-1 xs:p-2'>
           <form className='flex flex-col items-center' action='POST' onSubmit={handleSubmit(loginSubmit)}>
             <Input
               variant='bordered'
@@ -81,6 +89,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
               isInvalid={errors.email || errors.password?.type === 'loginFailed' ? true : false}
               color={isSubmitted ? (errors.email ? 'danger' : 'success') : 'default'}
               errorMessage={errors.email?.message}
+              isRequired
             />
             <Input
               label='Mật khẩu'
@@ -100,6 +109,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
               isInvalid={errors.password ? true : false}
               color={isSubmitted ? (errors.password ? 'danger' : 'success') : 'default'}
               errorMessage={errors.password?.message}
+              isRequired
             />
             {/* <Link className='mb-6 text-black cursor-pointer' underline='always'>
             Quên mật khẩu?
@@ -113,19 +123,19 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
             </Button>
           </form>
           <Divider className='mb-5' />
-          <div className='flex justify-center items-center mb-12'>
+          <div className='flex justify-center items-center'>
             <GoogleLogin
               onSuccess={(response) => {
                 loginGoogle(response)
               }}
               onError={() => console.log('error')}
               text='signin_with'
-              useOneTap={true}
+              // useOneTap={true}
             />
           </div>
         </CardBody>
       </div>
-      <p className='mb-3 text-center absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap'>
+      <p className='text-center absolute bottom-5 xs:bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap'>
         Chưa có tài khoản?{' '}
         <Link
           className='text-black cursor-pointer'

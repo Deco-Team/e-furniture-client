@@ -8,7 +8,7 @@ const LoginRegisterPage = () => {
   if (token) redirect('/')
 
   return (
-    <div className='bg-gray-200 flex items-center justify-center min-h-screen relative'>
+    <div className='bg-gray-100 flex items-center justify-center min-h-screen relative'>
       <LoginRegisterCard />
     </div>
   )

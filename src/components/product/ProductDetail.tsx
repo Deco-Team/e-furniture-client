@@ -2,15 +2,18 @@
 
 import { Button, Card, CardBody, Image, Input, Tab, Tabs, Tooltip } from '@nextui-org/react'
 import React from 'react'
-import { FaCartPlus, FaMinus, FaPlus } from 'react-icons/fa'
+import { FaArrowLeft, FaCartPlus, FaMinus, FaPlus } from 'react-icons/fa'
 import { IProduct, IVariant } from '@global/interface'
 import ProductSlide from './ProductSlide'
+import { useRouter } from 'next/navigation'
 
 interface ProductDetailProps {
   product: IProduct
 }
 
 const ProductDetail = ({ product }: ProductDetailProps) => {
+  const router = useRouter()
+
   // Show max-min price if there are multiple variants
   const { min, max } = product.variants.reduce(
     (acc, curr) => {
@@ -25,13 +28,21 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
   // State
   const [price, setPrice] = React.useState(priceDefaut)
-  const [activeVariant, setActiveVariant] = React.useState<IVariant>({
-    sku: '',
-    price: 0,
-    quantity: 0,
-    dimensions: { length: 0, width: 0, height: 0 },
-    keyValue: {}
-  })
+  const [hasKeyvalue, setHasKeyvalue] = React.useState(
+    product.variants.find((variant) => variant.keyValue) ? true : false
+  )
+  const [activeVariant, setActiveVariant] = React.useState<IVariant>(
+    hasKeyvalue
+      ? {
+          sku: '',
+          price: 0,
+          quantity: 0,
+          dimensions: { length: 0, width: 0, height: 0 },
+          keyValue: {}
+        }
+      : product.variants[0]
+  )
+
   const [selectedImage, setSelectedImage] = React.useState(product.images[0])
   const [selectedQuantity, setSelectedQuantity] = React.useState(1)
 
@@ -77,7 +88,14 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   return (
     <div className='max-w-screen-lg p-4 w-full'>
       <div className='flex flex-col sm:grid sm:grid-cols-5 gap-4'>
-        <div className='sm:col-span-2'>
+        <div className='sm:col-span-2 relative'>
+          <Button
+            isIconOnly
+            className='absolute z-20 top-6 left-6 bg-black/30 backdrop-blur-sm text-white h-12 w-12 text-lg'
+            onClick={() => router.back()}
+          >
+            <FaArrowLeft />
+          </Button>
           <Image
             isBlurred
             removeWrapper
@@ -91,37 +109,41 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
         </div>
         <div className='sm:col-span-3 flex flex-col gap-4'>
           <div className='sm:pt-4 '>
-            <p className='text-base font-semibold text-gray-400'>{product.categories[0].name}</p>
-            <div className='flex justify-between'>
-              <h3 className='font-bold text-2xl text-nowrap'>{product.name}</h3>
+            <p className='text-base font-semibold text-gray-400'>
+              {product.categories.map((category) => category.name).join(', ')}
+            </p>
+            <div className='flex justify-between flex-wrap'>
+              <h3 className='font-bold text-2xl'>{product.name}</h3>
               <h3 className='font-bold text-2xl text-nowrap'>{price}</h3>
             </div>
             {/* <Rating ratingInPercent={product.rate * 20} iconSize='l' showOutOf={true} enableUserInteraction={false} /> */}
           </div>
 
-          <div>
-            <h3 className='font-medium text-base text-nowrap pb-2'>Phân loại</h3>
-            <div className='flex gap-4 flex-wrap'>
-              {product.variants.map((variant) => (
-                <Tooltip key={variant.sku} showArrow content={Object.keys(variant.keyValue).join(' - ')}>
-                  <Button
-                    radius='sm'
-                    disabled={variant.quantity === 0}
-                    variant={activeVariant === variant ? 'solid' : 'bordered'}
-                    className={`max-w-96 block overflow-hidden text-ellipsis font-semibold text-[var(--primary-orange-text-color)] border-solid border-1 border-[var(--primary-orange-color)] disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed ${activeVariant === variant ? 'bg-[var(--light-orange-color)] px-[16px]' : 'bg-[var(--light-gray-color)]'}`}
-                    onClick={() => handleActiveVariant(variant)} // Fix: Pass a function reference instead of invoking the function directly
-                  >
-                    {Object.values(variant.keyValue).join(' - ')}
-                  </Button>
-                </Tooltip>
-              ))}
+          {hasKeyvalue && (
+            <div>
+              <h3 className='font-medium text-base text-nowrap pb-2'>Phân loại</h3>
+              <div className='flex gap-4 flex-wrap'>
+                {product.variants.map((variant) => (
+                  <Tooltip key={variant.sku} showArrow content={Object.keys(variant.keyValue).join(' - ')}>
+                    <Button
+                      radius='sm'
+                      disabled={variant.quantity === 0}
+                      variant={activeVariant === variant ? 'solid' : 'bordered'}
+                      className={`max-w-96 block overflow-hidden text-ellipsis font-semibold text-[var(--primary-orange-text-color)] border-solid border-1 border-[var(--primary-orange-color)] disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed ${activeVariant === variant ? 'bg-[var(--light-orange-color)] px-[16px]' : 'bg-[var(--light-gray-color)]'}`}
+                      onClick={() => handleActiveVariant(variant)} // Fix: Pass a function reference instead of invoking the function directly
+                    >
+                      {Object.values(variant.keyValue).join(' - ')}
+                    </Button>
+                  </Tooltip>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div>
             <h3 className='font-medium text-base text-nowrap pb-2'>Số lượng</h3>
             <div className='flex justify-between flex-wrap flex-col xs:flex-row'>
-              <div className='flex items-center gap-2 mb-4 sm:pb-0'>
+              <div className='flex items-center gap-2 max-sm:mb-4'>
                 <Button
                   isIconOnly
                   isDisabled={activeVariant.sku ? false : true}
@@ -139,7 +161,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
                   onValueChange={(value: string) => handleSelectedQuantity(value)}
                   variant='bordered'
                   defaultValue='1'
-                  className='max-w-12 min-w-12'
+                  className='max-w-14 min-w-14'
                   classNames={{
                     input: 'text-center',
                     inputWrapper: 'max-h-11 overflow-hidden'

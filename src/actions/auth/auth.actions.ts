@@ -59,3 +59,7 @@ export const registerCustomer = async (data: IRegister) => {
     return false
   }
 }
+
+export const logout = () => {
+  cookies().delete('accessToken')
+}
