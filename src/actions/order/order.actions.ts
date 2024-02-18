@@ -12,7 +12,6 @@ export const createOrder = async (data: IOrder) => {
     const response = await callAuthApi<{
       _id: true
     }>('post', endpoint, {}, data, {})
-    notifyLoading()
     return response.data
   } catch (error) {
     console.log(error)

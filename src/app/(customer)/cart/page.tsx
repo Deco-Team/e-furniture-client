@@ -87,7 +87,7 @@ const CartPage = () => {
               </div>
               <div className='mb-4 flex justify-between'>
                 <p className='text-base font-semibold'>Tổng cộng</p>
-                <p className='text-xl font-semibold'>${Number(cart?.totalAmount) + 2 ?? 2}</p>
+                <p className='text-xl font-semibold'> ${(cart?.totalAmount && Number(cart?.totalAmount) + 2) ?? 2}</p>
               </div>
               <div className='flex flex-row gap-2 mb-4'>
                 <Input size='sm' variant='bordered' placeholder='Coupon' type='text' />
