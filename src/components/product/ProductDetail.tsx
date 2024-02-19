@@ -28,9 +28,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
   // State
   const [price, setPrice] = React.useState(priceDefaut)
-  const [hasKeyvalue, setHasKeyvalue] = React.useState(
-    product.variants.find((variant) => variant.keyValue) ? true : false
-  )
+  const [hasKeyvalue] = React.useState(product.variants.find((variant) => variant.keyValue) ? true : false)
   const [activeVariant, setActiveVariant] = React.useState<IVariant>(
     hasKeyvalue
       ? {
