@@ -8,13 +8,11 @@ const getData = async () => {
   return { cart, me }
 }
 
-export const revalidate = 0
-
 const OrderPage = async () => {
   const { cart, me } = await getData()
   if (cart?.items.length === 0) redirect('/')
 
-  return <>{cart && me && <Order cart={cart} me={me} />}</>
+  return cart && me && <Order cart={cart} me={me} />
 }
 
 export default OrderPage
