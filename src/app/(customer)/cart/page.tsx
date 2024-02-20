@@ -1,5 +1,5 @@
 'use client'
-import { Button, Card, CardBody, CardHeader, Input, Skeleton } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, Skeleton } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import CartItemCard from '@components/cards/CartItemCard'
@@ -83,17 +83,11 @@ const CartPage = () => {
               </div>
               <div className='mb-4 flex justify-between'>
                 <p className='text-gray-500 text-base'>Phí giao hàng</p>
-                <p className='text-gray-500 text-base'>$2</p>
+                <p className='text-gray-500 text-base'>Miễn phí</p>
               </div>
               <div className='mb-4 flex justify-between'>
                 <p className='text-base font-semibold'>Tổng cộng</p>
-                <p className='text-xl font-semibold'> ${(cart?.totalAmount && Number(cart?.totalAmount) + 2) ?? 2}</p>
-              </div>
-              <div className='flex flex-row gap-2 mb-4'>
-                <Input size='sm' variant='bordered' placeholder='Coupon' type='text' />
-                <Button radius='sm' className='bg-black text-white' size='lg'>
-                  Áp dụng
-                </Button>
+                <p className='text-xl font-semibold'> ${(cart?.totalAmount && Number(cart?.totalAmount)) ?? 0}</p>
               </div>
               <Button
                 as={Link}

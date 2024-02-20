@@ -37,14 +37,14 @@ const Order = ({ cart, me }: OrderProps) => {
 
   const initialOrderValues = {
     customer: {
-      firstName: me.firstName || '',
-      lastName: me.lastName || '',
-      email: me.email || '',
-      phone: me.phone || '',
-      address: address || '',
-      province: province,
-      district: district,
-      ward: ward
+      firstName: me.firstName ?? '',
+      lastName: me.lastName ?? '',
+      email: me.email ?? '',
+      phone: me.phone ?? '',
+      address: address ?? '',
+      province,
+      district,
+      ward
     },
     items: [],
     notes: ''
@@ -89,7 +89,7 @@ const Order = ({ cart, me }: OrderProps) => {
   })
 
   const handleChangeProvince = (provinceId: Key) => {
-    isSubmitted && provinceId === null
+    isSubmitted && !provinceId
       ? (setError('customer.province', { type: 'required', message: 'Tỉnh/Thành phố không được để trống' }),
         setError('customer.district', { type: 'required', message: 'Quận/Huyện không được để trống' }),
         setError('customer.ward', { type: 'required', message: 'Phường/Xã không được để trống' }))
@@ -98,20 +98,20 @@ const Order = ({ cart, me }: OrderProps) => {
     const list = selectedProvince?.level2s
     setDistrictList(list || [])
     setWardList([])
-    setProvince(selectedProvince?.name || '')
+    setProvince(selectedProvince?.name ?? '')
     setDistrict('')
     setWard('')
   }
 
   const handleChangeDistrict = (districtId: Key) => {
-    isSubmitted && districtId === null
+    isSubmitted && !districtId
       ? (setError('customer.district', { type: 'required', message: 'Quận/Huyện không được để trống' }),
         setError('customer.ward', { type: 'required', message: 'Phường/Xã không được để trống' }))
       : clearErrors('customer.district')
     const selectedDistrict = districtList.find((value) => value.level2_id === districtId)
     const list = selectedDistrict?.level3s
     setWardList(list || [])
-    setDistrict(selectedDistrict?.name || '')
+    setDistrict(selectedDistrict?.name ?? '')
     setWard('')
   }
 
@@ -120,7 +120,7 @@ const Order = ({ cart, me }: OrderProps) => {
       ? setError('customer.ward', { type: 'required', message: 'Phường/Xã không được để trống' })
       : clearErrors('customer.ward')
     const selectedWard = wardList.find((value) => value.level3_id === wardId)
-    setWard(selectedWard?.name || '')
+    setWard(selectedWard?.name ?? '')
   }
 
   const handleChangeAddress = (address: Key) => {
@@ -161,7 +161,7 @@ const Order = ({ cart, me }: OrderProps) => {
         phone: data.customer.phone,
         shippingAddress: `${data.customer.address}, ${ward}, ${district}, ${province}`
       },
-      items: items,
+      items,
       notes: data.notes
     }
     notifyLoading()
@@ -299,7 +299,7 @@ const Order = ({ cart, me }: OrderProps) => {
                     className='w-1/3 max-xs:w-full'
                     label='Quận/Huyện'
                     allowsEmptyCollection={false}
-                    selectedKey={districtList.find((value) => value.name === district)?.level2_id || null}
+                    selectedKey={districtList.find((value) => value.name === district)?.level2_id ?? null}
                     onSelectionChange={handleChangeDistrict}
                     {...register('customer.district')}
                     isInvalid={errors.customer?.district ? true : false}
@@ -318,7 +318,7 @@ const Order = ({ cart, me }: OrderProps) => {
                     className='w-1/3 max-xs:w-full'
                     label='Phường/Xã'
                     allowsEmptyCollection={false}
-                    selectedKey={wardList.find((value) => value.name === ward)?.level3_id || null}
+                    selectedKey={wardList.find((value) => value.name === ward)?.level3_id ?? null}
                     onSelectionChange={handleChangeWard}
                     {...register('customer.ward')}
                     isInvalid={errors.customer?.ward ? true : false}
