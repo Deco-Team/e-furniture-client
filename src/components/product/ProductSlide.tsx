@@ -1,6 +1,6 @@
 import { Image } from '@nextui-org/react'
-import { Slide } from 'react-slideshow-image'
-import 'react-slideshow-image/dist/styles.css'
+import { ceil } from 'lodash'
+import Carousel from 'react-material-ui-carousel'
 
 interface ProductSlideProps {
   images: string[]
@@ -8,35 +8,48 @@ interface ProductSlideProps {
 }
 
 const ProductSlide = (props: ProductSlideProps) => {
+  let items = []
+  for (let i = 0; i < ceil(props.images.length / 4); i += 1) {
+    items.push(props.images.slice(i, i + 4))
+  }
+
   const properties = {
-    autoplay: false,
-    transitionDuration: 300,
-    arrows: true,
-    infinite: false,
-    easing: 'ease',
-    canSwipe: false,
+    autoPlay: false,
     indicators: false,
-    slidesToScroll: 1,
-    slidesToShow: 5,
-    nextArrow: <div className='text-4xl bg-[#0000002f] align-middle text-white w-5 text-center'>›</div>,
-    prevArrow: <div className='text-4xl bg-[#0000002f] align-middle text-white w-5 text-center'>‹</div>
+    swipe: true,
+    cycleNavigation: false,
+    navButtonsAlwaysVisible: true,
+    duration: 100,
+    NextIcon: <div className='text-4xl bg-[#00000082] align-middle text-white w-6 text-center -right-5'>›</div>,
+    PrevIcon: <div className='text-4xl bg-[#00000082] align-middle text-white w-6 text-center left-0'>‹</div>,
+    navButtonsProps: {
+      style: {
+        backgroundColor: 'transparent',
+        margin: 0,
+        padding: 0
+      }
+    }
   }
 
   return (
-    <Slide {...properties}>
-      {props.images.map((image, index) => (
-        <Image
-          key={index}
-          isBlurred
-          removeWrapper
-          width='100%'
-          alt={`${index}`}
-          className='w-full mx-auto object-cover aspect-square cursor-pointer hover:ring-2 ring-[var(--primary-orange-color)] scale-90'
-          src={image}
-          onClick={() => props.setSelectedImage(image)}
-        />
+    <Carousel {...properties} animation={'fade'} className='relative'>
+      {items.map((item, index) => (
+        <div key={index} className='flex max-w-full'>
+          {item.map((image) => (
+            <Image
+              key={image}
+              isBlurred
+              removeWrapper
+              width='100%'
+              alt={`${image}`}
+              className='w-1/4 object-cover aspect-square cursor-pointer hover:ring-2 ring-[var(--primary-orange-color)] scale-90 shadow-lg'
+              src={image}
+              onClick={() => props.setSelectedImage(image)}
+            />
+          ))}
+        </div>
       ))}
-    </Slide>
+    </Carousel>
   )
 }
 
