@@ -7,6 +7,8 @@ const getData = async () => {
   return { me }
 }
 
+export const revalidate = 0
+
 const NavBar = async () => {
   const { me } = await getData()
   const isLogin = cookies().get('accessToken') ? true : false
