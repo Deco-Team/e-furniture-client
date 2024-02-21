@@ -34,14 +34,14 @@ const CategoryList = ({ categories }: CategoryListProps) => {
         ))}
       </div>
       <div
-        className={`${showAllCategories ? 'max-h-[1000px] pb-4' : 'max-h-0'} sm:grid sm:grid-cols-3 hidden overflow-hidden gap-4 transition-all !duration-400 !ease-linear`}
+        className={`${showAllCategories ? 'max-h-[1000px] mb-4' : 'max-h-0'} sm:grid sm:grid-cols-3 hidden overflow-hidden gap-4 transition-all !duration-400 !ease-linear`}
       >
         {hiddenCategories.map((category) => (
           <CategoryCard key={category._id} category={category} />
         ))}
       </div>
       {categories.length > 3 && (
-        <div className='hidden sm:flex'>
+        <div className={`hidden sm:flex ${showAllCategories && 'mt-4'}`}>
           <Button
             onClick={toggleShowAllCategories} // skipcq: JS-0417
             variant='bordered'

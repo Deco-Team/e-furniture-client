@@ -1,6 +1,6 @@
 import { getCart } from '@actions/cart/cart.actions'
 import { getMe } from '@actions/customers/customer.actions'
-import Order from '@components/order/order'
+import Order from '@components/orders/Order'
 import { redirect } from 'next/navigation'
 
 const getData = async () => {

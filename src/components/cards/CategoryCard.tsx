@@ -11,7 +11,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
       shadow='sm'
       isBlurred
       isPressable
-      className='min-w-fit max-w-fit snap-start sm:[&:nth-child(3n+1)]:mr-auto sm:[&:nth-child(3n+2)]:mx-auto	sm"[&:nth-child(3n)]:ml-auto drop-shadow-lg'
+      className='min-w-fit max-w-fit snap-start sm:[&:nth-child(3n+1)]:mr-auto sm:[&:nth-child(3n+2)]:mx-auto	sm:[&:nth-child(3n)]:ml-auto drop-shadow-lg'
       onClick={() => console.log('Category clicked')}
     >
       <CardBody className='overflow-visible p-0 relative'>

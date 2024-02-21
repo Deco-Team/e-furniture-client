@@ -19,7 +19,6 @@ import { FaHome, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
 import { logout } from '@actions/auth/auth.actions'
 import { usePathname, useRouter } from 'next/navigation'
-import { notifySuccess } from '@utils/toastify'
 import { ICustomer } from '@src/interface/customer.intefaces'
 // import ProgressLoading from '@components/loading/ProgressLoading'
 
@@ -36,7 +35,6 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
   const logoutAction = () => {
     logout()
     router.refresh()
-    notifySuccess('Đã đăng xuất')
   }
 
   return (

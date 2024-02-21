@@ -23,3 +23,9 @@ export interface IDeleteCartItem {
   productId: string
   sku: string
 }
+
+export interface IAddCartItem {
+  productId: string
+  sku: string
+  quantity: number
+}
