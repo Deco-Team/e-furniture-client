@@ -1,7 +1,7 @@
 'use server'
 
 import { callAuthApi } from '@actions/actions'
-import { ICart, IDeleteCartItem, IUpdateCartQuantity } from '@app/(customer)/cart/cart.interface'
+import { IAddCartItem, ICart, IDeleteCartItem, IUpdateCartQuantity } from '@app/(customer)/cart/cart.interface'
 
 const ROOT_ENDPOINT = '/carts'
 
@@ -26,6 +26,14 @@ export const updateCartQuantity = async (data: IUpdateCartQuantity) => {
 export const deleteCartItem = async (data: IDeleteCartItem) => {
   try {
     return await callAuthApi<{ success: boolean }>('delete', ROOT_ENDPOINT, {}, data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addCartItem = async (data: IAddCartItem) => {
+  try {
+    return await callAuthApi<{ success: boolean }>('post', ROOT_ENDPOINT, {}, data)
   } catch (error) {
     console.log(error)
   }
