@@ -1,7 +1,7 @@
 'use client'
 
 import { getMe } from '@actions/customers/customer.actions'
-import { ICustomer } from '@src/interface/customer.intefaces'
+import { ICustomer } from '@src/interface/customer.interface'
 import { ReactNode, createContext, useEffect, useState } from 'react'
 
 const initialContext: ICustomer = {

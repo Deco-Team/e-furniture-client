@@ -25,7 +25,7 @@ const setToken = (token: string) => {
 export const login = async (loginData: ILogin) => {
   const endpoint = `${ROOT_ENDPOINT}/login`
   try {
-    const { data } = await callApi('post', endpoint, {}, {}, loginData)
+    const { data } = await callApi({ method: 'post', endpoint, body: loginData })
     setToken((data as LoginResponseData).accessToken)
 
     return true
@@ -38,7 +38,7 @@ export const login = async (loginData: ILogin) => {
 export const loginWithGoogle = async (credential: string) => {
   const endpoint = `${ROOT_ENDPOINT}/google`
   try {
-    const { data } = await callApi('post', endpoint, {}, {}, { token: credential })
+    const { data } = await callApi({ method: 'post', endpoint, body: { token: credential } })
     setToken((data as LoginResponseData).accessToken)
 
     return true
@@ -51,7 +51,7 @@ export const loginWithGoogle = async (credential: string) => {
 export const registerCustomer = async (data: IRegister) => {
   const endpoint = `${ROOT_ENDPOINT}/register`
   try {
-    await callApi('post', endpoint, {}, {}, data)
+    await callApi({ method: 'post', endpoint, body: data })
 
     return true
   } catch (error) {
