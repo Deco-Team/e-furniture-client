@@ -19,8 +19,7 @@ import { FaHome, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
 import { logout } from '@actions/auth/auth.actions'
 import { usePathname, useRouter } from 'next/navigation'
-import { ICustomer } from '@src/interface/customer.intefaces'
-// import ProgressLoading from '@components/loading/ProgressLoading'
+import { ICustomer } from '@src/interface/customer.interface'
 
 interface NavigationBarProps {
   isLogin: boolean
