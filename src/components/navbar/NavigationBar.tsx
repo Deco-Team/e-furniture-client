@@ -113,13 +113,28 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             {isLogin && me ? (
               <Dropdown placement='bottom-end'>
                 <DropdownTrigger>
-                  <Button size='lg' isIconOnly variant='light' radius='full'>
+                  <Button
+                    size='lg'
+                    isIconOnly
+                    variant='light'
+                    radius='full'
+                    className={`${activePathname.includes('customer') ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                  >
                     <FaUser className='min-w-5 min-h-5' />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label='Profile Actions' variant='flat' disabledKeys={['profile']}>
-                  <DropdownItem isReadOnly textValue='profile' key='profile' className='opacity-100'>
-                    <p className='font-semibold'>{me.email}</p>
+                <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                  <DropdownItem as={Link} href='/customer' textValue='profile' key='profile'>
+                    <p className='font-semibold text-black'>{me.email}</p>
+                  </DropdownItem>
+                  <DropdownItem
+                    as={Link}
+                    className='text-black hover:!text-[var(--primary-orange-text-color)]'
+                    key='orders'
+                    color='warning'
+                    href='/customer/orders'
+                  >
+                    Lịch sử đơn hàng
                   </DropdownItem>
                   <DropdownItem textValue='logout' key='logout' color='danger' onClick={logoutAction}>
                     Đăng xuất
@@ -193,7 +208,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 size='lg'
                 radius='full'
                 as={Link}
-                href='/cart'
+                href={isLogin ? '/cart' : '/login-register'}
                 className={`${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
                 <FaShoppingCart className='min-w-5 min-h-5' />

@@ -1,6 +1,6 @@
 import { getMe } from '@actions/customers/customer.actions'
-import NavigationBar from './navigationBar'
 import { cookies } from 'next/headers'
+import NavigationBar from './NavigationBar'
 
 const getData = async () => {
   const me = await getMe()
