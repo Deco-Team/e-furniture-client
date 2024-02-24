@@ -121,6 +121,9 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   <DropdownItem isReadOnly textValue='profile' key='profile' className='opacity-100'>
                     <p className='font-semibold'>{me.email}</p>
                   </DropdownItem>
+                  <DropdownItem as={Link} color='primary' href='/customer/orders'>
+                    Lịch sử đơn hàng
+                  </DropdownItem>
                   <DropdownItem textValue='logout' key='logout' color='danger' onClick={logoutAction}>
                     Đăng xuất
                   </DropdownItem>

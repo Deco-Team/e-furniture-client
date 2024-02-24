@@ -25,7 +25,7 @@ const OrderItemCard = ({ imageURL, name, description, quantity, price }: IOrderI
             <div className='w-full flex flex-col justify-between'>
               <div>
                 <p className='text-xl font-semibold'>{name}</p>
-                <p className='text-gray-500'>Art: {description}</p>
+                <p className='text-gray-500'>SKU: {description}</p>
               </div>
               <div className='flex flex-row justify-between'>
                 <p className='text-gray-500'>Số lượng: {quantity}</p>

@@ -4,7 +4,7 @@ import '@app/globals.css'
 import { NextUIProviders } from '@app/providers'
 import Toastify from '@components/common/Toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import NavBar from '@components/navbar/navbar'
+import NavBar from '@components/navbar/NavBar'
 
 export const metadata: Metadata = {
   title: 'eFurniture',
