@@ -1,4 +1,6 @@
 import { IProduct } from '@global/interface'
+import { OrderStatus, OrderStatusColor, TransactionStatus } from './order.enum'
+import { ICart, ICartItem } from '../cart/cart.interface'
 
 export interface IDistrict {
   level2_id: string
@@ -27,6 +29,30 @@ export interface IOrder {
   }[]
 
   notes: string
+}
+
+export interface IOrderResponse {
+  _id: string
+  customer: ICustomer
+  totalAmount: number
+  items: ICartItem[]
+  orderDate: string
+  orderStatus: string
+  orderStatusColor: OrderStatusColor
+  transactionStatus: TransactionStatus
+  notes: string
+  createdAt: string
+  updatedAt: string
+  reason: string
+}
+
+export interface ICustomer {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  shippingAddress: string
+  _id: string
 }
 
 export interface IOrderDetail {
