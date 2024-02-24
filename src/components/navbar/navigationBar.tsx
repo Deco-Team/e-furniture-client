@@ -37,7 +37,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
   }
 
   return (
-    !(activePathname.includes('order') || activePathname.includes('login')) && (
+    !(activePathname === '/order' || activePathname.includes('login')) && (
       <>
         <Navbar
           isBlurred={false}
