@@ -377,9 +377,7 @@ const Order = ({ cart, me }: OrderProps) => {
                   </div>
                   <div className='md:mb-4 flex justify-between'>
                     <p className='text-base font-semibold'>Tổng cộng</p>
-                    <p className='text-xl font-semibold'>
-                      ${(cart?.totalAmount && Number(cart?.totalAmount) + 2) ?? 2}
-                    </p>
+                    <p className='text-xl font-semibold'>${cart?.totalAmount ?? 0}</p>
                   </div>
                 </div>
               </div>
