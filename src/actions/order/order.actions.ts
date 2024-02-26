@@ -1,8 +1,8 @@
 'use server'
 
 import { callAuthApi } from '@actions/actions'
+import { IOrder, IOrderDetail, IOrderResponse, IOrderStatusHistory } from '@app/(customer)/order/order.interface'
 import { cookies } from 'next/headers'
-import { IOrder, IOrderDetail, IOrderResponse } from '@app/(customer)/order/order.interface'
 import { IPagination } from '@global/interface'
 
 const ROOT_ENDPOINT = '/orders'
@@ -44,6 +44,18 @@ export const getOrder = async (id: string) => {
   const cookieStore = cookies()
   try {
     const response = await callAuthApi<IOrderDetail>({ method: 'get', endpoint }, cookieStore)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const getStatusHistory = async (id: string) => {
+  const endpoint = `${ROOT_ENDPOINT}/customer/${id}/status-history`
+  const cookieStore = cookies()
+  try {
+    const response = await callAuthApi<IOrderStatusHistory[]>({ method: 'get', endpoint }, cookieStore)
     return response.data
   } catch (error) {
     console.log(error)

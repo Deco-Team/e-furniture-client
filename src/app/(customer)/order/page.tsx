@@ -8,6 +8,8 @@ const getData = async () => {
   return { cart, me }
 }
 
+const revalidate = 0
+
 const OrderPage = async () => {
   const { cart, me } = await getData()
   if (cart?.items.length === 0) redirect('/')

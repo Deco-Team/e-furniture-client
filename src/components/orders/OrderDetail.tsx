@@ -1,21 +1,34 @@
 'use client'
 
 import OrderItemCard from '@components/orders/OrderItemCard'
-import { Input, Textarea } from '@nextui-org/react'
 import React from 'react'
 
-import { IOrderDetail } from '@app/(customer)/order/order.interface'
+import { IOrderDetail, IOrderStatusHistory } from '@app/(customer)/order/order.interface'
+import OrderTracking from './OrderTracking'
+import { Button, Card, CardHeader } from '@nextui-org/react'
+import { FaArrowLeft } from 'react-icons/fa'
+import Link from 'next/link'
 
 interface OrderProps {
   order: IOrderDetail
+  orderStatus: IOrderStatusHistory[] | null
 }
 
-const OrderDetail = ({ order }: OrderProps) => {
+const OrderDetail = ({ order, orderStatus }: OrderProps) => {
   return (
     <main className='flex pb-24 flex-col items-center'>
       <div className='max-w-screen-lg p-4 w-full'>
+        <Card className='bg-gray-200 mb-4 md:mb-8 md:p-6'>
+          <CardHeader className='flex gap-4 p-6'>
+            <Button isIconOnly as={Link} href='/customer/orders'>
+              <FaArrowLeft />
+            </Button>
+            <h2 className='font-bold text-2xl md:text-4xl'>Thông tin đơn hàng</h2>
+          </CardHeader>
+        </Card>
         <div>
           <div className='flex flex-col'>
+            {orderStatus && <OrderTracking orderStatus={orderStatus} />}
             <div className='md:col-span-2 p-4 max-sm:px-0'>
               <h3 className='font-semibold text-xl md:text-2xl mb-4'>Địa chỉ nhận hàng</h3>
               <h3 className='font-medium text-sm md:text-base mb-2'>

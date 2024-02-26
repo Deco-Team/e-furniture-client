@@ -20,6 +20,7 @@ import { FaArrowRightToBracket } from 'react-icons/fa6'
 import { logout } from '@actions/auth/auth.actions'
 import { usePathname, useRouter } from 'next/navigation'
 import { ICustomer } from '@src/interface/customer.interface'
+import { title } from 'process'
 
 interface NavigationBarProps {
   isLogin: boolean
@@ -124,8 +125,8 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label='Profile Actions' variant='flat'>
-                  <DropdownItem as={Link} href='/customer' textValue='profile' key='profile'>
-                    <p className='font-semibold text-black'>{me.email}</p>
+                  <DropdownItem as={Link} href='/customer' key='profile' className='text-black'>
+                    Tài khoản của tôi
                   </DropdownItem>
                   <DropdownItem
                     as={Link}
@@ -136,7 +137,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   >
                     Lịch sử đơn hàng
                   </DropdownItem>
-                  <DropdownItem textValue='logout' key='logout' color='danger' onClick={logoutAction}>
+                  <DropdownItem key='logout' color='danger' onClick={logoutAction}>
                     Đăng xuất
                   </DropdownItem>
                 </DropdownMenu>
