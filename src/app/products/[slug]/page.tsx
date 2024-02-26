@@ -15,7 +15,7 @@ export const generateStaticParams = async () => {
   return response ? response.docs.map((product) => ({ slug: product.slug })) : []
 }
 
-export const revalidate = 0
+const revalidate = 0
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const product = await getData(params.slug)

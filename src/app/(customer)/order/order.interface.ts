@@ -73,3 +73,9 @@ export interface IOrderDetail {
   notes: string
   totalAmount: number
 }
+
+export interface IOrderStatusHistory {
+  orderStatus: string
+  transactionStatus: string
+  timestamp: Date
+}
