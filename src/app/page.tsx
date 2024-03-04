@@ -14,7 +14,7 @@ const getData = async () => {
   }
 }
 
-const revalidate = 0
+export const revalidate = 0
 
 export default async function Home() {
   const { categories, products } = await getData()
