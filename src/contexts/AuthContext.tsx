@@ -5,6 +5,7 @@ import { ICustomer } from '@src/interface/customer.interface'
 import { ReactNode, createContext, useEffect, useState } from 'react'
 
 const initialContext: ICustomer = {
+  _id: '',
   firstName: '',
   lastName: '',
   email: '',

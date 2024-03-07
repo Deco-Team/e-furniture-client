@@ -2,7 +2,7 @@
 
 import OrderItemCard from '@components/orders/OrderItemCard'
 import { Autocomplete, AutocompleteItem, Button, Card, CardHeader, Input, Textarea } from '@nextui-org/react'
-import { cloneDeep, set } from 'lodash'
+import { cloneDeep } from 'lodash'
 import jsonData from '@utils/dvhcvn.json'
 import Link from 'next/link'
 import React, { Key } from 'react'
@@ -345,9 +345,9 @@ const Order = ({ cart, me }: OrderProps) => {
 
                 <Button
                   type='submit'
-                  className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold w-full mt-8 disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
+                  className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold w-full mt-8'
                   size='lg'
-                  disabled={isSubmitted && Object.keys(errors).length > 0}
+                  isDisabled={Object.keys(errors).length > 0}
                 >
                   Thanh toán
                 </Button>
