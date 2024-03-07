@@ -15,12 +15,12 @@ import {
   Image,
   Button
 } from '@nextui-org/react'
-import { FaHome, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
+import { FaChevronDown, FaHome, FaRegEnvelope, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
 import { logout } from '@actions/auth/auth.actions'
 import { usePathname, useRouter } from 'next/navigation'
 import { ICustomer } from '@src/interface/customer.interface'
-import { title } from 'process'
+import { MdSupportAgent } from 'react-icons/md'
 
 interface NavigationBarProps {
   isLogin: boolean
@@ -75,12 +75,53 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             <NavbarItem>
               <Link
                 underline={activePathname === '/contact' ? 'always' : 'hover'}
-                href='/'
+                href='/contact'
                 className={`font-medium underline-offset-8 decoration-2 ${activePathname === '/contact' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
               >
                 Liên hệ
               </Link>
             </NavbarItem>
+            <Dropdown>
+              <NavbarItem>
+                <DropdownTrigger>
+                  <Link
+                    disableRipple
+                    underline={activePathname.includes('booking') ? 'always' : 'hover'}
+                    as={Button}
+                    variant='light'
+                    className={`p-0 min-w-fit bg-transparent data-[hover=true]:bg-transparent aria-[expanded=true]:scale-100 aria-[expanded=true]:underline font-medium underline-offset-8 decoration-2 ${activePathname.includes('booking') ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
+                    endContent={<FaChevronDown className='max-h-3 max-w-3' />}
+                  >
+                    Dịch vụ
+                  </Link>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                className='w-[200px]'
+                itemClasses={{
+                  base: 'gap-4'
+                }}
+                variant='flat'
+                aria-label='Service action'
+              >
+                <DropdownItem
+                  key='booking-visit'
+                  as={Link}
+                  href='/booking/visit'
+                  className={` ${activePathname === '/booking/visit' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
+                >
+                  Đặt lịch tham quan
+                </DropdownItem>
+                <DropdownItem
+                  key='booking-consultant'
+                  as={Link}
+                  href='/booking/consultant'
+                  className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
+                >
+                  Tư vấn thiết kế
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </NavbarContent>
           <NavbarContent as='div' className='items-center gap-2' justify='end'>
             <Input
@@ -175,7 +216,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
           classNames={{ wrapper: 'justify-center' }}
           className='h-[72px] top-[calc(100%-72px)] fixed sm:hidden border-t border-default-100'
         >
-          <NavbarContent className='flex gap-8 !justify-evenly'>
+          <NavbarContent className='flex gap-8 max-xs:gap-4 !justify-evenly'>
             <NavbarItem>
               <Button
                 isIconOnly
@@ -215,6 +256,60 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 <FaShoppingCart className='min-w-5 min-h-5' />
               </Button>
             </NavbarItem>
+            <NavbarItem>
+              <Button
+                isIconOnly
+                variant='light'
+                size='lg'
+                radius='full'
+                as={Link}
+                href={'/contact'}
+                className={`${activePathname === '/contact' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+              >
+                <FaRegEnvelope className='min-w-5 min-h-5' />
+              </Button>
+            </NavbarItem>
+            <Dropdown backdrop='blur'>
+              <NavbarItem>
+                <DropdownTrigger>
+                  <Button
+                    isIconOnly
+                    variant='light'
+                    size='lg'
+                    radius='full'
+                    as={Link}
+                    className={`${activePathname.includes('booking') ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                  >
+                    <MdSupportAgent className='min-w-6 min-h-6' />
+                  </Button>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                className='w-[200px]'
+                itemClasses={{
+                  base: 'gap-4'
+                }}
+                variant='flat'
+                aria-label='Service action'
+              >
+                <DropdownItem
+                  key='booking-visit'
+                  as={Link}
+                  href='/booking/visit'
+                  className={` ${activePathname === '/booking/visit' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
+                >
+                  Đặt lịch tham quan
+                </DropdownItem>
+                <DropdownItem
+                  key='booking-consultant'
+                  as={Link}
+                  href='/booking/consultant'
+                  className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
+                >
+                  Tư vấn thiết kế
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </NavbarContent>
         </Navbar>
       </>
