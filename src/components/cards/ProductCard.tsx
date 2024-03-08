@@ -47,7 +47,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.categories.map((category) => category.name).join(', ')}
           </p>
           <h3 className='w-full font-normal text-base text-nowrap overflow-hidden text-ellipsis'>{product.name}</h3>
-          <p className='w-full text-base font-semibold text-nowrap'>{min === max ? `$${min}` : `$${min} - $${max}`}</p>
+          <p className='w-full text-base font-semibold text-nowrap'>
+            {min === max
+              ? Intl.NumberFormat('en-DE').format(min) + ' ₫'
+              : `${Intl.NumberFormat('en-DE').format(min)} ₫ - ${Intl.NumberFormat('en-DE').format(max)} ₫`}
+          </p>
         </div>
       </CardFooter>
     </Card>

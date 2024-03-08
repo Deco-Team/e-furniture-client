@@ -79,7 +79,9 @@ const CartPage = () => {
             <CardBody className='p-0'>
               <div className='mb-4 flex justify-between'>
                 <p className='text-gray-500 text-base'>Sản phẩm</p>
-                <p className='text-gray-500 text-base'>${cart?.totalAmount ?? 0}</p>
+                <p className='text-gray-500 text-base'>
+                  {Intl.NumberFormat('en-DE').format(cart?.totalAmount ?? 0)} &#8363;
+                </p>
               </div>
               <div className='mb-4 flex justify-between'>
                 <p className='text-gray-500 text-base'>Phí giao hàng</p>
@@ -87,7 +89,10 @@ const CartPage = () => {
               </div>
               <div className='mb-4 flex justify-between'>
                 <p className='text-base font-semibold'>Tổng cộng</p>
-                <p className='text-xl font-semibold'> ${(cart?.totalAmount && Number(cart?.totalAmount)) ?? 0}</p>
+                <p className='text-xl font-semibold'>
+                  {' '}
+                  {Intl.NumberFormat('en-DE').format((cart?.totalAmount && Number(cart?.totalAmount)) ?? 0)} &#8363;
+                </p>
               </div>
               <Button
                 as={Link}

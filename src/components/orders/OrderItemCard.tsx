@@ -29,7 +29,7 @@ const OrderItemCard = ({ imageURL, name, description, quantity, price }: IOrderI
               </div>
               <div className='flex flex-row justify-between'>
                 <p className='text-gray-500'>Số lượng: {quantity}</p>
-                <p className='text-base font-semibold'>${price}</p>
+                <p className='text-base font-semibold'>{Intl.NumberFormat('en-DE').format(price)} &#8363;</p>
               </div>
             </div>
           </div>

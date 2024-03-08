@@ -145,7 +145,7 @@ const CartItemCard = ({
               <FaPlus />
             </Button>
           </div>
-          <p className='text-lg font-semibold'>${price}</p>
+          <p className='text-lg font-semibold'>{Intl.NumberFormat('en-DE').format(price)} &#8363;</p>
         </div>
       </div>
     </Card>

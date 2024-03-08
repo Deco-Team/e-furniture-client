@@ -129,10 +129,10 @@ const OrderListPage = () => {
                               <div className='flex flex-row justify-between'>
                                 <p className='text-gray-500'>Số lượng: {items.quantity}</p>
                                 <p className='text-base font-semibold'>
-                                  $
-                                  {items.product.variants
-                                    .find((variant) => variant.sku === items.sku)
-                                    ?.price.toLocaleString() ?? 0}
+                                  {Intl.NumberFormat('en-DE').format(
+                                    items.product.variants.find((variant) => variant.sku === items.sku)?.price ?? 0
+                                  )}{' '}
+                                  &#8363;
                                 </p>
                               </div>
                             </div>
@@ -142,7 +142,10 @@ const OrderListPage = () => {
                       </Card>
                     ))}
                     <p className='text-lg text-right font-normal py-3'>
-                      Thành tiền: <span className='font-semibold'>${value.totalAmount.toLocaleString()}</span>
+                      Thành tiền:{' '}
+                      <span className='font-semibold'>
+                        {Intl.NumberFormat('en-DE').format(value.totalAmount)} &#8363;
+                      </span>
                     </p>
                   </CardBody>
                 </Card>

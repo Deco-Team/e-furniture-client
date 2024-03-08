@@ -28,7 +28,10 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
     },
     { min: Infinity, max: -Infinity }
   )
-  const priceDefault = min === max ? `$${min}` : `$${min} - $${max}`
+  const priceDefault =
+    min === max
+      ? Intl.NumberFormat('en-DE').format(min) + ' ₫'
+      : `${Intl.NumberFormat('en-DE').format(min)} ₫ - ${Intl.NumberFormat('en-DE').format(max)} ₫`
 
   // State
   const [price, setPrice] = React.useState(priceDefault)
@@ -76,7 +79,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
       return
     }
     setSelectedQuantity('1')
-    setPrice(`$${variant.price}`)
+    setPrice(Intl.NumberFormat('en-DE').format(variant.price) + ' ₫')
     setActiveVariant(variant)
     setVariantError(false)
     setQuantityError(false)
