@@ -61,7 +61,9 @@ const OrderDetail = ({ order, orderStatus }: OrderProps) => {
               <div>
                 <div className='mb-4 flex justify-between'>
                   <p className='text-gray-500 text-base'>Sản phẩm</p>
-                  <p className='text-gray-500 text-base'>${order?.totalAmount ?? 0}</p>
+                  <p className='text-gray-500 text-base'>
+                    {Intl.NumberFormat('en-DE').format(order?.totalAmount ?? 0)} &#8363;
+                  </p>
                 </div>
                 <div className='mb-4 flex justify-between'>
                   <p className='text-gray-500 text-base'>Phí giao hàng</p>
@@ -69,7 +71,9 @@ const OrderDetail = ({ order, orderStatus }: OrderProps) => {
                 </div>
                 <div className='md:mb-4 flex justify-between'>
                   <p className='text-base font-semibold'>Tổng cộng</p>
-                  <p className='text-xl font-semibold'>${order?.totalAmount ?? 0}</p>
+                  <p className='text-xl font-semibold'>
+                    {Intl.NumberFormat('en-DE').format(order?.totalAmount ?? 0)} &#8363;
+                  </p>
                 </div>
               </div>
             </div>
