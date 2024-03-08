@@ -115,7 +115,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 <DropdownItem
                   key='booking-consultant'
                   as={Link}
-                  href='/booking/consultant'
+                  href={isLogin ? '/booking/consultant' : '/login-register'}
                   className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
                   Tư vấn thiết kế
@@ -303,7 +303,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 <DropdownItem
                   key='booking-consultant'
                   as={Link}
-                  href='/booking/consultant'
+                  href={isLogin ? '/booking/consultant' : '/login-register'}
                   className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
                   Tư vấn thiết kế
