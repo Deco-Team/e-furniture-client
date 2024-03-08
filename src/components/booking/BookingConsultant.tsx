@@ -1,33 +1,47 @@
 'use client'
 
-import bookingVisit from '@actions/booking/bookingVisit.action'
-import { IBookingVisit } from '@app/booking/visit/bookingVisit.interface'
+import { bookingConsultant } from '@actions/booking/bookingConsultant.action'
+import { IBookingConsultant, IConsultant } from '@app/booking/consultant/bookingConsultant.interface'
 import { ICategory } from '@global/interface'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Card, CardHeader, Checkbox, Input, Link, Select, SelectItem, Textarea } from '@nextui-org/react'
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Avatar,
+  Button,
+  Card,
+  CardHeader,
+  Checkbox,
+  Input,
+  Link,
+  Select,
+  SelectItem,
+  Textarea
+} from '@nextui-org/react'
 import { ICustomer } from '@src/interface/customer.interface'
 import { notifyError, notifySuccess } from '@utils/toastify'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { Key } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft } from 'react-icons/fa'
 import * as yup from 'yup'
 
-interface BookingVisitProps {
+interface BookingConsultantProps {
   categories: ICategory[]
   me: ICustomer | null
+  consultants: IConsultant[]
 }
 
-const BookingVisit = ({ categories, me }: BookingVisitProps) => {
+const BookingConsultant = ({ categories, me, consultants }: BookingConsultantProps) => {
   const [date, setDate] = React.useState(moment().format('YYYY-MM-DD'))
   const [time, setTime] = React.useState(0)
   const [interestedCategories, setInterestedCategories] = React.useState([])
+  const [consultantId, setConsultantId] = React.useState('')
   const router = useRouter()
 
   const initialValues = {
     customer: {
-      _id: me?._id ?? '',
       firstName: me?.firstName ?? '',
       lastName: me?.lastName ?? '',
       email: me?.email ?? '',
@@ -55,6 +69,7 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
     }),
     time: yup.number().required('Vui lòng chọn thời gian bạn muốn đặt'),
     category: yup.string().required('Vui lòng chọn danh mục bạn quan tâm'),
+    consultantId: yup.string().required('Vui lòng chọn tư vấn viên'),
     notes: yup.string()
   })
 
@@ -79,9 +94,8 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
       return
     }
     const bookingDate = `${date} ${time}:00:00`
-    const booking: IBookingVisit = {
+    const booking: IBookingConsultant = {
       customer: {
-        _id: me?._id,
         firstName: data.customer.firstName,
         lastName: data.customer.lastName,
         email: data.customer.email,
@@ -89,22 +103,23 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
       },
       bookingDate: new Date(moment(bookingDate, 'YYYY-MM-DD HH:mm:ss').utc().toISOString()),
       interestedCategories: Array.from(interestedCategories),
+      consultantId: consultantId,
       notes: data.notes
     }
     await handleBooking(booking)
   }
 
-  const handleBooking = async (data: IBookingVisit) => {
-    console.log(data)
-    const result = await bookingVisit(data)
+  const handleBooking = async (data: IBookingConsultant) => {
+    const result = await bookingConsultant(data)
     if (result) {
       notifySuccess('Đặt lịch thành công')
       setDate(moment().format('YYYY-MM-DD'))
       setTime(0)
       setInterestedCategories([])
+      setConsultantId('')
       clearErrors()
       reset()
-      router.push('/')
+      // router.push('/')
     } else {
       notifyError('Đặt lịch thất bại')
     }
@@ -137,6 +152,10 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
     setTime(value)
   }
 
+  const handleChangeConsultant = (key: Key) => {
+    setConsultantId(key as string)
+  }
+
   return (
     <main className='flex pb-24 flex-col items-center'>
       <div className='max-w-screen-lg p-4 w-full'>
@@ -145,11 +164,11 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
             <Button isIconOnly as={Link} href='/'>
               <FaArrowLeft />
             </Button>
-            <h2 className='font-bold text-2xl md:text-4xl'>Đặt lịch tham quan</h2>
+            <h2 className='font-bold text-2xl md:text-4xl'>Tư vấn thiết kế</h2>
           </CardHeader>
         </Card>
         <h3 className='md:text-lg text-center mb-8'>
-          Để chúng mình chuẩn bị tốt cho việc đón tiếp, hãy điền thông tin thời gian bạn muốn ghé showroom nhé.
+          Để lại thông tin thời gian bạn rảnh, chúng tôi sẽ liên hệ với bạn để xác nhận lịch hẹn.
         </h3>
 
         <div className='max-w-screen-md mx-auto'>
@@ -212,6 +231,45 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
                 </div>
               </div>
             </div>
+            <h3 className='font-semibold text-xl md:text-2xl mb-4'>Tư vấn viên</h3>
+            <Autocomplete
+              variant='bordered'
+              className='mb-8'
+              label='Tư vấn viên'
+              selectedKey={consultantId}
+              onSelectionChange={handleChangeConsultant}
+              {...register('consultantId')}
+              isInvalid={errors.consultantId ? true : false}
+              color={isSubmitting ? (errors.consultantId ? 'danger' : 'success') : 'default'}
+              errorMessage={errors.consultantId?.message}
+              isRequired
+            >
+              {consultants.map((consultant) => (
+                <AutocompleteItem key={consultant._id} textValue={consultant.lastName + ' ' + consultant.firstName}>
+                  <div className='flex justify-between items-center'>
+                    <div className='flex gap-2 items-center'>
+                      <Avatar
+                        alt={consultant.firstName + ' ' + consultant.lastName}
+                        className='flex-shrink-0'
+                        size='sm'
+                        src={consultant.avatar}
+                      />
+                      <div className='flex flex-col'>
+                        <span className='text-small'>{consultant.lastName + ' ' + consultant.firstName}</span>
+                      </div>
+                    </div>
+                    <Button
+                      className='border-small mr-0.5 font-medium shadow-small'
+                      radius='full'
+                      size='sm'
+                      variant='bordered'
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
             <h3 className='font-semibold text-xl md:text-2xl mb-4'>Thời gian</h3>
             <Input
               variant='bordered'
@@ -262,8 +320,8 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
               color={isSubmitting ? (errors.category ? 'danger' : 'success') : 'default'}
               isRequired
             >
-              {categories.map((category, index) => (
-                <SelectItem key={category._id || ''} textValue={category._id}>
+              {categories.map((category) => (
+                <SelectItem key={category._id || ''} textValue={category.name}>
                   {category.name}
                 </SelectItem>
               ))}
@@ -291,4 +349,4 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
   )
 }
 
-export default BookingVisit
+export default BookingConsultant
