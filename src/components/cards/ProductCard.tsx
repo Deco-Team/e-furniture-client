@@ -43,11 +43,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
       <CardFooter className='p-4 flex justify-between'>
         <div className='flex flex-col items-start max-w-full'>
-          <p className='w-full text-xs font-semibold text-gray-400 text-ellipsis'>
+          <p className='w-full text-xs font-semibold text-gray-400 text-nowrap overflow-hidden text-ellipsis'>
             {product.categories.map((category) => category.name).join(', ')}
           </p>
           <h3 className='w-full font-normal text-base text-nowrap overflow-hidden text-ellipsis'>{product.name}</h3>
-          <p className='w-full text-base font-semibold text-nowrap'>
+          <p className='w-full text-sm sm:text-base font-semibold text-nowrap overflow-hidden text-ellipsis'>
             {min === max
               ? Intl.NumberFormat('en-DE').format(min) + ' ₫'
               : `${Intl.NumberFormat('en-DE').format(min)} ₫ - ${Intl.NumberFormat('en-DE').format(max)} ₫`}
