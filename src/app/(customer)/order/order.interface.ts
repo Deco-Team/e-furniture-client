@@ -1,6 +1,6 @@
 import { IProduct } from '@global/interface'
-import { OrderStatus, OrderStatusColor, TransactionStatus } from './order.enum'
-import { ICart, ICartItem } from '../cart/cart.interface'
+import { OrderStatusColor, TransactionStatus } from './order.enum'
+import { ICartItem } from '../cart/cart.interface'
 
 export interface IDistrict {
   level2_id: string

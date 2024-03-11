@@ -1,7 +1,7 @@
 'use client'
 
 import { bookingConsultant } from '@actions/booking/bookingConsultant.action'
-import { IBookingConsultant, IConsultant } from '@app/booking/consultant/bookingConsultant.interface'
+import { IBookingConsultant, IConsultant } from '@app/(customer)/booking/consultant/bookingConsultant.interface'
 import { ICategory } from '@global/interface'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {

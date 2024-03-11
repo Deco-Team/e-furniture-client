@@ -189,6 +189,15 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   >
                     Lịch sử đơn hàng
                   </DropdownItem>
+                  <DropdownItem
+                    as={Link}
+                    className='text-black hover:!text-[var(--primary-orange-text-color)]'
+                    key='orders'
+                    color='warning'
+                    href='/customer/bookings/consultants'
+                  >
+                    Lịch sử tư vấn
+                  </DropdownItem>
                   <DropdownItem key='logout' color='danger' onClick={logoutAction}>
                     Đăng xuất
                   </DropdownItem>
