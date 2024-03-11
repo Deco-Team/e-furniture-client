@@ -100,7 +100,7 @@ const OrderListPage = () => {
                       <p>
                         Ngày tạo:{' '}
                         <span className='font-semibold text-base'>
-                          {moment(value.createdAt).format('hh:mm:ss DD-mm-yyyy')}
+                          {moment(value.createdAt).format('hh:mm:ss DD-MM-yyyy')}
                         </span>
                       </p>
                     </div>
