@@ -28,13 +28,18 @@ export default async function Home() {
       <div className='max-w-screen-lg p-4 w-full'>
         <div className='mb-5 flex items-center gap-5 justify-between xs:justify-start'>
           <h2 className='font-bold text-xl sm:text-2xl text-black'>Sản phẩm</h2>
-          <Link size='sm' className='text-[var(--primary-orange-text-color)] cursor-pointer gap-1' underline='hover'>
+          <Link
+            size='sm'
+            href='/products'
+            className='text-[var(--primary-orange-text-color)] cursor-pointer gap-1'
+            underline='hover'
+          >
             Xem thêm
             <FaLongArrowAltRight />
           </Link>
         </div>
 
-        <ProductList products={products} />
+        <ProductList products={products} className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-4' />
       </div>
     </main>
   )

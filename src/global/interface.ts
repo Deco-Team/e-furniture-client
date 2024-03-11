@@ -47,6 +47,18 @@ export interface IProduct {
   slug: string
 }
 
+export interface IProductResponse {
+  _id: string
+  name: string
+  description: string
+  images: string[]
+  rate: number
+  brand: string
+  variants: IVariant[]
+  categories: ICategory[]
+  slug: string
+}
+
 export type IPagination<T> = {
   docs: T[]
   totalDocs: number

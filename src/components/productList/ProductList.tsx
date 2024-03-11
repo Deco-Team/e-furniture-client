@@ -3,11 +3,12 @@ import ProductCard from '@components/cards/ProductCard'
 
 interface ProductListProps {
   products: IProduct[]
+  className: string
 }
 
-export default function ProductList({ products }: ProductListProps) {
+export default function ProductList({ products, className }: ProductListProps) {
   return (
-    <div className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-4'>
+    <div className={className}>
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}

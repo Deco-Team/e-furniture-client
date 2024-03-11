@@ -13,7 +13,13 @@ import {
   Dropdown,
   DropdownMenu,
   Image,
-  Button
+  Button,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+  useDisclosure
 } from '@nextui-org/react'
 import { FaChevronDown, FaHome, FaRegEnvelope, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
@@ -21,6 +27,7 @@ import { logout } from '@actions/auth/auth.actions'
 import { usePathname, useRouter } from 'next/navigation'
 import { ICustomer } from '@src/interface/customer.interface'
 import { MdSupportAgent } from 'react-icons/md'
+import { set } from 'lodash'
 
 interface NavigationBarProps {
   isLogin: boolean
@@ -31,6 +38,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
   const router = useRouter()
   const activePathname = usePathname()
   const [searchValue, setSearchValue] = React.useState('')
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const logoutAction = () => {
     logout()
@@ -66,7 +74,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             <NavbarItem>
               <Link
                 underline={activePathname === '/products' ? 'always' : 'hover'}
-                href='/'
+                href='/products'
                 className={`font-medium underline-offset-8 decoration-2 ${activePathname === '/products' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
               >
                 Sản phẩm
@@ -137,6 +145,9 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
               value={searchValue}
               onValueChange={(value: string) => setSearchValue(value)}
               onClear={() => setSearchValue('')}
+              onKeyDown={(e) =>
+                e.key === 'Enter' && searchValue && router.push(`/products/search?search=${searchValue}`)
+              }
               size='lg'
               startContent={<FaSearch className='min-w-5 min-h-5 pointer-events-none' />}
               className='focus-within:max-w-full transition-all !duration-300 !ease-linear hidden sm:flex'
@@ -236,8 +247,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 variant='light'
                 size='lg'
                 radius='full'
-                as={Link}
-                href='/'
+                onPress={onOpen}
                 className={`${activePathname === '/search' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
                 <FaSearch className='min-w-5 min-h-5' />
@@ -312,6 +322,58 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             </Dropdown>
           </NavbarContent>
         </Navbar>
+        <Modal
+          isOpen={isOpen}
+          placement={'top-center'}
+          backdrop='blur'
+          onOpenChange={onOpenChange}
+          isDismissable={false}
+          isKeyboardDismissDisabled={true}
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className='flex flex-col gap-1'>Tìm kiếm</ModalHeader>
+                <ModalBody>
+                  <Input
+                    isClearable
+                    variant='bordered'
+                    classNames={{
+                      mainWrapper: 'h-full',
+                      input: 'text-small',
+                      inputWrapper: 'h-full text-center font-normal'
+                    }}
+                    placeholder='Tìm kiếm...'
+                    value={searchValue}
+                    onValueChange={(value: string) => setSearchValue(value)}
+                    onClear={() => setSearchValue('')}
+                    onKeyDown={(e) => {
+                      e.key === 'Enter' && searchValue && router.push(`/products/search?search=${searchValue}`)
+                      e.key === 'Enter' && searchValue && onClose()
+                    }}
+                    size='lg'
+                    startContent={<FaSearch className='min-w-5 min-h-5 pointer-events-none' />}
+                    className='focus-within:max-w-full transition-all !duration-300 !ease-linear'
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color='default' variant='light' onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button
+                    onPress={() => {
+                      searchValue && router.push(`/products/search?search=${searchValue}`)
+                      searchValue && onClose()
+                    }}
+                    className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)]'
+                  >
+                    Search
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
       </>
     )
   )
