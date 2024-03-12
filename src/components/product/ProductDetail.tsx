@@ -182,14 +182,14 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
             </p>
             <div className='flex justify-between flex-wrap'>
               <h3 className='font-bold text-2xl'>{product.name}</h3>
-              <h3 className='font-bold text-2xl text-nowrap'>{price}</h3>
+              <h3 className='font-bold text-2xl text-nowrap whitespace-nowrap'>{price}</h3>
             </div>
             {/* <Rating ratingInPercent={product.rate * 20} iconSize='l' showOutOf={true} enableUserInteraction={false} /> */}
           </div>
 
           {hasKeyvalue && (
             <div>
-              <h3 className='font-medium text-base text-nowrap pb-2'>Phân loại</h3>
+              <h3 className='font-medium text-base text-nowrap whitespace-nowrap pb-2'>Phân loại</h3>
               <div className='flex gap-4 flex-wrap'>
                 {product.variants.map((variant) => (
                   <Tooltip key={variant.sku} showArrow content={Object.keys(variant.keyValue).join(' - ')}>
@@ -209,7 +209,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
           )}
 
           <div>
-            <h3 className='font-medium text-base text-nowrap pb-2'>Số lượng</h3>
+            <h3 className='font-medium text-base text-nowrap whitespace-nowrap pb-2'>Số lượng</h3>
             <div className='flex justify-between flex-wrap flex-col xs:flex-row gap-y-4 gap-x-2'>
               <div className='flex items-center gap-2'>
                 <Button
@@ -256,8 +256,10 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                 >
                   <FaPlus />
                 </Button>
-                {activeVariant.sku && <p className='text-nowrap'>{activeVariant.quantity} mặt hàng có sẵn</p>}
-                {variantError && <p className='text-nowrap'>Vui lòng chọn Phân loại hàng</p>}
+                {activeVariant.sku && (
+                  <p className='text-nowrap whitespace-nowrap'>{activeVariant.quantity} mặt hàng có sẵn</p>
+                )}
+                {variantError && <p className='text-nowrap whitespace-nowrap'>Vui lòng chọn Phân loại hàng</p>}
               </div>
               <Button
                 startContent={<FaCartPlus size={20} />}
