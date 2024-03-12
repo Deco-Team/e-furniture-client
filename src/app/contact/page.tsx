@@ -84,7 +84,7 @@ const ContactPage = () => {
               <FaPhoneAlt className='md:min-w-14 md:min-h-14 min-h-12 min-w-12 md:p-4 p-3 rounded-full text-white bg-[var(--primary-orange-color)]' />
               <div className='max-w-full overflow-hidden'>
                 <h4 className='md:text-lg font-semibold'>Liên hệ</h4>
-                <h5 className='max-md:text-sm text-nowrap overflow-hidden text-ellipsis'>
+                <h5 className='max-md:text-sm text-nowrap overflow-hidden text-ellipsis whitespace-nowrap'>
                   furnique.contact@gmail.com
                   <br />
                   +(84) 987-654-321
