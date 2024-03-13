@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     activePathname !== '/order' && (
       <footer className='flex max-sm:pb-24 flex-col items-center border-t-1'>
-        <div className='max-w-screen-lg p-4 w-full grid grid-cols-1 sm:grid-cols-3 gap-8'>
+        <div className='max-w-screen-lg p-4 pt-12 w-full grid grid-cols-1 sm:grid-cols-3 gap-8'>
           <div className='flex flex-col gap-8'>
             <Link href='/'>
               <Image removeWrapper radius='none' src='/logo.svg' alt='logo' className='!h-10' />

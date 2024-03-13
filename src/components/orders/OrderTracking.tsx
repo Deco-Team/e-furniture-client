@@ -41,11 +41,11 @@ const OrderTracking = ({ orderStatus }: OrderTrackingProps) => {
     }
   ]
 
-  const [progress] = React.useState(orderStatus.length)
+  const [progress] = React.useState(orderStatus.filter((status) => status.transactionStatus !== 'DRAFT').length)
   const [cancelIndex] = React.useState(orderStatus.findIndex((status) => status.orderStatus === 'CANCELED'))
 
   return (
-    <div className='w-full relative flex justify-between flex-nowrap py-4 sm:px-4 sm:py-6'>
+    <div className='w-full relative flex justify-between flex-nowrap py-4 sm:px-4 pt-6'>
       <Progress
         size='sm'
         color='success'
@@ -75,7 +75,7 @@ const OrderTracking = ({ orderStatus }: OrderTrackingProps) => {
           )
         } else {
           if (orderStatus.some((s) => s.orderStatus === 'CANCELED')) {
-            if (cancelIndex === index) {
+            if (cancelIndex === index + 1) {
               const cancelStatus = orderStatus.find((s) => s.orderStatus === 'CANCELED')
               return (
                 <div

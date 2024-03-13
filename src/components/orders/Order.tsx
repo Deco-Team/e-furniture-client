@@ -1,7 +1,18 @@
 'use client'
 
 import OrderItemCard from '@components/orders/OrderItemCard'
-import { Autocomplete, AutocompleteItem, Button, Card, CardHeader, Input, Textarea } from '@nextui-org/react'
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Card,
+  CardHeader,
+  Image,
+  Input,
+  Radio,
+  RadioGroup,
+  Textarea
+} from '@nextui-org/react'
 import { cloneDeep } from 'lodash'
 import jsonData from '@utils/dvhcvn.json'
 import Link from 'next/link'
@@ -167,7 +178,7 @@ const Order = ({ cart, me }: OrderProps) => {
     await handleCreateOrder(order)
   }
   return (
-    <main className='min-h-screen flex flex-col items-center'>
+    <main className='min-h-screen pb-24 flex flex-col items-center'>
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
@@ -181,8 +192,8 @@ const Order = ({ cart, me }: OrderProps) => {
           <form action='POST' onSubmit={handleSubmit(onSubmit)}>
             <div className='flex flex-col-reverse md:grid md:grid-cols-3'>
               <div className='md:col-span-2 p-4 max-sm:px-0'>
-                <h3 className='font-semibold text-xl md:text-2xl mb-5'>Thông tin giao hàng</h3>
-                <div className='flex flex-row gap-4 my-8 max-xs:flex-wrap'>
+                <h3 className='font-semibold text-xl md:text-2xl mb-4'>Thông tin giao hàng</h3>
+                <div className='flex flex-row gap-4 mb-8 max-xs:flex-wrap'>
                   <Input
                     variant='underlined'
                     defaultValue={me.lastName}
@@ -335,12 +346,21 @@ const Order = ({ cart, me }: OrderProps) => {
 
                 <Textarea
                   variant='underlined'
-                  className='mt-8'
+                  className='my-8'
                   label='Ghi chú'
                   minRows={3}
                   maxRows={4}
                   {...register('notes')}
                 />
+                <h3 className='font-semibold text-xl md:text-2xl mb-4'>Phương thức thanh toán</h3>
+                <RadioGroup aria-label='Chọn phươn thức thanh toán' defaultValue='momo' className='' isReadOnly>
+                  <Radio value='momo'>
+                    <div className='flex items-center'>
+                      <Image removeWrapper src='/momo.png' alt='momo icon' height={60} width={60}></Image>
+                      Momo
+                    </div>
+                  </Radio>
+                </RadioGroup>
 
                 <Button
                   type='submit'
