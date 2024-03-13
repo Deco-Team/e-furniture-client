@@ -3,7 +3,7 @@
 
 import { getConsultantBookingList } from '@actions/booking/bookingConsultant.action'
 import { IPagination } from '@global/interface'
-import { Button, Card, CardBody, CardHeader, Chip, Divider, Image, Pagination } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, Chip, Divider, Image, Pagination, Skeleton } from '@nextui-org/react'
 import moment from 'moment'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -66,18 +66,18 @@ const ConsultantBookingListPage = () => {
   }, [currentPage])
 
   return (
-    <main className='flex pb-24 flex-col items-center'>
+    <main className='flex pb-24 flex-col items-center min-h-[calc(100vh-72px)] sm:min-h-[calc(100vh-96px)]'>
       <div className='max-w-screen-lg p-4 w-full'>
-        {consultantBookingList && (
-          <div className='w-full flex flex-col items-center justify-center'>
-            <Card className='bg-gray-200 mb-8 md:p-6 w-full'>
-              <CardHeader className='flex gap-4 p-6'>
-                <Button isIconOnly as={Link} href='/'>
-                  <FaArrowLeft />
-                </Button>
-                <h2 className='font-bold text-2xl md:text-4xl'>Lịch sử tư vấn thiết kế</h2>
-              </CardHeader>
-            </Card>
+        <div className='w-full flex flex-col items-center justify-center'>
+          <Card className='bg-gray-200 mb-8 md:p-6 w-full'>
+            <CardHeader className='flex gap-4 p-6'>
+              <Button isIconOnly as={Link} href='/'>
+                <FaArrowLeft />
+              </Button>
+              <h2 className='font-bold text-2xl md:text-4xl'>Lịch sử tư vấn thiết kế</h2>
+            </CardHeader>
+          </Card>
+          {consultantBookingList ? (
             <div className='w-full flex flex-col self-start'>
               {consultantBookingList.docs.map((value, i) => (
                 <Card key={i} className='p-4 md:p-6 mb-4 cursor-pointer' as={Link} href='#'>
@@ -135,6 +135,39 @@ const ConsultantBookingListPage = () => {
                 </Card>
               ))}
             </div>
+          ) : (
+            <div className='w-full flex flex-col self-start'>
+              {[...Array(3)].map((_, index) => (
+                <Card key={index} shadow='sm' className='space-y-5 p-4 md:p-6 mb-4 w-full' radius='lg'>
+                  <div className='space-y-3'>
+                    <div className='w-full flex justify-between'>
+                      <Skeleton className='flex rounded-lg w-2/5 h-5' />
+                      <Skeleton className='flex rounded-lg w-1/6 h-5' />
+                    </div>
+                    <Divider className='my-4' />
+                    <div className='max-w-full w-full flex items-center gap-3'>
+                      <div>
+                        <Skeleton className='flex rounded-lg w-24 h-24' />
+                      </div>
+                      <div className='h-full w-full flex flex-col gap-4 '>
+                        <Skeleton className='flex rounded-lg w-3/5 h-4' />
+                        <Skeleton className='flex rounded-lg w-2/5 h-4' />
+                        <div className='w-full flex justify-between'>
+                          <Skeleton className='flex rounded-lg w-1/5 h-4' />
+                          <Skeleton className='flex rounded-lg w-1/5 h-4' />
+                        </div>
+                      </div>
+                    </div>
+                    <Divider className='my-4' />
+                    <div className='w-full flex justify-end py-2'>
+                      <Skeleton className='flex rounded-lg w-1/5 h-4' />
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+          {consultantBookingList && (
             <Pagination
               className='mx-auto mt-5'
               initialPage={1}
@@ -146,8 +179,8 @@ const ConsultantBookingListPage = () => {
                 cursor: 'bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)]'
               }}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </main>
   )

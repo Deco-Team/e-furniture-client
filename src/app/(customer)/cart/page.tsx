@@ -22,7 +22,7 @@ const CartPage = () => {
   }, [])
 
   return (
-    <main className='flex pb-24 flex-col items-center'>
+    <main className='flex pb-24 flex-col items-center min-h-[calc(100vh-72px)] sm:min-h-[calc(100vh-96px)]'>
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
@@ -36,9 +36,21 @@ const CartPage = () => {
           <div className='flex-grow justify-center items-center md:col-span-2'>
             {!cart?.items ? (
               <>
-                <Skeleton className='rounded-xl flex gap-3 m-4 shadow-none flex-row h-28' isLoaded={Boolean(cart)} />
-                <Skeleton className='rounded-xl flex gap-3 m-4 shadow-none flex-row h-28' isLoaded={Boolean(cart)} />
-                <Skeleton className='rounded-xl flex gap-3 m-4 shadow-none flex-row h-28' isLoaded={Boolean(cart)} />
+                {[...Array(3)].map((_, index) => (
+                  <div key={index} className='px-4 my-4 w-full flex items-center gap-3'>
+                    <div>
+                      <Skeleton className='flex rounded-lg w-[100px] md:w-[175px] aspect-square' />
+                    </div>
+                    <div className='h-full w-full flex flex-col gap-2 md:gap-4 '>
+                      <Skeleton className='flex rounded-lg w-3/5 h-5' />
+                      <Skeleton className='flex rounded-lg w-2/5 h-5 md:mb-10' />
+                      <div className='w-full flex justify-between'>
+                        <Skeleton className='flex rounded-lg w-1/5 h-8' />
+                        <Skeleton className='flex rounded-lg w-1/5 h-8' />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </>
             ) : null}
             {cart?.items.length !== 0 ? (

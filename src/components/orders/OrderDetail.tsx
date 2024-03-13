@@ -5,7 +5,7 @@ import React from 'react'
 
 import { IOrderDetail, IOrderStatusHistory } from '@app/(customer)/order/order.interface'
 import OrderTracking from './OrderTracking'
-import { Button, Card, CardHeader } from '@nextui-org/react'
+import { Button, Card, CardHeader, Divider } from '@nextui-org/react'
 import { FaArrowLeft } from 'react-icons/fa'
 import Link from 'next/link'
 
@@ -27,8 +27,15 @@ const OrderDetail = ({ order, orderStatus }: OrderProps) => {
           </CardHeader>
         </Card>
         <div>
+          <div className='sm:px-4 gap-2 flex flex-wrap w-full justify-between'>
+            <p className='text-sm md:text-base whitespace-nowrap'>
+              Mã đơn hàng: <span className='font-semibold'>{order.orderId}</span>
+            </p>
+            {order.reason && <p className='text-sm md:text-base whitespace-nowrap'>Lý do hủy: {order.reason}</p>}
+          </div>
           <div className='flex flex-col'>
             {orderStatus && <OrderTracking orderStatus={orderStatus} />}
+
             <div className='md:col-span-2 p-4 max-sm:px-0'>
               <h3 className='font-semibold text-xl md:text-2xl mb-4'>Địa chỉ nhận hàng</h3>
               <h3 className='font-medium text-sm md:text-base mb-2'>
@@ -54,7 +61,7 @@ const OrderDetail = ({ order, orderStatus }: OrderProps) => {
               ))}
               {order.notes && (
                 <div className='mb-4 flex flex-nowrap'>
-                  <p className='text-sm md:text-base w-1/3'>Notes</p>
+                  <p className='text-sm md:text-base w-1/3'>Ghi chú</p>
                   <p className='text-sm md:text-base text-right w-2/3'>{order.notes}</p>
                 </div>
               )}

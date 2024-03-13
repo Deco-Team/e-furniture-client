@@ -33,6 +33,7 @@ export interface IOrder {
 
 export interface IOrderResponse {
   _id: string
+  orderId: string
   customer: ICustomer
   totalAmount: number
   items: ICartItem[]
@@ -40,6 +41,7 @@ export interface IOrderResponse {
   orderStatus: string
   orderStatusColor: OrderStatusColor
   transactionStatus: TransactionStatus
+  payment: IPayment
   notes: string
   createdAt: string
   updatedAt: string
@@ -57,6 +59,7 @@ export interface ICustomer {
 
 export interface IOrderDetail {
   _id: string
+  orderId: string
   customer: {
     firstName: string
     lastName: string
@@ -70,12 +73,22 @@ export interface IOrderDetail {
     quantity: number
     product: IProduct
   }[]
+  orderDate: string
+  orderStatus: string
+  transactionStatus: TransactionStatus
+  payment: IPayment
   notes: string
   totalAmount: number
+  reason: string
 }
 
 export interface IOrderStatusHistory {
   orderStatus: string
   transactionStatus: string
   timestamp: Date
+}
+
+export interface IPayment {
+  paymentMethod: string
+  amount: number
 }
