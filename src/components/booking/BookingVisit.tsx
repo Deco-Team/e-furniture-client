@@ -263,7 +263,7 @@ const BookingVisit = ({ categories, me }: BookingVisitProps) => {
               isRequired
             >
               {categories.map((category, index) => (
-                <SelectItem key={category._id || ''} textValue={category._id}>
+                <SelectItem key={category._id || ''} textValue={category.name}>
                   {category.name}
                 </SelectItem>
               ))}
