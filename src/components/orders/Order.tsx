@@ -224,10 +224,12 @@ const Order = ({ cart, me }: OrderProps) => {
                     variant='underlined'
                     defaultValue={me.email}
                     {...register('customer.email')}
+                    isReadOnly
+                    disabled
                     isInvalid={errors.customer?.email ? true : false}
                     color={isSubmitted ? (errors.customer?.email ? 'danger' : 'success') : 'default'}
                     errorMessage={errors.customer?.email?.message}
-                    className='max-xs:w-full w-2/3'
+                    className='max-xs:w-full w-2/3 '
                     label='Email'
                     type='email'
                     isRequired

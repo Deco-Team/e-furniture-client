@@ -85,7 +85,7 @@ const ContactPage = () => {
               <div className='max-w-full overflow-hidden'>
                 <h4 className='md:text-lg font-semibold'>Liên hệ</h4>
                 <h5 className='max-md:text-sm text-nowrap overflow-hidden text-ellipsis whitespace-nowrap'>
-                  furnique.contact@gmail.com
+                  contact@furnique.tech
                   <br />
                   +(84) 987-654-321
                 </h5>
