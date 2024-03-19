@@ -81,6 +81,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
       reset()
     } else {
       console.log('Register failed')
+      setError('email', { type: 'registerFailed', message: 'Email đã tồn tại' })
     }
   }
 

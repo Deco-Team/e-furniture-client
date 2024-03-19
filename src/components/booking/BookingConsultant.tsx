@@ -119,7 +119,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
       setConsultantId('')
       clearErrors()
       reset()
-      // router.push('/')
+      router.push('/')
     } else {
       notifyError('Đặt lịch thất bại')
     }
