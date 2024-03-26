@@ -1,5 +1,6 @@
 import CategoryList from '@components/categoryList/CategoryList'
 import { Link } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { FaLongArrowAltRight } from 'react-icons/fa'
 import ProductList from '@components/productList/ProductList'
 import { getCategories } from '@actions/categories/categories.actions'
@@ -29,6 +30,7 @@ export default async function Home() {
         <div className='mb-5 flex items-center gap-5 justify-between xs:justify-start'>
           <h2 className='font-bold text-xl sm:text-2xl text-black'>Sản phẩm</h2>
           <Link
+            as={NextLink}
             size='sm'
             href='/products'
             className='text-[var(--primary-orange-text-color)] cursor-pointer gap-1'

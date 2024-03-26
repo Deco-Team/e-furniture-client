@@ -34,7 +34,7 @@ export const getProductsForPage = async (
     return response.data
   } catch (error) {
     console.log(error)
-    return null
+    return error as Error
   }
 }
 

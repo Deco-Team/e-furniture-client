@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Card, CardBody, CardHeader, Divider, Input, Link } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { GoogleLogin } from '@react-oauth/google'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -7,8 +8,11 @@ import * as yup from 'yup'
 import './style.css'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { login, loginWithGoogle, registerCustomer } from '@actions/auth/auth.actions'
-import { ILogin } from '@global/interface'
+import { login, loginWithGoogle, registerCustomer } from '@actions/auth/auth.action'
+import { ILoginActionPayload, IRegisterActionPayload } from '@actions/auth/auth.interface'
+import { useAuth } from '@src/hooks/useAuth'
+import { getCustomer } from '@actions/customers/customer.actions'
+import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 
 interface RegisterCardProps {
   toggleCard: () => void
@@ -61,23 +65,31 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
     criteriaMode: 'all'
   })
 
-  const registerSubmit = async (data: any) => {
+  const { customerDispatch } = useAuth()
+
+  if (!customerDispatch) return null
+
+  const registerSubmit = async (data: IRegisterActionPayload) => {
     const result = await registerCustomer(data)
     if (result) {
       console.log('Register success')
-      const dataLogin: ILogin = {
+      const dataLogin: ILoginActionPayload = {
         email: data.email,
         password: data.password
       }
 
       const loginResult = await login(dataLogin)
       if (loginResult) {
-        router.push('/')
-        console.log('Login success')
-      } else {
-        console.log('Login failed')
-        setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
+        const customer = await getCustomer()
+        if (customer) {
+          customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
+          router.push('/')
+          console.log('Login success')
+          return
+        }
       }
+      console.log('Login failed')
+      setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
       reset()
     } else {
       console.log('Register failed')
@@ -100,7 +112,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
       <div className='w-full h-full flex flex-col items-center justify-center'>
         <Card className='bg-gray-200 w-full' shadow='none'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl'>Trang chủ</h2>

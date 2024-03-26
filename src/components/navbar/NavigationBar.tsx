@@ -21,27 +21,30 @@ import {
   ModalFooter,
   useDisclosure
 } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { FaChevronDown, FaHome, FaRegEnvelope, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
-import { logout } from '@actions/auth/auth.actions'
+import { logout } from '@actions/auth/auth.action'
 import { usePathname, useRouter } from 'next/navigation'
-import { ICustomer } from '@src/interface/customer.interface'
 import { MdSupportAgent } from 'react-icons/md'
-import { set } from 'lodash'
+import { useAuth } from '@src/hooks/useAuth'
+import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 
-interface NavigationBarProps {
-  isLogin: boolean
-  me: ICustomer | null
-}
-
-const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
+const NavigationBar = () => {
   const router = useRouter()
+  const {
+    state: { customer },
+    customerDispatch
+  } = useAuth()
   const activePathname = usePathname()
   const [searchValue, setSearchValue] = React.useState('')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
+  if (!customerDispatch) return null
+
   const logoutAction = () => {
     logout()
+    customerDispatch({ type: CustomerAuthActionTypes.LOGOUT })
     router.refresh()
   }
 
@@ -56,14 +59,15 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
         >
           <NavbarContent justify='start' className='max-w-fit'>
             <NavbarBrand>
-              <Link href='/'>
+              <NextLink href='/'>
                 <Image removeWrapper radius='none' src='/logo.svg' alt='logo' className='!h-10' />
-              </Link>
+              </NextLink>
             </NavbarBrand>
           </NavbarContent>
           <NavbarContent className='hidden sm:flex gap-8' justify='start'>
             <NavbarItem>
               <Link
+                as={NextLink}
                 underline={activePathname === '/' ? 'always' : 'hover'}
                 href='/'
                 className={`font-medium underline-offset-8 decoration-2 ${activePathname === '/' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
@@ -73,6 +77,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             </NavbarItem>
             <NavbarItem>
               <Link
+                as={NextLink}
                 underline={activePathname === '/products' ? 'always' : 'hover'}
                 href='/products'
                 className={`font-medium underline-offset-8 decoration-2 ${activePathname === '/products' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
@@ -82,6 +87,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             </NavbarItem>
             <NavbarItem>
               <Link
+                as={NextLink}
                 underline={activePathname === '/contact' ? 'always' : 'hover'}
                 href='/contact'
                 className={`font-medium underline-offset-8 decoration-2 ${activePathname === '/contact' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
@@ -114,7 +120,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
               >
                 <DropdownItem
                   key='booking-visit'
-                  as={Link}
+                  as={NextLink}
                   href='/booking/visit'
                   className={` ${activePathname === '/booking/visit' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
@@ -122,8 +128,8 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 </DropdownItem>
                 <DropdownItem
                   key='booking-consultant'
-                  as={Link}
-                  href={isLogin ? '/booking/consultant' : '/login-register'}
+                  as={NextLink}
+                  href={customer ? '/booking/consultant' : '/login-register'}
                   className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
                   Tư vấn thiết kế
@@ -153,8 +159,8 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
               className='focus-within:max-w-full transition-all !duration-300 !ease-linear hidden sm:flex'
             />
             <Button
-              as={Link}
-              href={isLogin ? '/cart' : '/login-register'}
+              as={NextLink}
+              href={customer ? '/cart' : '/login-register'}
               size='lg'
               isIconOnly
               variant='light'
@@ -163,7 +169,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             >
               <FaShoppingCart className='min-w-5 min-h-5' />
             </Button>
-            {isLogin && me ? (
+            {customer ? (
               <Dropdown placement='bottom-end'>
                 <DropdownTrigger>
                   <Button
@@ -177,11 +183,11 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label='Profile Actions' variant='flat'>
-                  <DropdownItem as={Link} href='/customer' key='profile' className='text-black'>
+                  <DropdownItem as={NextLink} href='/customer' key='profile' className='text-black'>
                     Tài khoản của tôi
                   </DropdownItem>
                   <DropdownItem
-                    as={Link}
+                    as={NextLink}
                     className='text-black hover:!text-[var(--primary-orange-text-color)]'
                     key='orders'
                     color='warning'
@@ -190,7 +196,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                     Lịch sử đơn hàng
                   </DropdownItem>
                   <DropdownItem
-                    as={Link}
+                    as={NextLink}
                     className='text-black hover:!text-[var(--primary-orange-text-color)]'
                     key='orders'
                     color='warning'
@@ -206,7 +212,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
             ) : (
               <>
                 <Button
-                  as={Link}
+                  as={NextLink}
                   variant='light'
                   href='/login-register'
                   size='lg'
@@ -217,7 +223,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                   <FaArrowRightToBracket className='min-w-5 min-h-5' />
                 </Button>
                 <Button
-                  as={Link}
+                  as={NextLink}
                   href='/login-register'
                   className='hidden sm:flex min-w-fit bg-black text-white font-medium'
                 >
@@ -243,7 +249,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 variant='light'
                 size='lg'
                 radius='full'
-                as={Link}
+                as={NextLink}
                 href='/'
                 className={`${activePathname === '/' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
@@ -268,8 +274,8 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 variant='light'
                 size='lg'
                 radius='full'
-                as={Link}
-                href={isLogin ? '/cart' : '/login-register'}
+                as={NextLink}
+                href={customer ? '/cart' : '/login-register'}
                 className={`${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
                 <FaShoppingCart className='min-w-5 min-h-5' />
@@ -281,7 +287,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 variant='light'
                 size='lg'
                 radius='full'
-                as={Link}
+                as={NextLink}
                 href={'/contact'}
                 className={`${activePathname === '/contact' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
@@ -313,7 +319,7 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
               >
                 <DropdownItem
                   key='booking-visit'
-                  as={Link}
+                  as={NextLink}
                   href='/booking/visit'
                   className={` ${activePathname === '/booking/visit' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
@@ -321,8 +327,8 @@ const NavigationBar = ({ isLogin, me }: NavigationBarProps) => {
                 </DropdownItem>
                 <DropdownItem
                   key='booking-consultant'
-                  as={Link}
-                  href={isLogin ? '/booking/consultant' : '/login-register'}
+                  as={NextLink}
+                  href={customer ? '/booking/consultant' : '/login-register'}
                   className={` ${activePathname === '/booking/consultant' ? 'text-[var(--primary-orange-text-color)]' : 'text-black'}`}
                 >
                   Tư vấn thiết kế

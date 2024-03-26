@@ -41,7 +41,12 @@ export const callApi = cache(
 )
 
 export const callAuthApi = <T>(options: IApiOptions, cookies: ReadonlyRequestCookies): Promise<{ data: T }> => {
-  const accessToken = cookies.get('accessToken')?.value ?? ''
+  const accessToken = cookies.get('accessToken')?.value
+
+  if (!accessToken) {
+    throw new Error('Unauthorized')
+  }
+
   return callApi<T>({
     ...options,
     headers: {

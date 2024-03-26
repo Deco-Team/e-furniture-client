@@ -6,8 +6,7 @@ import { OrderStatus, OrderStatusColor } from '@app/(customer)/order/order.enum'
 import { IOrderResponse } from '@app/(customer)/order/order.interface'
 import { IPagination } from '@global/interface'
 import { Button, Card, CardBody, CardHeader, Chip, Divider, Image, Pagination, Skeleton } from '@nextui-org/react'
-import moment from 'moment'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 
@@ -77,7 +76,7 @@ const OrderListPage = () => {
         <div className='w-full flex flex-col items-center justify-center'>
           <Card className='bg-gray-200 mb-8 md:p-6 w-full'>
             <CardHeader className='flex gap-4 p-6'>
-              <Button isIconOnly as={Link} href='/'>
+              <Button isIconOnly as={NextLink} href='/'>
                 <FaArrowLeft />
               </Button>
               <h2 className='font-bold text-2xl md:text-4xl'>Lịch sử đơn hàng</h2>
@@ -90,7 +89,7 @@ const OrderListPage = () => {
                   <Card
                     key={i}
                     className='p-4 md:p-6 mb-4 cursor-pointer'
-                    as={Link}
+                    as={NextLink}
                     href={`/customer/orders/${value._id}`}
                   >
                     <CardHeader className='flex flex-row justify-between items-start p-0'>

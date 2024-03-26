@@ -3,18 +3,6 @@
  * Ex: Cart -> ICart
  */
 
-export interface ILogin {
-  email: string
-  password: string
-}
-
-export interface IRegister {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}
-
 export interface ICategory {
   _id?: string
   name: string

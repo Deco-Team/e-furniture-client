@@ -1,19 +1,19 @@
 'use server'
 
 import { callAuthApi } from '@actions/actions'
-import { ICustomer } from '@src/interface/customer.interface'
+import { CustomerDto } from '@data/customer/customer.dto'
 import { cookies } from 'next/headers'
 
 const ROOT_ENDPOINT = '/customers'
 
-export const getMe = async () => {
+export const getCustomer = async () => {
   const endpoint = `${ROOT_ENDPOINT}/me`
   const cookieStore = cookies()
   try {
-    const response = await callAuthApi<ICustomer>({ method: 'get', endpoint }, cookieStore)
+    const response = await callAuthApi<CustomerDto>({ method: 'get', endpoint }, cookieStore)
     return response.data
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return null
   }
 }

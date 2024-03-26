@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Divider, Image, Input, Link, Textarea } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const Footer = () => {
@@ -11,30 +12,30 @@ const Footer = () => {
       <footer className='flex max-sm:pb-24 flex-col items-center border-t-1'>
         <div className='max-w-screen-lg p-4 pt-12 w-full grid grid-cols-1 sm:grid-cols-3 gap-8'>
           <div className='flex flex-col gap-8'>
-            <Link href='/'>
+            <NextLink href='/'>
               <Image removeWrapper radius='none' src='/logo.svg' alt='logo' className='!h-10' />
-            </Link>
+            </NextLink>
             <p>Lô E2a-7, Đường D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh 700000</p>
           </div>
           <div className='grid grid-cols-2'>
             <div className='flex flex-col gap-8'>
               <p className='font-semibold'>Mục lục</p>
-              <Link underline='hover' className='text-black' href={'/'}>
+              <Link underline='hover' as={NextLink} className='text-black' href={'/'}>
                 Trang chủ
               </Link>
-              <Link underline='hover' className='text-black' href={'/products'}>
+              <Link as={NextLink} underline='hover' className='text-black' href={'/products'}>
                 Sản phẩm
               </Link>
-              <Link underline='hover' className='text-black' href={'/contact'}>
+              <Link as={NextLink} underline='hover' className='text-black' href={'/contact'}>
                 Liên hệ
               </Link>
             </div>
             <div className='flex flex-col gap-8'>
               <p className='font-semibold'>Dịch vụ</p>
-              <Link underline='hover' className='text-black' href={'/booking/visit'}>
+              <Link as={NextLink} underline='hover' className='text-black' href={'/booking/visit'}>
                 Đặt lịch tham quan
               </Link>
-              <Link underline='hover' className='text-black' href={'/booking/consultant'}>
+              <Link as={NextLink} underline='hover' className='text-black' href={'/booking/consultant'}>
                 Tư vấn thiết kế
               </Link>
             </div>

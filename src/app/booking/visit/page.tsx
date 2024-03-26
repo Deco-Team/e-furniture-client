@@ -1,15 +1,14 @@
 import { getCategories } from '@actions/categories/categories.actions'
-import { getMe } from '@actions/customers/customer.actions'
 import BookingVisit from '@components/booking/BookingVisit'
 
 const getData = async () => {
-  const [categories, me] = await Promise.all([getCategories(1, 100, ''), getMe()])
-  return { categories: categories ? categories.docs : [], me }
+  const categories = await getCategories(1, 100, '')
+  return { categories: categories ? categories.docs : [] }
 }
 
-const BookingVistPage = async () => {
-  const { categories, me } = await getData()
+const BookingVisitPage = async () => {
+  const { categories } = await getData()
 
-  return <BookingVisit categories={categories} me={me} />
+  return <BookingVisit categories={categories} />
 }
-export default BookingVistPage
+export default BookingVisitPage

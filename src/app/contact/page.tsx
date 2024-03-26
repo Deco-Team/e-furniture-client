@@ -3,7 +3,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Card, CardHeader, Input, Textarea } from '@nextui-org/react'
 import { notifySuccess } from '@utils/toastify'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaClock, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import * as yup from 'yup'
@@ -55,7 +55,7 @@ const ContactPage = () => {
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Liên hệ</h2>

@@ -2,7 +2,8 @@
 
 import { IProduct } from '@global/interface'
 import ProductList from './ProductList'
-import { Button, Card, CardHeader, Divider, Link, Pagination, Select, SelectItem } from '@nextui-org/react'
+import { Button, Card, CardHeader, Divider, Pagination, Select, SelectItem } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { FaArrowLeft } from 'react-icons/fa'
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import { ceil } from 'lodash'
@@ -24,7 +25,7 @@ const Products = ({ products }: ProductsProps) => {
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-4 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Sản phẩm</h2>

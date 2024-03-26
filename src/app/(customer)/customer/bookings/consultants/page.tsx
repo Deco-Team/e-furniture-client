@@ -5,7 +5,7 @@ import { getConsultantBookingList } from '@actions/booking/bookingConsultant.act
 import { IPagination } from '@global/interface'
 import { Button, Card, CardBody, CardHeader, Chip, Divider, Image, Pagination, Skeleton } from '@nextui-org/react'
 import moment from 'moment'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { BookingStatus, BookingStatusColor } from './consultant-booking.enum'
@@ -71,7 +71,7 @@ const ConsultantBookingListPage = () => {
         <div className='w-full flex flex-col items-center justify-center'>
           <Card className='bg-gray-200 mb-8 md:p-6 w-full'>
             <CardHeader className='flex gap-4 p-6'>
-              <Button isIconOnly as={Link} href='/'>
+              <Button isIconOnly as={NextLink} href='/'>
                 <FaArrowLeft />
               </Button>
               <h2 className='font-bold text-2xl md:text-4xl'>Lịch sử tư vấn thiết kế</h2>
@@ -80,7 +80,7 @@ const ConsultantBookingListPage = () => {
           {consultantBookingList ? (
             <div className='w-full flex flex-col self-start'>
               {consultantBookingList.docs.map((value, i) => (
-                <Card key={i} className='p-4 md:p-6 mb-4 cursor-pointer' as={Link} href='#'>
+                <Card key={i} className='p-4 md:p-6 mb-4 cursor-pointer' as={NextLink} href='#'>
                   <CardHeader className='flex flex-row justify-between items-start p-0'>
                     <div className='flex flex-col w-full overflow-hidden'>
                       <p>
