@@ -24,6 +24,7 @@ export default function RootLayout({
       <head>
         {/* <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' /> */}
         <meta name='google-adsense-account' content='ca-pub-8968731383405809'></meta>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8968731383405809" crossorigin="anonymous"></script>
       </head>
       <body>
         <Toastify>
