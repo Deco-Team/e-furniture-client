@@ -1,16 +1,15 @@
 'use server'
-
-import { ILogin, IRegister } from '@global/interface'
 import { callApi } from '@actions/actions'
 import { cookies } from 'next/headers'
 import { JwtPayload, decode } from 'jsonwebtoken'
+import {
+  IGoogleLoginActionPayload,
+  ILoginActionData,
+  ILoginActionPayload,
+  IRegisterActionPayload
+} from './auth.interface'
 
 const ROOT_ENDPOINT = '/auth/customer'
-
-interface LoginResponseData {
-  accessToken: string
-  refreshToken: string
-}
 
 const setToken = (token: string) => {
   const decodedToken = decode(token) as JwtPayload
@@ -22,11 +21,11 @@ const setToken = (token: string) => {
   })
 }
 
-export const login = async (loginData: ILogin) => {
+export const login = async (payload: ILoginActionPayload) => {
   const endpoint = `${ROOT_ENDPOINT}/login`
   try {
-    const { data } = await callApi({ method: 'post', endpoint, body: loginData })
-    setToken((data as LoginResponseData).accessToken)
+    const { data } = await callApi<ILoginActionData>({ method: 'post', endpoint, body: payload })
+    setToken(data.accessToken)
 
     return true
   } catch (error) {
@@ -35,11 +34,11 @@ export const login = async (loginData: ILogin) => {
   }
 }
 
-export const loginWithGoogle = async (credential: string) => {
+export const loginWithGoogle = async (payload: IGoogleLoginActionPayload) => {
   const endpoint = `${ROOT_ENDPOINT}/google`
   try {
-    const { data } = await callApi({ method: 'post', endpoint, body: { token: credential } })
-    setToken((data as LoginResponseData).accessToken)
+    const { data } = await callApi<ILoginActionData>({ method: 'post', endpoint, body: { token: payload.credential } })
+    setToken(data.accessToken)
 
     return true
   } catch (error) {
@@ -48,10 +47,10 @@ export const loginWithGoogle = async (credential: string) => {
   }
 }
 
-export const registerCustomer = async (data: IRegister) => {
+export const registerCustomer = async (payload: IRegisterActionPayload) => {
   const endpoint = `${ROOT_ENDPOINT}/register`
   try {
-    await callApi({ method: 'post', endpoint, body: data })
+    await callApi({ method: 'post', endpoint, body: payload })
 
     return true
   } catch (error) {

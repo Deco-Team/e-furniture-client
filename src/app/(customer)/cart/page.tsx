@@ -5,7 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa'
 import CartItemCard from '@components/cards/CartItemCard'
 import { ICart } from './cart.interface'
 import { getCart } from '@actions/cart/cart.actions'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 const CartPage = () => {
   const [cart, setCart] = useState<ICart | null>(null)
@@ -26,7 +26,7 @@ const CartPage = () => {
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Giỏ hàng</h2>
@@ -78,7 +78,7 @@ const CartPage = () => {
                 <p className='font-medium text-base text-center text-gray-500 mb-4'>
                   Giỏ hàng của bạn vẫn chưa có gì này, shopping tiếp nhé! 😊
                 </p>
-                <Button size='lg' startContent={<FaArrowLeft />} as={Link} href='/'>
+                <Button size='lg' startContent={<FaArrowLeft />} as={NextLink} href='/'>
                   Quay lại trang chủ
                 </Button>
               </div>
@@ -107,7 +107,7 @@ const CartPage = () => {
                 </p>
               </div>
               <Button
-                as={Link}
+                as={NextLink}
                 radius='sm'
                 href='/order'
                 isDisabled={loading || cart?.items.length === 0}

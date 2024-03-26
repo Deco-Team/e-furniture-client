@@ -1,13 +1,8 @@
-import React, { ReactNode } from 'react'
 import { Slide, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-const Toastify = ({ children }: { children: ReactNode }) => {
-  return (
-    <>
-      {children}
-      <ToastContainer transition={Slide} />
-    </>
-  )
+const Toastify = () => {
+  return <ToastContainer transition={Slide} />
 }
 
 export default Toastify

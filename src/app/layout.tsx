@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@app/globals.css'
-import { NextUIProviders } from '@app/providers'
+import { ThemeProvider } from '@app/theme.provider'
 import Toastify from '@components/common/Toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import NavBar from '@components/navbar/NavBar'
 import Footer from '@components/footer/Footer'
+import NavigationBar from '@components/navbar/NavigationBar'
+import AuthProvider from '@src/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: 'eFurniture',
@@ -31,13 +31,14 @@ export default function RootLayout({
         ></script>
       </head>
       <body>
-        <Toastify>
-          <NextUIProviders>
-            <NavBar />
+        <AuthProvider>
+          <ThemeProvider>
+            <NavigationBar />
             {children}
             <Footer />
-          </NextUIProviders>
-        </Toastify>
+          </ThemeProvider>
+        </AuthProvider>
+        <Toastify />
       </body>
     </html>
   )
