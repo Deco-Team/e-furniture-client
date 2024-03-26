@@ -23,6 +23,7 @@ export default function RootLayout({
     <html lang='en' className={inter.className}>
       <head>
         {/* <link rel='stylesheet' href='https://web.nvnstatic.net/tp/T0295/fonts/font.css?v=24' type='text/css' /> */}
+        <meta name='google-adsense-account' content='ca-pub-8968731383405809'></meta>
       </head>
       <body>
         <Toastify>
