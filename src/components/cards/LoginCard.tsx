@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, CardBody, CardHeader, Divider, Input, Link } from '@nextui-org/react'
+import NextLink from 'next/link'
 import { GoogleLogin } from '@react-oauth/google'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ILogin } from '@global/interface'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa'
 import './style.css'
-import { login, loginWithGoogle } from '@actions/auth/auth.actions'
+import { login, loginWithGoogle } from '@actions/auth/auth.action'
+import { IGoogleLoginActionPayload, ILoginActionPayload } from '@actions/auth/auth.interface'
+import { useAuth } from '@src/hooks/useAuth'
+import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
+import { getCustomer } from '@actions/customers/customer.actions'
 
 interface LoginCardProps {
   toggleCard: () => void
@@ -16,8 +20,9 @@ interface LoginCardProps {
 
 const LoginCard = ({ toggleCard }: LoginCardProps) => {
   const router = useRouter()
+  const { customerDispatch } = useAuth()
 
-  const [isVisibleLogin, setIsVisibleLogin] = React.useState(false)
+  const [isVisibleLogin, setIsVisibleLogin] = useState(false)
   const toggleVisibilityLogin = () => setIsVisibleLogin(!isVisibleLogin)
 
   const initialLoginValues = {
@@ -44,25 +49,40 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
     criteriaMode: 'all'
   })
 
-  const loginSubmit = async (data: ILogin) => {
+  if (!customerDispatch) return null
+
+  const loginSubmit = async (data: ILoginActionPayload) => {
     const result = await login(data)
     if (result) {
-      router.push('/')
-      console.log('Login success')
+      const customer = await getCustomer()
+      if (!customer) {
+        console.log('Login failed')
+        setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
+      } else {
+        customerDispatch({ type: CustomerAuthActionTypes.LOGIN, payload: customer })
+        router.push('/')
+        console.log('Login success')
+      }
     } else {
       console.log('Login failed')
       setError('password', { type: 'loginFailed', message: 'Email hoặc mật khẩu không đúng' })
     }
   }
 
-  const loginGoogle = async (data: any) => {
-    const result = await loginWithGoogle(data.credential)
+  const loginGoogle = async (data: IGoogleLoginActionPayload) => {
+    const result = await loginWithGoogle(data)
     if (result) {
-      router.push('/')
-      console.log('Login success')
-    } else {
-      console.log('Login failed')
+      const customer = await getCustomer()
+      if (customer) {
+        customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
+        router.push('/')
+        console.log('Login success')
+        return
+      }
     }
+
+    console.log('Login failed')
+    setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
   }
 
   return (
@@ -70,7 +90,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
       <div className='w-full h-full flex flex-col items-center justify-center'>
         <Card className='bg-gray-200 w-full justify-items-start' shadow='none'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl'>Trang chủ</h2>
@@ -126,7 +146,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
           <div className='flex justify-center items-center'>
             <GoogleLogin
               onSuccess={(response) => {
-                loginGoogle(response)
+                loginGoogle({ credential: response.credential ?? '' })
               }}
               onError={() => console.log('error')}
               text='signin_with'

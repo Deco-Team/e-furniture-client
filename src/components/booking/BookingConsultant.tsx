@@ -13,12 +13,12 @@ import {
   CardHeader,
   Checkbox,
   Input,
-  Link,
   Select,
   SelectItem,
   Textarea
 } from '@nextui-org/react'
-import { ICustomer } from '@src/interface/customer.interface'
+import NextLink from 'next/link'
+import { useAuth } from '@src/hooks/useAuth'
 import { notifyError, notifySuccess } from '@utils/toastify'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
@@ -29,23 +29,25 @@ import * as yup from 'yup'
 
 interface BookingConsultantProps {
   categories: ICategory[]
-  me: ICustomer | null
   consultants: IConsultant[]
 }
 
-const BookingConsultant = ({ categories, me, consultants }: BookingConsultantProps) => {
+const BookingConsultant = ({ categories, consultants }: BookingConsultantProps) => {
   const [date, setDate] = React.useState(moment().format('YYYY-MM-DD'))
   const [time, setTime] = React.useState(0)
   const [interestedCategories, setInterestedCategories] = React.useState([])
   const [consultantId, setConsultantId] = React.useState('')
   const router = useRouter()
+  const {
+    state: { customer }
+  } = useAuth()
 
   const initialValues = {
     customer: {
-      firstName: me?.firstName ?? '',
-      lastName: me?.lastName ?? '',
-      email: me?.email ?? '',
-      phone: me?.phone ?? ''
+      firstName: customer?.firstName ?? '',
+      lastName: customer?.lastName ?? '',
+      email: customer?.email ?? '',
+      phone: customer?.phone ?? ''
     },
     time: time,
     notes: ''
@@ -161,7 +163,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/'>
+            <Button isIconOnly as={NextLink} href='/'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Tư vấn thiết kế</h2>
@@ -179,7 +181,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
                 <div className='flex flex-row gap-4 mb-8 max-xs:mb-4 max-xs:flex-wrap'>
                   <Input
                     {...register('customer.lastName')}
-                    defaultValue={me?.lastName}
+                    defaultValue={customer?.lastName}
                     isInvalid={errors.customer?.lastName ? true : false}
                     color={isSubmitting ? (errors.customer?.lastName ? 'danger' : 'success') : 'default'}
                     errorMessage={errors.customer?.lastName?.message}
@@ -190,7 +192,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
                     isRequired
                   />
                   <Input
-                    defaultValue={me?.firstName}
+                    defaultValue={customer?.firstName}
                     {...register('customer.firstName')}
                     isInvalid={errors.customer?.firstName ? true : false}
                     color={isSubmitting ? (errors.customer?.firstName ? 'danger' : 'success') : 'default'}
@@ -204,7 +206,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
                 </div>
                 <div className='flex flex-row gap-4 mb-8 max-xs:flex-wrap'>
                   <Input
-                    defaultValue={me?.email}
+                    defaultValue={customer?.email}
                     {...register('customer.email')}
                     isInvalid={errors.customer?.email ? true : false}
                     color={isSubmitting ? (errors.customer?.email ? 'danger' : 'success') : 'default'}
@@ -216,7 +218,7 @@ const BookingConsultant = ({ categories, me, consultants }: BookingConsultantPro
                     isRequired
                   />
                   <Input
-                    defaultValue={me?.phone}
+                    defaultValue={customer?.phone}
                     // value={phone}
                     {...register('customer.phone')}
                     isInvalid={errors.customer?.phone ? true : false}

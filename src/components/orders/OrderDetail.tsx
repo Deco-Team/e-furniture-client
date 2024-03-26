@@ -7,7 +7,7 @@ import { IOrderDetail, IOrderStatusHistory } from '@app/(customer)/order/order.i
 import OrderTracking from './OrderTracking'
 import { Button, Card, CardHeader, Divider } from '@nextui-org/react'
 import { FaArrowLeft } from 'react-icons/fa'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 interface OrderProps {
   order: IOrderDetail
@@ -20,7 +20,7 @@ const OrderDetail = ({ order, orderStatus }: OrderProps) => {
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-4 md:mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/customer/orders'>
+            <Button isIconOnly as={NextLink} href='/customer/orders'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Thông tin đơn hàng</h2>

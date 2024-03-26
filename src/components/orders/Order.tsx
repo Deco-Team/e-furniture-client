@@ -15,43 +15,45 @@ import {
 } from '@nextui-org/react'
 import { cloneDeep } from 'lodash'
 import jsonData from '@utils/dvhcvn.json'
-import Link from 'next/link'
-import React, { Key } from 'react'
+import NextLink from 'next/link'
+import React, { Key, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { ICart } from '@app/(customer)/cart/cart.interface'
-import { ICustomer } from '@src/interface/customer.interface'
 import { IDistrict, IOrder, IWard } from '@app/(customer)/order/order.interface'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createOrder } from '@actions/order/order.actions'
 import { notifyError, notifyLoading, notifySuccess } from '@utils/toastify'
+import { useAuth } from '@src/hooks/useAuth'
+import { CustomerDto } from '@data/customer/customer.dto'
 
-interface OrderProps {
+interface OrderDisplayProps {
   cart: ICart
-  me: ICustomer
+  customer: CustomerDto
 }
 
-const Order = ({ cart, me }: OrderProps) => {
-  const loadData = cloneDeep(jsonData)
+const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
   const router = useRouter()
 
-  const [province, setProvince] = React.useState('')
-  const [district, setDistrict] = React.useState('')
-  const [ward, setWard] = React.useState('')
+  const loadData = cloneDeep(jsonData)
 
-  const [districtList, setDistrictList] = React.useState<IDistrict[]>([])
-  const [wardList, setWardList] = React.useState<IWard[]>([])
+  const [province, setProvince] = useState('')
+  const [district, setDistrict] = useState('')
+  const [ward, setWard] = useState('')
 
-  const [address, setAddress] = React.useState('')
+  const [districtList, setDistrictList] = useState<IDistrict[]>([])
+  const [wardList, setWardList] = useState<IWard[]>([])
+
+  const [address, setAddress] = useState('')
 
   const initialOrderValues = {
     customer: {
-      firstName: me.firstName ?? '',
-      lastName: me.lastName ?? '',
-      email: me.email ?? '',
-      phone: me.phone ?? '',
+      firstName: customer.firstName ?? '',
+      lastName: customer.lastName ?? '',
+      email: customer.email ?? '',
+      phone: customer.phone ?? '',
       address: address ?? '',
       province,
       district,
@@ -182,7 +184,7 @@ const Order = ({ cart, me }: OrderProps) => {
       <div className='max-w-screen-lg p-4 w-full'>
         <Card className='bg-gray-200 mb-8 md:p-6'>
           <CardHeader className='flex gap-4 p-6'>
-            <Button isIconOnly as={Link} href='/cart'>
+            <Button isIconOnly as={NextLink} href='/cart'>
               <FaArrowLeft />
             </Button>
             <h2 className='font-bold text-2xl md:text-4xl'>Thanh toán</h2>
@@ -196,7 +198,7 @@ const Order = ({ cart, me }: OrderProps) => {
                 <div className='flex flex-row gap-4 mb-8 max-xs:flex-wrap'>
                   <Input
                     variant='underlined'
-                    defaultValue={me.lastName}
+                    defaultValue={customer.lastName}
                     {...register('customer.lastName')}
                     isInvalid={errors.customer?.lastName ? true : false}
                     color={isSubmitted ? (errors.customer?.lastName ? 'danger' : 'success') : 'default'}
@@ -208,7 +210,7 @@ const Order = ({ cart, me }: OrderProps) => {
                   />
                   <Input
                     variant='underlined'
-                    defaultValue={me.firstName}
+                    defaultValue={customer.firstName}
                     {...register('customer.firstName')}
                     isInvalid={errors.customer?.firstName ? true : false}
                     color={isSubmitted ? (errors.customer?.firstName ? 'danger' : 'success') : 'default'}
@@ -222,21 +224,21 @@ const Order = ({ cart, me }: OrderProps) => {
                 <div className='flex flex-row gap-4 my-8 max-xs:flex-wrap'>
                   <Input
                     variant='underlined'
-                    defaultValue={me.email}
+                    defaultValue={customer.email}
                     {...register('customer.email')}
                     isReadOnly
                     disabled
                     isInvalid={errors.customer?.email ? true : false}
                     color={isSubmitted ? (errors.customer?.email ? 'danger' : 'success') : 'default'}
                     errorMessage={errors.customer?.email?.message}
-                    className='max-xs:w-full w-2/3 '
+                    className='max-xs:w-full w-2/3'
                     label='Email'
                     type='email'
                     isRequired
                   />
                   <Input
                     variant='underlined'
-                    defaultValue={me.phone}
+                    defaultValue={customer.phone}
                     // value={phone}
                     {...register('customer.phone')}
                     isInvalid={errors.customer?.phone ? true : false}
@@ -249,10 +251,10 @@ const Order = ({ cart, me }: OrderProps) => {
                   />
                 </div>
 
-                {me.address ? (
+                {customer.address ? (
                   <Autocomplete
                     allowsCustomValue
-                    defaultItems={me.address}
+                    defaultItems={customer.address}
                     variant='underlined'
                     allowsEmptyCollection={false}
                     onSelectionChange={handleChangeAddress}
@@ -266,7 +268,7 @@ const Order = ({ cart, me }: OrderProps) => {
                     {...register('customer.address')}
                     isRequired
                   >
-                    {me.address.map((value) => (
+                    {customer.address.map((value) => (
                       <AutocompleteItem key={value} value={value}>
                         {value}
                       </AutocompleteItem>
@@ -412,6 +414,18 @@ const Order = ({ cart, me }: OrderProps) => {
       </div>
     </main>
   )
+}
+
+interface OrderProps {
+  cart: ICart | null
+}
+
+const Order = ({ cart }: OrderProps) => {
+  const {
+    state: { customer }
+  } = useAuth()
+
+  return cart && customer ? <OrderDisplay cart={cart} customer={customer} /> : null
 }
 
 export default Order

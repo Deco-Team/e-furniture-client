@@ -2,7 +2,7 @@
 
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { IProduct } from '@global/interface'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 interface ProductCardProps {
   product: IProduct
@@ -23,7 +23,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     <Card
       shadow='sm'
       isBlurred
-      as={Link}
+      as={NextLink}
       href={`/products/${product.slug}`}
       isPressable
       className='w-full bg-gray-100 cursor-pointer'
