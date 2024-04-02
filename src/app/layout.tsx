@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@app/globals.css'
@@ -8,8 +9,9 @@ import NavigationBar from '@components/navbar/NavigationBar'
 import AuthProvider from '@src/contexts/AuthContext'
 
 export const metadata: Metadata = {
-  title: 'eFurniture',
-  description: 'App providing furniture for your home'
+  metadataBase: new URL('https://www.furnique.tech'),
+  title: 'Furnique - Elegant Home & Office Furniture | Shop Online',
+  description: `Discover Furnique's premium range of home and office furniture. Explore our stylish sofas, ergonomic chairs, decorative items, and more. Exceptional quality at great prices.`
 }
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,6 +41,7 @@ export default function RootLayout({
           </ThemeProvider>
         </AuthProvider>
         <Toastify />
+        <Analytics />
       </body>
     </html>
   )

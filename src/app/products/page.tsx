@@ -23,6 +23,8 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import ProductList from '@components/productList/ProductList'
 
+export const revalidate = 5
+
 const ProductsPage = () => {
   const [products, setProducts] = React.useState<IPagination<IProductResponse>>()
   const [categories, setCategories] = React.useState<ICategory[]>([])
