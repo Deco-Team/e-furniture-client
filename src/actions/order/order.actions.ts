@@ -12,15 +12,17 @@ export const createOrder = async (data: IOrder) => {
   const cookieStore = cookies()
   try {
     const response = await callAuthApi<{
-      partnerCode: string
-      requestId: string
-      orderId: string
+      bin: string
+      accountNumber: string
+      accountName: string
       amount: number
-      responseTime: number
-      message: string
-      resultCode: number
-      payUrl: string
-      shortLink: string
+      description: string
+      orderCode: number
+      currency: string
+      paymentLinkId: string
+      status: string
+      checkoutUrl: string
+      qrCode: string
     }>({ method: 'post', endpoint, body: data }, cookieStore)
     return response.data
   } catch (error) {

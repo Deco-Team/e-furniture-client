@@ -147,7 +147,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
     const result = await createOrder(data)
     if (result) {
       notifySuccess('Đặt hàng thành công')
-      router.replace(result.payUrl)
+      router.replace(result.checkoutUrl)
     } else {
       notifyError('Đặt hàng thất bại')
     }
@@ -357,8 +357,20 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
                   {...register('notes')}
                 />
                 <h3 className='font-semibold text-xl md:text-2xl mb-4'>Phương thức thanh toán</h3>
-                <RadioGroup aria-label='Chọn phươn thức thanh toán' defaultValue='momo' className='' isReadOnly>
-                  <Radio value='momo'>
+                <RadioGroup aria-label='Chọn phươn thức thanh toán' defaultValue='payos' orientation='horizontal'>
+                  <Radio value='payos'>
+                    <div className='flex items-center mr-4'>
+                      <Image
+                        removeWrapper
+                        src='/payos.png'
+                        alt='payos icon'
+                        height={80}
+                        width={90}
+                        className='mr-3 rounded-none'
+                      ></Image>
+                    </div>
+                  </Radio>
+                  <Radio value='momo' isDisabled>
                     <div className='flex items-center'>
                       <Image removeWrapper src='/momo.png' alt='momo icon' height={60} width={60}></Image>
                       Momo
