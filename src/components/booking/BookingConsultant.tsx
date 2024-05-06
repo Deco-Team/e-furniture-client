@@ -154,7 +154,7 @@ const BookingConsultant = ({ categories, consultants }: BookingConsultantProps) 
     setTime(value)
   }
 
-  const handleChangeConsultant = (key: Key) => {
+  const handleChangeConsultant = (key: Key | null) => {
     setConsultantId(key as string)
   }
 

@@ -101,7 +101,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
     criteriaMode: 'all'
   })
 
-  const handleChangeProvince = (provinceId: Key) => {
+  const handleChangeProvince = (provinceId: Key | null) => {
     isSubmitted && !provinceId
       ? (setError('customer.province', { type: 'required', message: 'Tỉnh/Thành phố không được để trống' }),
         setError('customer.district', { type: 'required', message: 'Quận/Huyện không được để trống' }),
@@ -116,7 +116,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
     setWard('')
   }
 
-  const handleChangeDistrict = (districtId: Key) => {
+  const handleChangeDistrict = (districtId: Key | null) => {
     isSubmitted && !districtId
       ? (setError('customer.district', { type: 'required', message: 'Quận/Huyện không được để trống' }),
         setError('customer.ward', { type: 'required', message: 'Phường/Xã không được để trống' }))
@@ -128,7 +128,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
     setWard('')
   }
 
-  const handleChangeWard = (wardId: Key) => {
+  const handleChangeWard = (wardId: Key | null) => {
     isSubmitted && wardId === null
       ? setError('customer.ward', { type: 'required', message: 'Phường/Xã không được để trống' })
       : clearErrors('customer.ward')
@@ -136,7 +136,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
     setWard(selectedWard?.name ?? '')
   }
 
-  const handleChangeAddress = (address: Key) => {
+  const handleChangeAddress = (address: Key | null) => {
     isSubmitted && (address === null || address === '')
       ? setError('customer.address', { type: 'required', message: 'Địa chỉ không được để trống' })
       : clearErrors('customer.address')
