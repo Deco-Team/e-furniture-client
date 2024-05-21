@@ -28,14 +28,14 @@ const LoadingProductDetail = () => {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <Skeleton className='w-1/4 rounded-lg mb-1'>
                 <div className='h-6 w-1/4 rounded-lg'></div>
               </Skeleton>
               <Skeleton className='w-1/4 rounded-lg mb-1'>
                 <div className='h-12 w-1/4 rounded-lg'></div>
               </Skeleton>
-            </div>
+            </div> */}
 
             <div>
               <Skeleton className='w-1/4 rounded-lg mb-1'>
