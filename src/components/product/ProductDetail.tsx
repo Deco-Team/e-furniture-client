@@ -1,14 +1,17 @@
 'use client'
 
-import { Button, Card, CardBody, Image, Input, Tab, Tabs, Tooltip } from '@nextui-org/react'
+import { Button, Card, CardBody, Image, Input, Tab, Tabs, Tooltip, useDisclosure } from '@nextui-org/react'
 import React from 'react'
 import { FaArrowLeft, FaCartPlus, FaMinus, FaPlus } from 'react-icons/fa'
+import { MdViewInAr } from 'react-icons/md'
+import { PiCube } from 'react-icons/pi'
 import { IProduct, IVariant } from '@global/interface'
 import ProductSlide from './ProductSlide'
 import { useRouter } from 'next/navigation'
 import { addCartItem, getCart } from '@actions/cart/cart.actions'
 import { notifyError, notifySuccess } from '@utils/toastify'
 import { ICart } from '@app/(customer)/cart/cart.interface'
+import ARModal from './ARModal'
 
 interface ProductDetailProps {
   product: IProduct
@@ -47,6 +50,8 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
         }
       : product.variants[0]
   )
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const [selectedImage, setSelectedImage] = React.useState(product.images[0])
   const [selectedQuantity, setSelectedQuantity] = React.useState('1')
@@ -156,23 +161,46 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
   return (
     <div className='max-w-screen-lg p-4 w-full'>
       <div className='flex flex-col sm:grid sm:grid-cols-5 gap-4'>
-        <div className='sm:col-span-2 relative'>
-          <Button
-            isIconOnly
-            className='absolute z-20 top-6 left-6 bg-black/30 backdrop-blur-sm text-white h-12 w-12 text-lg'
-            onClick={() => router.back()}
-          >
-            <FaArrowLeft />
-          </Button>
-          <Image
-            isBlurred
-            removeWrapper
-            shadow='sm'
-            width='100%'
-            alt={product.name}
-            className='w-full object-cover aspect-square col-span-2 mb-2'
-            src={selectedImage}
-          />
+        <div className='sm:col-span-2'>
+          <div className='relative'>
+            <Button
+              isIconOnly
+              className='absolute z-20 top-6 left-6 bg-black/30 backdrop-blur-sm text-white h-12 w-12 text-lg'
+              onClick={() => router.back()}
+            >
+              <FaArrowLeft />
+            </Button>
+            <Image
+              isBlurred
+              removeWrapper
+              shadow='sm'
+              width='100%'
+              alt={product.name}
+              className='w-full object-cover aspect-square col-span-2 mb-2'
+              src={selectedImage}
+            />
+            {product.modelUrl && (
+              <>
+                <Button
+                  startContent={<MdViewInAr className='text-2xl' />}
+                  className='absolute z-20 bottom-6 right-6 bg-black/0 backdrop-blur-md text-white h-10 w-36 text-lg max-sm:hidden'
+                  onClick={onOpen}
+                >
+                  Xem 3D
+                </Button>
+                <ARModal
+                  isOpen={isOpen}
+                  onOpenChange={onOpenChange}
+                  src={product.modelUrl}
+                  arPlacement={product.arPlacement}
+                  productName={product.name}
+                  categoryName={product.categories.map((category) => category.name).join(', ')}
+                  dimensions={`${activeVariant.dimensions.length} x ${activeVariant.dimensions.width} x ${activeVariant.dimensions.height}`}
+                  price={priceDefault}
+                />
+              </>
+            )}
+          </div>
           <ProductSlide images={product.images} setSelectedImage={setSelectedImage} />
         </div>
         <div className='sm:col-span-3 flex flex-col gap-4'>
@@ -186,6 +214,27 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
             </div>
             {/* <Rating ratingInPercent={product.rate * 20} iconSize='l' showOutOf={true} enableUserInteraction={false} /> */}
           </div>
+
+          {product.modelUrl && (
+            <div className='flex flex-row justify-evenly items-center gap-8 sm:hidden'>
+              <Button
+                radius='sm'
+                className='w-1/2 font-semibold h-12 text-base bg-gray-200'
+                startContent={<MdViewInAr className='text-2xl mr-1' />}
+                onClick={onOpen}
+              >
+                Xem 3D
+              </Button>
+              <Button
+                radius='sm'
+                className='w-1/2 font-semibold h-12 text-base bg-gray-200'
+                startContent={<PiCube className='text-2xl mr-1' />}
+                onClick={() => console.log('open')}
+              >
+                Chế độ AR
+              </Button>
+            </div>
+          )}
 
           {hasKeyvalue && (
             <div>
@@ -220,6 +269,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                   radius='sm'
                   variant='solid'
                   onClick={() => handleQuantity((Number(selectedQuantity) - 1).toString())}
+                  className='bg-gray-200'
                 >
                   <FaMinus />
                 </Button>
@@ -253,6 +303,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                   radius='sm'
                   variant='solid'
                   onClick={() => handleQuantity((Number(selectedQuantity) + 1).toString())}
+                  className='bg-gray-200'
                 >
                   <FaPlus />
                 </Button>

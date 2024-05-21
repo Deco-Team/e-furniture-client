@@ -33,6 +33,8 @@ export interface IProduct {
   variants: IVariant[]
   categories: ICategory[]
   slug: string
+  modelUrl?: string
+  arPlacement?: 'floor' | 'wall'
 }
 
 export interface IProductResponse {
