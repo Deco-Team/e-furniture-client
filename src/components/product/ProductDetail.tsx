@@ -195,7 +195,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                   arPlacement={product.arPlacement}
                   productName={product.name}
                   categoryName={product.categories.map((category) => category.name).join(', ')}
-                  dimensions={`${activeVariant.dimensions.length} x ${activeVariant.dimensions.width} x ${activeVariant.dimensions.height}`}
+                  dimensions={`${product.variants[0].dimensions.length} x ${product.variants[0].dimensions.width} x ${product.variants[0].dimensions.height}`}
                   price={priceDefault}
                 />
               </>
