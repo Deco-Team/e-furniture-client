@@ -3,6 +3,7 @@
 import { get, patch, post, put, remove } from '@utils/apiCaller'
 import { cache } from 'react'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import { AxiosError } from 'axios'
 
 export interface IApiOptions {
   method: 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -14,29 +15,49 @@ export interface IApiOptions {
 
 export const callApi = cache(
   async <T>({ method, endpoint, headers = {}, params = {}, body = {} }: IApiOptions): Promise<{ data: T }> => {
-    let response
-    switch (method) {
-      case 'post': {
-        response = await post(endpoint, body, params, headers)
-        break
+    try {
+      let response
+      switch (method) {
+        case 'post': {
+          response = await post(endpoint, body, params, headers)
+          break
+        }
+        case 'put': {
+          response = await put(endpoint, body, params, headers)
+          break
+        }
+        case 'delete': {
+          response = await remove(endpoint, body, params, headers)
+          break
+        }
+        case 'patch': {
+          response = await patch(endpoint, body, params, headers)
+          break
+        }
+        default: {
+          response = await get(endpoint, params, headers)
+        }
       }
-      case 'put': {
-        response = await put(endpoint, body, params, headers)
-        break
+
+      return response.data
+    } catch (err) {
+      const error = err as AxiosError
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error(error.response.data)
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.error(error.request)
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message)
       }
-      case 'delete': {
-        response = await remove(endpoint, body, params, headers)
-        break
-      }
-      case 'patch': {
-        response = await patch(endpoint, body, params, headers)
-        break
-      }
-      default: {
-        response = await get(endpoint, params, headers)
-      }
+      console.log(error.config)
+      throw error
     }
-    return response.data
   }
 )
 
