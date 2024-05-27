@@ -13,6 +13,8 @@ import { IGoogleLoginActionPayload, ILoginActionPayload } from '@actions/auth/au
 import { useAuth } from '@src/hooks/useAuth'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 import { getCustomer } from '@actions/customers/customer.actions'
+import { getCart } from '@actions/cart/cart.actions'
+import { useCart } from '@src/hooks/useCart'
 
 interface LoginCardProps {
   toggleCard: () => void
@@ -21,6 +23,7 @@ interface LoginCardProps {
 const LoginCard = ({ toggleCard }: LoginCardProps) => {
   const router = useRouter()
   const { customerDispatch } = useAuth()
+  const { setCart } = useCart()
 
   const [isVisibleLogin, setIsVisibleLogin] = useState(false)
   const toggleVisibilityLogin = () => setIsVisibleLogin(!isVisibleLogin)
@@ -54,12 +57,13 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
   const loginSubmit = async (data: ILoginActionPayload) => {
     const result = await login(data)
     if (result) {
-      const customer = await getCustomer()
+      const [customer, cart] = await Promise.all([getCustomer(), getCart()])
       if (!customer) {
         console.log('Login failed')
         setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
       } else {
         customerDispatch({ type: CustomerAuthActionTypes.LOGIN, payload: customer })
+        setCart(cart)
         router.push('/')
         console.log('Login success')
       }
@@ -72,9 +76,10 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
   const loginGoogle = async (data: IGoogleLoginActionPayload) => {
     const result = await loginWithGoogle(data)
     if (result) {
-      const customer = await getCustomer()
+      const [customer, cart] = await Promise.all([getCustomer(), getCart()])
       if (customer) {
         customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
+        setCart(cart)
         router.push('/')
         console.log('Login success')
         return

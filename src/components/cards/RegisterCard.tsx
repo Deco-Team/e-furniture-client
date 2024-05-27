@@ -9,10 +9,12 @@ import './style.css'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { login, loginWithGoogle, registerCustomer } from '@actions/auth/auth.action'
-import { ILoginActionPayload, IRegisterActionPayload } from '@actions/auth/auth.interface'
+import { IGoogleLoginActionPayload, ILoginActionPayload, IRegisterActionPayload } from '@actions/auth/auth.interface'
 import { useAuth } from '@src/hooks/useAuth'
 import { getCustomer } from '@actions/customers/customer.actions'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
+import { useCart } from '@src/hooks/useCart'
+import { getCart } from '@actions/cart/cart.actions'
 
 interface RegisterCardProps {
   toggleCard: () => void
@@ -20,6 +22,7 @@ interface RegisterCardProps {
 
 const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
   const router = useRouter()
+  const { setCart } = useCart()
 
   const [isVisibleSignup, setIsVisibleSignup] = React.useState(false)
   const toggleVisibilitySignup = () => setIsVisibleSignup(!isVisibleSignup)
@@ -80,9 +83,10 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
 
       const loginResult = await login(dataLogin)
       if (loginResult) {
-        const customer = await getCustomer()
+        const [customer, cart] = await Promise.all([getCustomer(), getCart()])
         if (customer) {
           customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
+          setCart(cart)
           router.push('/')
           console.log('Login success')
           return
@@ -97,14 +101,21 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
     }
   }
 
-  const loginGoogle = async (data: any) => {
-    const result = await loginWithGoogle(data.credential)
+  const loginGoogle = async (data: IGoogleLoginActionPayload) => {
+    const result = await loginWithGoogle(data)
     if (result) {
-      router.push('/')
-      console.log('Login success')
-    } else {
-      console.log('Login failed')
+      const [customer, cart] = await Promise.all([getCustomer(), getCart()])
+      if (customer) {
+        customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
+        setCart(cart)
+        router.push('/')
+        console.log('Login success')
+        return
+      }
     }
+
+    console.log('Login failed')
+    setError('password', { type: 'loginFailed', message: 'Lỗi không thể đăng nhập' })
   }
 
   return (
@@ -188,7 +199,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
           <div className='flex justify-center items-center'>
             <GoogleLogin
               onSuccess={(response) => {
-                loginGoogle(response)
+                loginGoogle({ credential: response.credential ?? '' })
               }}
               onError={() => console.log('error')}
               text='signup_with'

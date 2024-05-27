@@ -33,7 +33,7 @@ export async function generateMetadata(
 }
 
 export const generateStaticParams = async () => {
-  const response = await getProductList(1, 100, 'rate.desc_createdAt.desc')
+  const response = await getProductList(1, 100, undefined, 'rate.desc_createdAt.desc')
 
   return response ? response.docs.map((product) => ({ slug: product.slug })) : []
 }
