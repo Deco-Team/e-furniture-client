@@ -19,7 +19,8 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
-  useDisclosure
+  useDisclosure,
+  Badge
 } from '@nextui-org/react'
 import NextLink from 'next/link'
 import { FaChevronDown, FaHome, FaRegEnvelope, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
@@ -29,8 +30,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import { MdSupportAgent } from 'react-icons/md'
 import { useAuth } from '@src/hooks/useAuth'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
+import { useCart } from '@src/hooks/useCart'
 
 const NavigationBar = () => {
+  const { cart, clearCart } = useCart()
   const router = useRouter()
   const {
     state: { customer },
@@ -45,6 +48,7 @@ const NavigationBar = () => {
   const logoutAction = () => {
     logout()
     customerDispatch({ type: CustomerAuthActionTypes.LOGOUT })
+    clearCart()
     router.refresh()
   }
 
@@ -158,57 +162,68 @@ const NavigationBar = () => {
               startContent={<FaSearch className='min-w-5 min-h-5 pointer-events-none' />}
               className='focus-within:max-w-full transition-all !duration-300 !ease-linear hidden sm:flex'
             />
-            <Button
-              as={NextLink}
-              href={customer ? '/cart' : '/login-register'}
-              size='lg'
-              isIconOnly
-              variant='light'
-              radius='full'
-              className={`hidden sm:flex ${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
-            >
-              <FaShoppingCart className='min-w-5 min-h-5' />
-            </Button>
+
             {customer ? (
-              <Dropdown placement='bottom-end'>
-                <DropdownTrigger>
-                  <Button
-                    size='lg'
-                    isIconOnly
-                    variant='light'
-                    radius='full'
-                    className={`${activePathname.includes('customer') ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+              <>
+                <Button
+                  as={NextLink}
+                  href={'/cart'}
+                  size='lg'
+                  isIconOnly
+                  variant='light'
+                  radius='full'
+                  className={`${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                >
+                  <Badge
+                    content={cart?.items.length}
+                    size='sm'
+                    isOneChar={true}
+                    className={`${activePathname === '/cart' ? 'bg-[var(--primary-orange-text-color)] text-white outline-black' : 'bg-black text-white'}`}
                   >
-                    <FaUser className='min-w-5 min-h-5' />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label='Profile Actions' variant='flat'>
-                  <DropdownItem as={NextLink} href='/customer' key='profile' className='text-black'>
-                    Tài khoản của tôi
-                  </DropdownItem>
-                  <DropdownItem
-                    as={NextLink}
-                    className='text-black hover:!text-[var(--primary-orange-text-color)]'
-                    key='orders'
-                    color='warning'
-                    href='/customer/orders'
-                  >
-                    Lịch sử đơn hàng
-                  </DropdownItem>
-                  <DropdownItem
-                    as={NextLink}
-                    className='text-black hover:!text-[var(--primary-orange-text-color)]'
-                    key='orders'
-                    color='warning'
-                    href='/customer/bookings/consultants'
-                  >
-                    Lịch sử tư vấn
-                  </DropdownItem>
-                  <DropdownItem key='logout' color='danger' onClick={logoutAction}>
-                    Đăng xuất
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                    <FaShoppingCart className='min-w-6 min-h-5 mr-[2px]' />
+                  </Badge>
+                </Button>
+
+                <Dropdown placement='bottom-end'>
+                  <DropdownTrigger>
+                    <Button
+                      size='lg'
+                      isIconOnly
+                      variant='light'
+                      radius='full'
+                      className={`${activePathname.includes('customer') ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                    >
+                      <FaUser className='min-w-5 min-h-5' />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                    <DropdownItem as={NextLink} href='/customer' key='profile' className='text-black'>
+                      Tài khoản của tôi
+                    </DropdownItem>
+                    <DropdownItem
+                      as={NextLink}
+                      className='text-black hover:!text-[var(--primary-orange-text-color)]'
+                      key='orders'
+                      color='warning'
+                      href='/customer/orders'
+                    >
+                      Lịch sử đơn hàng
+                    </DropdownItem>
+                    <DropdownItem
+                      as={NextLink}
+                      className='text-black hover:!text-[var(--primary-orange-text-color)]'
+                      key='consultant'
+                      color='warning'
+                      href='/customer/bookings/consultants'
+                    >
+                      Lịch sử tư vấn
+                    </DropdownItem>
+                    <DropdownItem key='logout' color='danger' onClick={logoutAction}>
+                      Đăng xuất
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </>
             ) : (
               <>
                 <Button

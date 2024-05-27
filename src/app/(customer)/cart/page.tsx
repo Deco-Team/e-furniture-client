@@ -6,12 +6,15 @@ import CartItemCard from '@components/cards/CartItemCard'
 import { ICart } from './cart.interface'
 import { getCart } from '@actions/cart/cart.actions'
 import NextLink from 'next/link'
+import { useCart } from '@src/hooks/useCart'
 
 const CartPage = () => {
-  const [cart, setCart] = useState<ICart | null>(null)
+  const { setCart } = useCart()
+  const [cartItems, setCartItems] = useState<ICart | null>(null)
   const [loading, setLoading] = useState(true)
   const getData = async () => {
     const cart = await getCart()
+    setCartItems(cart)
     setCart(cart)
     setLoading(false)
   }
@@ -34,7 +37,7 @@ const CartPage = () => {
         </Card>
         <div className='flex flex-col md:grid md:grid-cols-3'>
           <div className='flex-grow justify-center items-center md:col-span-2'>
-            {!cart?.items ? (
+            {!cartItems?.items ? (
               <>
                 {[...Array(3)].map((_, index) => (
                   <div key={index} className='px-4 my-4 w-full flex items-center gap-3'>
@@ -53,8 +56,8 @@ const CartPage = () => {
                 ))}
               </>
             ) : null}
-            {cart?.items.length !== 0 ? (
-              cart?.items.map((value) => {
+            {cartItems?.items.length !== 0 ? (
+              cartItems?.items.map((value) => {
                 return (
                   <CartItemCard
                     onUpdate={() => getData()}
@@ -92,7 +95,7 @@ const CartPage = () => {
               <div className='mb-4 flex justify-between'>
                 <p className='text-gray-500 text-base'>Sản phẩm</p>
                 <p className='text-gray-500 text-base'>
-                  {Intl.NumberFormat('en-DE').format(cart?.totalAmount ?? 0)} &#8363;
+                  {Intl.NumberFormat('en-DE').format(cartItems?.totalAmount ?? 0)} &#8363;
                 </p>
               </div>
               <div className='mb-4 flex justify-between'>
@@ -103,14 +106,17 @@ const CartPage = () => {
                 <p className='text-base font-semibold'>Tổng cộng</p>
                 <p className='text-xl font-semibold'>
                   {' '}
-                  {Intl.NumberFormat('en-DE').format((cart?.totalAmount && Number(cart?.totalAmount)) ?? 0)} &#8363;
+                  {Intl.NumberFormat('en-DE').format(
+                    (cartItems?.totalAmount && Number(cartItems?.totalAmount)) ?? 0
+                  )}{' '}
+                  &#8363;
                 </p>
               </div>
               <Button
                 as={NextLink}
                 radius='sm'
                 href='/order'
-                isDisabled={loading || cart?.items.length === 0}
+                isDisabled={loading || cartItems?.items.length === 0}
                 className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold'
                 size='lg'
               >
