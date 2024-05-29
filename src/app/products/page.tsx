@@ -34,12 +34,12 @@ const ProductsPage = () => {
   const [products, setProducts] = React.useState<IPagination<IProductResponse>>()
   const [categories, setCategories] = React.useState<ICategory[]>([])
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [filterOpen, setFilterOpen] = React.useState(category && true)
-  const [filterPrice, setFilterPrice] = React.useState<SliderValue>([0, 20000000])
+  const [filterOpen, setFilterOpen] = React.useState(!!category)
+  const [filterPrice, setFilterPrice] = React.useState<SliderValue>([0, 5000000])
   const [sort, setSort] = React.useState<Selection>(new Set(['createdAt.desc']))
   const [selectedCategories, setSelectedCategories] = React.useState<Selection>(new Set(category ? [category] : []))
   const [isLoading, setIsLoading] = React.useState(false)
-  const [onChangeFilterPrice, setOnChangeFilterPrice] = React.useState<SliderValue>([0, 20000000])
+  const [onChangeFilterPrice, setOnChangeFilterPrice] = React.useState<SliderValue>([0, 5000000])
 
   const getData = async () => {
     setIsLoading(true)
@@ -67,8 +67,8 @@ const ProductsPage = () => {
   ]
 
   const handleReset = () => {
-    if (Object.values(onChangeFilterPrice).toString() !== '0,20000000') setOnChangeFilterPrice([0, 20000000])
-    if (Object.values(filterPrice).toString() !== '0,20000000') setFilterPrice([0, 20000000])
+    if (Object.values(onChangeFilterPrice).toString() !== '0,5000000') setOnChangeFilterPrice([0, 5000000])
+    if (Object.values(filterPrice).toString() !== '0,5000000') setFilterPrice([0, 5000000])
     if (Array.from(selectedCategories).length > 0) setSelectedCategories(new Set([]))
   }
 
@@ -128,8 +128,8 @@ const ProductsPage = () => {
               color='foreground'
               showTooltip
               minValue={0}
-              maxValue={20000000}
-              defaultValue={[0, 20000000]}
+              maxValue={5000000}
+              defaultValue={[0, 5000000]}
               value={onChangeFilterPrice}
               onChange={setOnChangeFilterPrice}
               onChangeEnd={setFilterPrice}
