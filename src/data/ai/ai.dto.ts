@@ -7,6 +7,7 @@ export type TaskModel = {
     model: string
     rendered_image: string
   }
+  running_left_time: number
   progress: number
   create_time: string
 }
