@@ -339,7 +339,13 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
               <Tab title={'Mô tả'}>
                 <Card shadow='sm'>
                   <CardBody className='p-4 sm:p-6'>
-                    <p>{product.description}</p>
+                    {product.description
+                      ?.split('\n')
+                      .map((paragraph, index) => (
+                        <React.Fragment key={index}>
+                          {paragraph.trim() === '' ? <br /> : <p>{paragraph}</p>}
+                        </React.Fragment>
+                      ))}
                   </CardBody>
                 </Card>
               </Tab>
