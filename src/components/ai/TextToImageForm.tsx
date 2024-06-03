@@ -10,43 +10,43 @@ import React, { useEffect, useState } from 'react'
 import { MdViewInAr } from 'react-icons/md'
 
 const TextToImageForm = () => {
-  const [btn2D, setBtn2D] = useState<
-    'danger' | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | undefined
-  >('primary')
-  const [btn3D, setBtn3D] = useState<
-    'danger' | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | undefined
-  >('default')
+  const [btn2D, setBtn2D] = useState<'solid' | 'bordered' | 'light' | 'flat' | 'faded' | 'shadow' | 'ghost'>('solid')
+  const [btn3D, setBtn3D] = useState<'solid' | 'bordered' | 'light' | 'flat' | 'faded' | 'shadow' | 'ghost'>('light')
   const [apiState, setApiState] = useState<'2D' | '3D'>('2D')
   const [input, setInput] = useState('')
   const [saveInput, setSaveInput] = useState('')
   const [output, setOutput] = useState<any>()
   const [isLoading, setisLoading] = useState(false)
+  const [errorInput, setErrorInput] = useState(false)
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const getRender = async () => {
-    notifyLoading()
-    setisLoading(true)
-    setSaveInput(input)
-    if (apiState === '2D') {
-      const response = await createTextToImage({ text: input })
-      setOutput(response?.data.imageUrl)
-      notifySuccess('Đã tạo ảnh thành công')
-      setisLoading(false)
+    if (input.length <= 10) {
+      setErrorInput(true)
     } else {
-      const response = await createTextToModelTask({ prompt: input })
-      if (response?.task_id) {
-        const result = await getTextToModelTask(response?.task_id)
-        const intervalId = setInterval(async () => {
+      setisLoading(true)
+      setSaveInput(input)
+      if (apiState === '2D') {
+        const response = await createTextToImage({ text: input })
+        setOutput(response?.data.imageUrl)
+        notifySuccess('Đã tạo ảnh thành công')
+        setisLoading(false)
+      } else {
+        const response = await createTextToModelTask({ prompt: input })
+        if (response?.task_id) {
           const result = await getTextToModelTask(response?.task_id)
-          if (result?.progress === 100) {
-            setOutput(result)
-            notifySuccess('Đã tạo ảnh thành công')
-            setisLoading(false)
-            setInput('')
-            clearInterval(intervalId)
-          }
-        }, 3000)
+          const intervalId = setInterval(async () => {
+            const result = await getTextToModelTask(response?.task_id)
+            if (result?.progress === 100) {
+              setOutput(result)
+              notifySuccess('Đã tạo ảnh thành công')
+              setisLoading(false)
+              setInput('')
+              clearInterval(intervalId)
+            }
+          }, 3000)
+        }
       }
     }
   }
@@ -60,24 +60,30 @@ const TextToImageForm = () => {
       {/* Start Dimension Options */}
       <div className='flex items-center justify-between mb-5'>
         <p>Không gian</p>
-        <ButtonGroup isDisabled={isLoading}>
+        <ButtonGroup size='sm' isDisabled={isLoading} className='border-1.5 border-black rounded-lg'>
           <Button
-            color={btn2D}
+            radius='sm'
+            variant={btn2D}
             onPress={() => {
-              setBtn2D('primary')
-              setBtn3D('default')
+              setBtn2D('solid')
+              setBtn3D('light')
               setApiState('2D')
+              setOutput(undefined)
             }}
+            className={`font-semibold min-w-14 ${apiState === '2D' && 'bg-[var(--primary-orange-text-color)] text-white'}`}
           >
             2D
           </Button>
           <Button
-            color={btn3D}
+            radius='sm'
+            variant={btn3D}
             onPress={() => {
-              setBtn2D('default')
-              setBtn3D('primary')
+              setBtn2D('light')
+              setBtn3D('solid')
               setApiState('3D')
+              setOutput(undefined)
             }}
+            className={`font-semibold min-w-14 ${apiState === '3D' && 'bg-[var(--primary-orange-text-color)] text-white'}`}
           >
             3D
           </Button>
@@ -87,12 +93,20 @@ const TextToImageForm = () => {
       {/* Start Prompt Input */}
       <div className='mb-5'>
         <Textarea
+          minRows={5}
           value={input}
-          onValueChange={setInput}
+          onValueChange={(value: string) => {
+            setErrorInput(false)
+            if (value.length <= 100) {
+              setInput(value)
+            }
+          }}
           label='Mô tả'
           placeholder='Nhập mô tả đồ nội thất bạn mong muốn'
           variant='bordered'
           isRequired
+          description={input.length + '/100'}
+          errorMessage={errorInput && 'Vui lòng nhập nhiều hơn 10 ký tự'}
         />
       </div>
       {/* End Prompt Input */}
@@ -102,6 +116,7 @@ const TextToImageForm = () => {
         size='lg'
         onClick={getRender}
         isDisabled={!input || isLoading}
+        isLoading={isLoading}
       >
         Tạo
       </Button>
