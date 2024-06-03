@@ -12,6 +12,7 @@ import { addCartItem, getCart } from '@actions/cart/cart.actions'
 import { notifyError, notifySuccess } from '@utils/toastify'
 import { ICart } from '@app/(customer)/cart/cart.interface'
 import ARModal from './ARModal'
+import { useCart } from '@src/hooks/useCart'
 
 interface ProductDetailProps {
   product: IProduct
@@ -20,7 +21,7 @@ interface ProductDetailProps {
 
 const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
   const router = useRouter()
-
+  const { setCart } = useCart()
   // Show max-min price if there are multiple variants
   const { min, max } = product.variants.reduce(
     (acc, curr) => {
@@ -57,11 +58,12 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
   const [selectedQuantity, setSelectedQuantity] = React.useState('1')
   const [variantError, setVariantError] = React.useState(false)
   const [quantityEror, setQuantityError] = React.useState(false)
-  const [cart, setCart] = React.useState<ICart | null>(null)
+  const [cartItems, setCartItems] = React.useState<ICart | null>(null)
 
   const getData = async () => {
-    const cart = await getCart()
-    setCart(cart)
+    const cartItems = await getCart()
+    setCartItems(cartItems)
+    setCart(cartItems)
   }
 
   React.useEffect(() => {
@@ -93,7 +95,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
   // Handlers selected quantity
   const handleQuantity = (value: string) => {
     const quantity = Number(value)
-    const cartQuantity = cart?.items.find((item) => item.sku === activeVariant.sku)?.quantity ?? 0
+    const cartQuantity = cartItems?.items.find((item) => item.sku === activeVariant.sku)?.quantity ?? 0
     if (activeVariant.sku) {
       if (quantity < 1) {
         setSelectedQuantity('1')
@@ -114,7 +116,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
 
   const handleInputQuantity = (value: string) => {
     const quantityPattern = /^([1-9][0-9]*)?$/
-    const cartQuantity = cart?.items.find((item) => item.productId === product._id)?.quantity ?? 0
+    const cartQuantity = cartItems?.items.find((item) => item.productId === product._id)?.quantity ?? 0
     if (quantityPattern.test(value)) {
       if (activeVariant.sku) {
         if (Number(value) > activeVariant.quantity - cartQuantity) {
@@ -147,8 +149,8 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
       sku: activeVariant.sku,
       quantity: Number(selectedQuantity)
     })
-    console.log(result)
     if (result) {
+      await getData()
       notifySuccess('Thêm vào giỏ hàng thành công')
       setSelectedQuantity('1')
       setVariantError(false)
@@ -195,7 +197,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                   arPlacement={product.arPlacement}
                   productName={product.name}
                   categoryName={product.categories.map((category) => category.name).join(', ')}
-                  dimensions={`${activeVariant.dimensions.length} x ${activeVariant.dimensions.width} x ${activeVariant.dimensions.height}`}
+                  dimensions={`${product.variants[0].dimensions.length} x ${product.variants[0].dimensions.width} x ${product.variants[0].dimensions.height}`}
                   price={priceDefault}
                 />
               </>
@@ -337,7 +339,13 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
               <Tab title={'Mô tả'}>
                 <Card shadow='sm'>
                   <CardBody className='p-4 sm:p-6'>
-                    <p>{product.description}</p>
+                    {product.description
+                      ?.split('\n')
+                      .map((paragraph, index) => (
+                        <React.Fragment key={index}>
+                          {paragraph.trim() === '' ? <br /> : <p>{paragraph}</p>}
+                        </React.Fragment>
+                      ))}
                   </CardBody>
                 </Card>
               </Tab>

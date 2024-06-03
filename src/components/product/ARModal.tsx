@@ -73,10 +73,10 @@ const ARModal = (props: ARModalProps) => {
                 </PopoverContent>
               </Popover>
             </model-viewer>
-            <div className='absolute p-2 rounded-large top-4 left-4 sm:top-6 sm:left-6 pointer-events-none backdrop-blur-3xl bg-white/30'>
+            <div className='absolute p-2 sm:p-4 rounded-large top-4 left-4 sm:top-6 sm:left-6 pointer-events-none backdrop-blur-3xl bg-white/30'>
               <h2 className='font-bold uppercase mb-1'>{props.productName}</h2>
               <h3 className='font-normal mb-1'>
-                {props.categoryName}, {props.dimensions}
+                {props.categoryName}, <span className='whitespace-nowrap'>{props.dimensions}</span>
               </h3>
               <h1 className='text-xl font-extrabold'>{props.price}</h1>
             </div>

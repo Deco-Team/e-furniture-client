@@ -2,8 +2,10 @@
 
 import { login, loginWithGoogle, logout } from '@actions/auth/auth.action'
 import { IGoogleLoginActionPayload, ILoginActionPayload } from '@actions/auth/auth.interface'
+import { getCart } from '@actions/cart/cart.actions'
 import { getCustomer } from '@actions/customers/customer.actions'
 import { CustomerDto } from '@data/customer/customer.dto'
+import { useCart } from '@src/hooks/useCart'
 import { PropsWithChildren, createContext, useEffect, useState, useReducer, Dispatch } from 'react'
 
 export enum CustomerAuthActionTypes {
@@ -53,18 +55,21 @@ export const AuthContext = createContext<{
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const [loading, setLoading] = useState(true)
   const [customerState, customerDispatch] = useReducer(customerAuthReducer, null)
+  const { clearCart, setCart } = useCart()
 
   useEffect(() => {
-    // eslint-disable-next-line prettier/prettier
-    (async () => {
-      const customer = await getCustomer()
+    ;(async () => {
+      const [customer, cart] = await Promise.all([getCustomer(), getCart()])
       if (!customer) {
         customerDispatch({ type: CustomerAuthActionTypes.LOGOUT })
+        clearCart()
       } else {
         customerDispatch({ type: CustomerAuthActionTypes.LOGIN, payload: customer })
+        setCart(cart)
       }
       setLoading(false)
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

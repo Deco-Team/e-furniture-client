@@ -22,19 +22,24 @@ import NextLink from 'next/link'
 import { FaArrowLeft } from 'react-icons/fa'
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import ProductList from '@components/productList/ProductList'
+import { useSearchParams } from 'next/navigation'
 
 export const revalidate = 5
 
 const ProductsPage = () => {
+  const searchParams = useSearchParams()
+
+  const category = searchParams.get('category')
+
   const [products, setProducts] = React.useState<IPagination<IProductResponse>>()
   const [categories, setCategories] = React.useState<ICategory[]>([])
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [filterOpen, setFilterOpen] = React.useState(false)
-  const [filterPrice, setFilterPrice] = React.useState<SliderValue>([0, 20000000])
+  const [filterOpen, setFilterOpen] = React.useState(!!category)
+  const [filterPrice, setFilterPrice] = React.useState<SliderValue>([0, 5000000])
   const [sort, setSort] = React.useState<Selection>(new Set(['createdAt.desc']))
-  const [selectedCategories, setSelectedCategories] = React.useState<Selection>(new Set([]))
+  const [selectedCategories, setSelectedCategories] = React.useState<Selection>(new Set(category ? [category] : []))
   const [isLoading, setIsLoading] = React.useState(false)
-  const [onChangeFilterPrice, setOnChangeFilterPrice] = React.useState<SliderValue>([0, 20000000])
+  const [onChangeFilterPrice, setOnChangeFilterPrice] = React.useState<SliderValue>([0, 5000000])
 
   const getData = async () => {
     setIsLoading(true)
@@ -62,8 +67,8 @@ const ProductsPage = () => {
   ]
 
   const handleReset = () => {
-    if (Object.values(onChangeFilterPrice).toString() !== '0,20000000') setOnChangeFilterPrice([0, 20000000])
-    if (Object.values(filterPrice).toString() !== '0,20000000') setFilterPrice([0, 20000000])
+    if (Object.values(onChangeFilterPrice).toString() !== '0,5000000') setOnChangeFilterPrice([0, 5000000])
+    if (Object.values(filterPrice).toString() !== '0,5000000') setFilterPrice([0, 5000000])
     if (Array.from(selectedCategories).length > 0) setSelectedCategories(new Set([]))
   }
 
@@ -123,8 +128,8 @@ const ProductsPage = () => {
               color='foreground'
               showTooltip
               minValue={0}
-              maxValue={20000000}
-              defaultValue={[0, 20000000]}
+              maxValue={5000000}
+              defaultValue={[0, 5000000]}
               value={onChangeFilterPrice}
               onChange={setOnChangeFilterPrice}
               onChangeEnd={setFilterPrice}
@@ -157,11 +162,15 @@ const ProductsPage = () => {
 
           <div className={`flex flex-col items-center w-full`}>
             <h2 className='font-bold text-2xl sm:text-3xl md:text-4xl mb-8'>Tất cả sản phẩm</h2>
-            {!isLoading && products ? (
-              <ProductList
-                products={products ? products.docs : []}
-                className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-8 max-w-[900px]'
-              />
+            {!isLoading ? (
+              products?.docs.length ? (
+                <ProductList
+                  products={products.docs}
+                  className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-8 max-w-[900px]'
+                />
+              ) : (
+                <div>Không có sản phẩm phù hợp</div>
+              )
             ) : (
               <div className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-8 max-w-[900px] w-full'>
                 {[...Array(9)].map((_, index) => (

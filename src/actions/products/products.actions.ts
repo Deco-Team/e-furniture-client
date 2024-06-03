@@ -7,8 +7,8 @@ import { Key } from 'react'
 const ROOT_ENDPOINT_PRODUCT = '/products/public'
 const ROOT_ENDPOINT_PRODUCT_DETAIL = '/products/public/slug'
 
-export const getProductList = async (page: number, limit: number, sort?: string) => {
-  const endpoint = `${ROOT_ENDPOINT_PRODUCT}?page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ''}`
+export const getProductList = async (page: number, limit: number, categories?: Key[], sort?: string) => {
+  const endpoint = `${ROOT_ENDPOINT_PRODUCT}?${categories?.length ? 'categories=' + Array.from(categories).join('&categories=') + '&' : ''}page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ''}`
   try {
     const response = await callApi<{ docs: IProduct[] }>({ method: 'get', endpoint })
 
