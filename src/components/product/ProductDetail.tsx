@@ -227,14 +227,41 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
               >
                 Xem 3D
               </Button>
-              <Button
+              {/* <Button
                 radius='sm'
                 className='w-1/2 font-semibold h-12 text-base bg-gray-200'
                 startContent={<PiCube className='text-2xl mr-1' />}
                 onClick={() => console.log('open')}
               >
                 Chế độ AR
-              </Button>
+              </Button> */}
+              <model-viewer
+                id='openInAR'
+                src={product.modelUrl}
+                ios-src=''
+                ar-scale='fixed'
+                ar-placement={product.arPlacement || 'floor'}
+                autoplay
+                ar-modes='webxr scene-viewer'
+                poster=''
+                alt='A 3D model of product'
+                shadow-intensity='1'
+                camera-controls
+                disable-tap
+                auto-rotate
+                reveal='interaction'
+                ar
+              >
+                <Button
+                  slot='ar-button'
+                  radius='sm'
+                  className='activate-ar w-full font-semibold h-12 text-base bg-gray-200'
+                  startContent={<PiCube className='text-2xl mr-1' />}
+                  aria-hidden={false}
+                >
+                  Chế độ AR
+                </Button>
+              </model-viewer>
             </div>
           )}
 
