@@ -77,3 +77,9 @@ model-viewer {
   height: 100%;
   border-radius: 14px;
 }
+
+#openInAR {
+  height: 3rem;
+  width: 50%;
+  border-radius: 8px;
+}
