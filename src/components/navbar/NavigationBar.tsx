@@ -31,6 +31,7 @@ import { MdSupportAgent } from 'react-icons/md'
 import { useAuth } from '@src/hooks/useAuth'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 import { useCart } from '@src/hooks/useCart'
+import { HiOutlineSparkles } from 'react-icons/hi2'
 
 const NavigationBar = () => {
   const { cart, clearCart } = useCart()
@@ -68,7 +69,7 @@ const NavigationBar = () => {
               </NextLink>
             </NavbarBrand>
           </NavbarContent>
-          <NavbarContent className='hidden sm:flex gap-8' justify='start'>
+          <NavbarContent className='hidden sm:flex gap-6' justify='start'>
             <NavbarItem>
               <Link
                 as={NextLink}
@@ -140,6 +141,17 @@ const NavigationBar = () => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            <NavbarItem>
+              <Button
+                as={NextLink}
+                startContent={<HiOutlineSparkles className='min-w-5 min-h-5' />}
+                // underline={activePathname === '/contact' ? 'always' : 'hover'}
+                href={customer ? '/ai' : '/login-register'}
+                className={`bg-gradient-to-l from-[#e3964a] to-[#f8747f] text-white shadow-lg`}
+              >
+                Furnique AI
+              </Button>
+            </NavbarItem>
           </NavbarContent>
           <NavbarContent as='div' className='items-center gap-2' justify='end'>
             <Input
@@ -290,10 +302,10 @@ const NavigationBar = () => {
                 size='lg'
                 radius='full'
                 as={NextLink}
-                href={customer ? '/cart' : '/login-register'}
-                className={`${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                href={customer ? '/ai' : '/login-register'}
+                className={`${activePathname === '/ai' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
               >
-                <FaShoppingCart className='min-w-5 min-h-5' />
+                <HiOutlineSparkles className='min-w-6 min-h-6' />
               </Button>
             </NavbarItem>
             <NavbarItem>
@@ -388,7 +400,7 @@ const NavigationBar = () => {
                 </ModalBody>
                 <ModalFooter>
                   <Button color='default' variant='light' onPress={onClose}>
-                    Close
+                    Đóng
                   </Button>
                   <Button
                     onPress={() => {
@@ -397,7 +409,7 @@ const NavigationBar = () => {
                     }}
                     className='bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)]'
                   >
-                    Search
+                    Tìm kiếm
                   </Button>
                 </ModalFooter>
               </>

@@ -18,10 +18,10 @@ interface ARModalProps {
   onOpenChange: UseDisclosureProps & ((isOpen: boolean) => void)
   src: string
   arPlacement?: 'floor' | 'wall'
-  productName: string
-  categoryName: string
-  dimensions: string
-  price: string
+  productName?: string
+  categoryName?: string
+  dimensions?: string
+  price?: string
 }
 
 const ARModal = (props: ARModalProps) => {
