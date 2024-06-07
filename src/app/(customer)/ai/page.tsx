@@ -4,6 +4,8 @@ import { Button } from '@nextui-org/react'
 import { FaArrowLeft } from 'react-icons/fa'
 import NextLink from 'next/link'
 
+export const maxDuration = 30
+
 const AIPage = () => {
   return (
     <main className='min-h-screen bg-gray-100 py-10'>
