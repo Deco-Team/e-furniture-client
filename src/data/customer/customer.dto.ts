@@ -5,7 +5,7 @@ export type CustomerDto = {
   email?: string
   phone?: string
   address?: string[]
-  dateOfBirth?: Date
+  dateOfBirth?: string
   gender?: string
   avatar?: string
   lastLoginDate?: Date
