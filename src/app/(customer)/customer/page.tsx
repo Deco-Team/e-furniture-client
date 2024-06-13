@@ -27,7 +27,7 @@ const ProfilePage = async () => {
             />
           </>
         ) : (
-          <p>Truy xuất thông tin tài khoảng không thành công</p>
+          <p>Truy xuất thông tin tài khoản không thành công</p>
         )}
       </Container>
     </main>
