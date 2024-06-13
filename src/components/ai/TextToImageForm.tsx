@@ -58,7 +58,7 @@ const TextToImageForm = () => {
   return (
     <form>
       {/* Start Dimension Options */}
-      <div className='flex items-center justify-between mb-5'>
+      <div className='flex items-center justify-between mb-2'>
         <p>Không gian</p>
         <ButtonGroup size='sm' isDisabled={isLoading} className='border-1.5 border-black rounded-lg'>
           <Button
@@ -89,6 +89,10 @@ const TextToImageForm = () => {
           </Button>
         </ButtonGroup>
       </div>
+      <p className='text-end mb-2 mr-1'>
+        <span className='text-red-600'>*</span> {apiState === '2D' ? '10 credits' : '15 credits'}
+      </p>
+
       {/* End Dimension Options */}
       {/* Start Prompt Input */}
       <div className='mb-5'>
@@ -110,7 +114,6 @@ const TextToImageForm = () => {
         />
       </div>
       {/* End Prompt Input */}
-
       <Button
         className='w-full bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
         size='lg'
@@ -124,7 +127,7 @@ const TextToImageForm = () => {
         <>
           {apiState === '2D' && (
             <>
-              <Image className='mt-5' src={output} />
+              <Image removeWrapper className='mt-5 mx-auto w-full aspect-square' src={output} />
               <p className='mt-5 text-center'>{saveInput}</p>
             </>
           )}
@@ -144,13 +147,15 @@ const TextToImageForm = () => {
                 src={output.output.rendered_image}
                 // src='https://source.unsplash.com/random'
               />
-              <Button
-                startContent={<MdViewInAr className='text-2xl' />}
-                className=' text-black h-10 w-36 text-lg max-sm:hidden'
-                onClick={onOpen}
-              >
-                Xem 3D
-              </Button>
+              <div className='w-full flex justify-center'>
+                <Button
+                  startContent={<MdViewInAr className='text-2xl' />}
+                  className='text-black h-10 w-36 text-lg'
+                  onClick={onOpen}
+                >
+                  Xem 3D
+                </Button>
+              </div>
               <ARModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
