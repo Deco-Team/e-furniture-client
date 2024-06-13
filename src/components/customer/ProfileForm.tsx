@@ -18,7 +18,7 @@ const ProfileForm = memo(function ProfileForm({ customer }: ProfileFormProps) {
         variant='flat'
         label='Email'
         labelPlacement='outside'
-        isDisabled
+        isReadOnly
         classNames={{ base: ['!mt-[50px]'], inputWrapper: ['h-[60px]'], label: ['!top-[30%]'] }}
         placeholder='Email'
         value={customer.email}
@@ -27,7 +27,7 @@ const ProfileForm = memo(function ProfileForm({ customer }: ProfileFormProps) {
         variant='flat'
         label='Điện thoại'
         labelPlacement='outside'
-        isDisabled
+        isReadOnly
         classNames={{ base: ['!mt-[50px]'], inputWrapper: ['h-[60px]'], label: ['!top-[30%]'] }}
         placeholder='Điện thoại'
         value={customer.phone}
@@ -36,7 +36,7 @@ const ProfileForm = memo(function ProfileForm({ customer }: ProfileFormProps) {
         variant='flat'
         label='Giới tính'
         labelPlacement='outside'
-        isDisabled
+        isReadOnly
         classNames={{ base: ['!mt-[50px]'], inputWrapper: ['h-[60px]'], label: ['!top-[30%]'] }}
         placeholder='Giới tính'
         value={customer.gender}
@@ -45,7 +45,7 @@ const ProfileForm = memo(function ProfileForm({ customer }: ProfileFormProps) {
         variant='flat'
         label='Ngày sinh'
         labelPlacement='outside'
-        isDisabled
+        isReadOnly
         classNames={{ base: ['!mt-[50px]'], inputWrapper: ['h-[60px]'], label: ['!top-[30%]'] }}
         type='date'
         placeholder='Ngày sinh'
@@ -55,7 +55,7 @@ const ProfileForm = memo(function ProfileForm({ customer }: ProfileFormProps) {
         variant='flat'
         label='Địa chỉ'
         labelPlacement='outside'
-        isDisabled
+        isReadOnly
         classNames={{ base: ['!mt-[50px]'], inputWrapper: ['h-[60px]'], label: ['!top-[30%]'] }}
         placeholder='Địa chỉ'
         value={customer.address ? customer.address[0] : ''}
