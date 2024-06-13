@@ -10,4 +10,5 @@ export type CustomerDto = {
   avatar?: string
   lastLoginDate?: Date
   googleUserId?: string
+  credits?: number
 }

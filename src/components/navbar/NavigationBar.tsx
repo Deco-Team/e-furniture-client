@@ -23,7 +23,15 @@ import {
   Badge
 } from '@nextui-org/react'
 import NextLink from 'next/link'
-import { FaChevronDown, FaHome, FaRegEnvelope, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa'
+import {
+  FaChevronDown,
+  FaHome,
+  FaLongArrowAltRight,
+  FaRegEnvelope,
+  FaSearch,
+  FaShoppingCart,
+  FaUser
+} from 'react-icons/fa'
 import { FaArrowRightToBracket } from 'react-icons/fa6'
 import { logout } from '@actions/auth/auth.action'
 import { usePathname, useRouter } from 'next/navigation'
@@ -57,9 +65,35 @@ const NavigationBar = () => {
     !(activePathname === '/order' || activePathname.includes('login')) && (
       <>
         <Navbar
+          position='static'
+          isBlurred
+          className={`border-b-1 border-default-100 ${activePathname === '/pricing' ? 'hidden' : 'flex'}`}
+          classNames={{
+            wrapper: 'h-12 px-2 w-full justify-center'
+          }}
+        >
+          {' '}
+          <NavbarContent className='flex gap-2 sm:gap-4' justify='center'>
+            <p className='text-center'>
+              🚀 Tăng trải nghiệm <span className='whitespace-nowrap'>không lo gián đoạn</span>
+            </p>
+            <Button
+              as={NextLink}
+              href='/pricing'
+              size='sm'
+              radius='full'
+              disableAnimation
+              endContent={<FaLongArrowAltRight />}
+              className='text-sm gradient-border-button min-w-32'
+            >
+              Mua credits
+            </Button>
+          </NavbarContent>
+        </Navbar>
+        <Navbar
           isBlurred={false}
           maxWidth='xl'
-          classNames={{ wrapper: 'gap-8' }}
+          classNames={{ wrapper: 'gap-8 max-md:gap-4' }}
           className='h-[72px] sm:h-24 static sm:sticky sm:border-b sm:border-default-100'
         >
           <NavbarContent justify='start' className='max-w-fit'>
@@ -153,7 +187,13 @@ const NavigationBar = () => {
               </Button>
             </NavbarItem>
           </NavbarContent>
-          <NavbarContent as='div' className='items-center gap-2' justify='end'>
+          <NavbarContent as='div' className='items-center gap-1' justify='end'>
+            {customer && (activePathname === '/ai' || activePathname === '/pricing') && (
+              <p className='whitespace-nowrap text-sm mr-2 text-[#dc3545] font-semibold'>
+                Credits: {customer?.credits}
+              </p>
+            )}
+
             <Input
               isClearable
               variant='bordered'
@@ -172,8 +212,19 @@ const NavigationBar = () => {
               }
               size='lg'
               startContent={<FaSearch className='min-w-5 min-h-5 pointer-events-none' />}
-              className='focus-within:max-w-full transition-all !duration-300 !ease-linear hidden sm:flex'
+              className={`focus-within:max-w-full transition-all !duration-300 !ease-linear ${activePathname === '/ai' || activePathname === '/pricing' ? 'hidden' : 'sm:flex hidden'}`}
             />
+
+            <Button
+              size='lg'
+              isIconOnly
+              variant='light'
+              radius='full'
+              onClick={onOpen}
+              className={`${activePathname === '/ai' || activePathname === '/pricing' ? 'sm:flex hidden' : 'hidden'}`}
+            >
+              <FaSearch className='min-w-6 min-h-5' />
+            </Button>
 
             {customer ? (
               <>
@@ -184,13 +235,16 @@ const NavigationBar = () => {
                   isIconOnly
                   variant='light'
                   radius='full'
-                  className={`${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
+                  className={`overflow-visible ${activePathname === '/cart' ? 'text-[var(--primary-orange-text-color)]' : ''}`}
                 >
                   <Badge
                     content={cart?.items.length}
                     size='sm'
-                    isOneChar={true}
-                    className={`${activePathname === '/cart' ? 'bg-[var(--primary-orange-text-color)] text-white outline-black' : 'bg-black text-white'}`}
+                    showOutline={false}
+                    className={`text-white ${activePathname === '/cart' ? 'bg-[var(--primary-orange-text-color)]' : 'bg-black'}`}
+                    classNames={{
+                      badge: 'font-semibold'
+                    }}
                   >
                     <FaShoppingCart className='min-w-6 min-h-5 mr-[2px]' />
                   </Badge>
@@ -366,11 +420,12 @@ const NavigationBar = () => {
         </Navbar>
         <Modal
           isOpen={isOpen}
-          placement={'top-center'}
+          placement={'top'}
           backdrop='blur'
           onOpenChange={onOpenChange}
           isDismissable={false}
           isKeyboardDismissDisabled={true}
+          size='4xl'
         >
           <ModalContent>
             {(onClose) => (

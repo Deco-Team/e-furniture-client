@@ -9,7 +9,7 @@ export const maxDuration = 30
 const AIPage = () => {
   return (
     <main className='min-h-screen bg-gray-100 py-10'>
-      <div className='p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md'>
+      <div className='p-6 max-w-2xl mx-auto bg-white rounded-lg shadow-md'>
         <div className='relative py-4 mb-4'>
           <Button
             isIconOnly
