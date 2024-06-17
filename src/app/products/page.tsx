@@ -59,6 +59,10 @@ const ProductsPage = () => {
     return () => {}
   }, [currentPage, filterPrice, sort, selectedCategories])
 
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [filterPrice, sort, selectedCategories])
+
   const sorting = [
     { label: 'Mới nhất', value: 'createdAt.desc' },
     { label: 'Cũ nhất', value: 'createdAt.asc' },
@@ -198,7 +202,7 @@ const ProductsPage = () => {
                 className='mx-auto mt-5'
                 initialPage={1}
                 onChange={setCurrentPage}
-                page={1}
+                page={currentPage}
                 showControls
                 total={products.totalPages}
                 classNames={{
