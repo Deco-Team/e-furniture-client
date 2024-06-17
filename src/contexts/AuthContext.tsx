@@ -6,6 +6,7 @@ import { getCart } from '@actions/cart/cart.actions'
 import { getCustomer } from '@actions/customers/customer.actions'
 import { CustomerDto } from '@data/customer/customer.dto'
 import { useCart } from '@src/hooks/useCart'
+import { useCredit } from '@src/hooks/useCredits'
 import { PropsWithChildren, createContext, useEffect, useState, useReducer, Dispatch } from 'react'
 
 export enum CustomerAuthActionTypes {
@@ -56,6 +57,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   const [loading, setLoading] = useState(true)
   const [customerState, customerDispatch] = useReducer(customerAuthReducer, null)
   const { clearCart, setCart } = useCart()
+  const { setCredit } = useCredit()
 
   useEffect(() => {
     ;(async () => {
@@ -63,9 +65,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       if (!customer) {
         customerDispatch({ type: CustomerAuthActionTypes.LOGOUT })
         clearCart()
+        setCredit(0)
       } else {
         customerDispatch({ type: CustomerAuthActionTypes.LOGIN, payload: customer })
         setCart(cart)
+        setCredit(customer.credits || 0)
       }
       setLoading(false)
     })()
