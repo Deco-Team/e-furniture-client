@@ -1,11 +1,25 @@
 'use client'
 
-import { Button, Card, CardBody, Image, Input, Tab, Tabs, Tooltip, useDisclosure } from '@nextui-org/react'
+import {
+  Avatar,
+  Button,
+  Card,
+  CardBody,
+  Divider,
+  Image,
+  Input,
+  Pagination,
+  Skeleton,
+  Tab,
+  Tabs,
+  Tooltip,
+  useDisclosure
+} from '@nextui-org/react'
 import React from 'react'
 import { FaArrowLeft, FaCartPlus, FaMinus, FaPlus } from 'react-icons/fa'
 import { MdViewInAr } from 'react-icons/md'
 import { PiCube } from 'react-icons/pi'
-import { IProduct, IVariant } from '@global/interface'
+import { IPagination, IProduct, IReview, IVariant } from '@global/interface'
 import ProductSlide from './ProductSlide'
 import { useRouter } from 'next/navigation'
 import { addCartItem, getCart } from '@actions/cart/cart.actions'
@@ -13,6 +27,9 @@ import { notifyError, notifySuccess } from '@utils/toastify'
 import { ICart } from '@app/(customer)/cart/cart.interface'
 import ARModal from './ARModal'
 import { useCart } from '@src/hooks/useCart'
+import Rating from '@components/starRating/StartRating'
+import { getReviews } from '@actions/products/products.actions'
+import moment from 'moment'
 
 interface ProductDetailProps {
   product: IProduct
@@ -59,17 +76,31 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
   const [variantError, setVariantError] = React.useState(false)
   const [quantityEror, setQuantityError] = React.useState(false)
   const [cartItems, setCartItems] = React.useState<ICart | null>(null)
+  const [activeFilterComment, setActiveFilterComment] = React.useState<number>(0)
+  const [reviews, setReviews] = React.useState<IPagination<IReview>>()
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const getData = async () => {
-    const cartItems = await getCart()
+    setIsLoading(true)
+    const [cartItems, reviews] = await Promise.all([
+      getCart(),
+      getReviews(product._id || '', currentPage, 3, activeFilterComment)
+    ])
     setCartItems(cartItems)
     setCart(cartItems)
+    if (!(reviews instanceof Error)) setReviews({ ...reviews, docs: reviews.docs })
+    setIsLoading(false)
   }
 
   React.useEffect(() => {
     getData()
     return () => {}
-  }, [])
+  }, [activeFilterComment, currentPage])
+
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [activeFilterComment])
 
   // Handlers selected variant
   const handleActiveVariant = (variant: IVariant) => {
@@ -214,7 +245,15 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
               <h3 className='font-bold text-2xl'>{product.name}</h3>
               <h3 className='font-bold text-2xl text-nowrap whitespace-nowrap'>{price}</h3>
             </div>
-            {/* <Rating ratingInPercent={product.rate * 20} iconSize='l' showOutOf={true} enableUserInteraction={false} /> */}
+            <div className='flex items-center gap-4'>
+              <Rating
+                ratingInPercent={Math.round(product.rate) * 20}
+                iconSize='l'
+                showOutOf={true}
+                enableUserInteraction={false}
+              />
+              <p>{product.rate.toFixed(1)}/5</p>
+            </div>
           </div>
 
           {product.modelUrl && (
@@ -400,13 +439,110 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                   </CardBody>
                 </Card>
               </Tab>
-              {/* <Tab title={'Reviews'}>
+              <Tab title={'Đánh giá'}>
                 <Card>
                   <CardBody className='p-4 sm:p-6'>
-                    <p>Review</p>
+                    <div className='flex flex-row flex-wrap gap-2 mb-8'>
+                      <Button
+                        variant={activeFilterComment === 0 ? 'solid' : 'bordered'}
+                        onClick={() => setActiveFilterComment(0)}
+                        className={`font-medium border-solid border-1 ${activeFilterComment === 0 ? 'bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] border-[var(--primary-orange-color)]' : 'border-[var(--gray-color)]'}`}
+                      >
+                        Tất cả (
+                        {product.ratingCount && Object.values(product.ratingCount).reduce((acc, curr) => acc + curr, 0)}
+                        )
+                      </Button>
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Button
+                          key={index}
+                          variant={activeFilterComment === 5 - index ? 'solid' : 'bordered'}
+                          onClick={() => setActiveFilterComment(5 - index)}
+                          className={`font-medium border-solid border-1 ${activeFilterComment === 5 - index ? 'bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] border-[var(--primary-orange-color)]' : 'border-[var(--gray-color)]'}`}
+                        >
+                          {5 - index} sao ({product.ratingCount?.[5 - index]})
+                        </Button>
+                      ))}
+                    </div>
+                    {!isLoading ? (
+                      reviews?.docs.length ? (
+                        reviews.docs.map((comment, index) => (
+                          <React.Fragment key={index}>
+                            <div className='flex gap-4'>
+                              <Avatar
+                                src={comment.customer.avatar}
+                                showFallback
+                                classNames={{ base: '!aspect-square min-w-fit' }}
+                              />
+                              <div className='flex flex-col gap-1 w-full'>
+                                <div className='flex justify-between flex-wrap items-center'>
+                                  <h4 className='font-semibold'>
+                                    {comment.customer.firstName + ' ' + comment.customer.lastName}
+                                  </h4>
+                                  <p className='text-sm'>{moment(comment.createdAt).format('HH:mm:ss DD/MM/YYYY')}</p>
+                                </div>
+                                <Rating
+                                  ratingInPercent={comment.rate * 20}
+                                  iconSize='m'
+                                  showOutOf={true}
+                                  enableUserInteraction={false}
+                                />
+                                <div className=''>{comment.comment}</div>
+                              </div>
+                            </div>
+                            <Divider className='my-4' />
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        <div className='min-h-[321px] flex items-center justify-center'>
+                          <p>Chưa có đánh giá nào</p>
+                        </div>
+                      )
+                    ) : (
+                      <div>
+                        {[...Array(3)].map((_, index) => (
+                          <React.Fragment key={index}>
+                            <div className='flex gap-4'>
+                              <Skeleton className='h-10 min-w-10 rounded-full aspect-square'>
+                                <div className='h-10 min-w-10 rounded-full bg-default-300'></div>
+                              </Skeleton>
+                              <div className='flex flex-col gap-1 w-full'>
+                                <div className='flex justify-between flex-wrap'>
+                                  <Skeleton className='w-2/5 rounded-lg'>
+                                    <div className='h-6 w-2/5 rounded-lg bg-default-200'></div>
+                                  </Skeleton>
+                                  <Skeleton className='w-1/5 rounded-lg'>
+                                    <div className='h-6 w-1/5 rounded-lg bg-default-200'></div>
+                                  </Skeleton>
+                                </div>
+                                <Skeleton className='w-32 rounded-lg'>
+                                  <div className='h-[18px] w-32 rounded-lg bg-default-200'></div>
+                                </Skeleton>
+                                <Skeleton className='w-full rounded-lg'>
+                                  <div className='h-6 w-full rounded-lg bg-default-200'></div>
+                                </Skeleton>
+                              </div>
+                            </div>
+                            <Divider className='my-4' />
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    )}
+                    {reviews && (
+                      <Pagination
+                        className='mx-auto'
+                        initialPage={1}
+                        onChange={setCurrentPage}
+                        page={currentPage}
+                        showControls
+                        total={reviews?.totalPages}
+                        classNames={{
+                          cursor: 'bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)]'
+                        }}
+                      />
+                    )}
                   </CardBody>
                 </Card>
-              </Tab> */}
+              </Tab>
             </Tabs>
           </div>
         </div>

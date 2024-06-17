@@ -51,10 +51,17 @@ const Rating: React.FC<RatingProps> = (props) => {
   const RatingDefault = <IconComponent type={'ratingDefault'} width={size} height={size} />
 
   const handleClick = (index: number) => {
-    if (onClick) {
-      onClick(index + 1)
+    if (index == activeStar) {
+      if (onClick) {
+        onClick(-1)
+      }
+      setActiveStar(-1)
+    } else {
+      if (onClick) {
+        onClick(index + 1)
+      }
+      setActiveStar(index)
     }
-    setActiveStar(index)
   }
 
   const showDefaultStar = () => {
@@ -85,12 +92,12 @@ const Rating: React.FC<RatingProps> = (props) => {
 
   const withoutUserInteraction = (index: number) => {
     return isShowOutOfStar(index) ? (
-      <div className='relative' key={index}>
+      <div className='relative cursor-default' key={index}>
         <div
           style={{
             width: getStar(index)
           }}
-          className='overflow-hidden absolute '
+          className='overflow-hidden absolute'
         >
           {RatingHighlighted}
         </div>
@@ -120,7 +127,7 @@ const Rating: React.FC<RatingProps> = (props) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root + ' max-w-fit'}>
       {[...new Array(numberOfStar)].map((arr, index) =>
         enableUserInteraction ? withUserInteraction(index) : withoutUserInteraction(index)
       )}

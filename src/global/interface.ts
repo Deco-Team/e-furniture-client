@@ -35,6 +35,7 @@ export interface IProduct {
   slug: string
   modelUrl?: string
   arPlacement?: 'floor' | 'wall'
+  ratingCount?: { [key: number]: number }
 }
 
 export interface IProductResponse {
@@ -47,6 +48,19 @@ export interface IProductResponse {
   variants: IVariant[]
   categories: ICategory[]
   slug: string
+}
+
+export interface IReview {
+  _id: string
+  customer: {
+    firstName: string
+    lastName: string
+    email: string
+    avatar: string
+  }
+  rate: number
+  comment: string
+  createdAt: Date
 }
 
 export type IPagination<T> = {
