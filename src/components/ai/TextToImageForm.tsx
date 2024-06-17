@@ -3,11 +3,14 @@
 'use client'
 
 import { createTextToImage, createTextToModelTask, getTextToModelTask } from '@actions/ai/ai.action'
+import { getCustomer } from '@actions/customers/customer.actions'
 import ARModal from '@components/product/ARModal'
 import { Button, ButtonGroup, Image, Textarea, useDisclosure } from '@nextui-org/react'
+import { useCredit } from '@src/hooks/useCredits'
 import { notifyLoading, notifySuccess } from '@utils/toastify'
 import React, { useEffect, useState } from 'react'
 import { MdViewInAr } from 'react-icons/md'
+import NextLink from 'next/link'
 
 const TextToImageForm = () => {
   const [btn2D, setBtn2D] = useState<'solid' | 'bordered' | 'light' | 'flat' | 'faded' | 'shadow' | 'ghost'>('solid')
@@ -18,6 +21,7 @@ const TextToImageForm = () => {
   const [output, setOutput] = useState<any>()
   const [isLoading, setisLoading] = useState(false)
   const [errorInput, setErrorInput] = useState(false)
+  const { credit, setCredit } = useCredit()
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -32,6 +36,7 @@ const TextToImageForm = () => {
         setOutput(response?.data.imageUrl)
         notifySuccess('Đã tạo ảnh thành công')
         setisLoading(false)
+        getCredits()
       } else {
         const response = await createTextToModelTask({ prompt: input })
         if (response?.task_id) {
@@ -44,6 +49,7 @@ const TextToImageForm = () => {
               setisLoading(false)
               setInput('')
               clearInterval(intervalId)
+              getCredits()
             }
           }, 3000)
         }
@@ -51,7 +57,13 @@ const TextToImageForm = () => {
     }
   }
 
+  const getCredits = async () => {
+    const customer = await getCustomer()
+    setCredit(customer?.credits || 0)
+  }
+
   useEffect(() => {
+    getCredits()
     return () => {}
   }, [])
 
@@ -118,11 +130,21 @@ const TextToImageForm = () => {
         className='w-full bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
         size='lg'
         onClick={getRender}
-        isDisabled={!input || isLoading}
+        isDisabled={!input || isLoading || (apiState === '2D' ? credit < 10 : credit < 15)}
         isLoading={isLoading}
       >
         Tạo
       </Button>
+      {credit < 10 && (
+        <Button
+          as={NextLink}
+          className='w-full bg-[var(--light-orange-color)] text-[var(--primary-orange-text-color)] font-bold disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed mt-5'
+          size='lg'
+          href='/pricing'
+        >
+          Mua thêm credit
+        </Button>
+      )}
       {output && (
         <>
           {apiState === '2D' && (

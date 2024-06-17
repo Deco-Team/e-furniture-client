@@ -40,9 +40,11 @@ import { useAuth } from '@src/hooks/useAuth'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 import { useCart } from '@src/hooks/useCart'
 import { HiOutlineSparkles } from 'react-icons/hi2'
+import { useCredit } from '@src/hooks/useCredits'
 
 const NavigationBar = () => {
   const { cart, clearCart } = useCart()
+  const { credit, setCredit } = useCredit()
   const router = useRouter()
   const {
     state: { customer },
@@ -58,6 +60,7 @@ const NavigationBar = () => {
     logout()
     customerDispatch({ type: CustomerAuthActionTypes.LOGOUT })
     clearCart()
+    setCredit(0)
     router.refresh()
   }
 
@@ -189,9 +192,7 @@ const NavigationBar = () => {
           </NavbarContent>
           <NavbarContent as='div' className='items-center gap-1' justify='end'>
             {customer && (activePathname === '/ai' || activePathname === '/pricing') && (
-              <p className='whitespace-nowrap text-sm mr-2 text-[#dc3545] font-semibold'>
-                Credits: {customer?.credits}
-              </p>
+              <p className='whitespace-nowrap text-sm mr-2 text-[#dc3545] font-semibold'>Credits: {credit}</p>
             )}
 
             <Input

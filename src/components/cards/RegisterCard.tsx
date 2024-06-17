@@ -15,6 +15,7 @@ import { getCustomer } from '@actions/customers/customer.actions'
 import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 import { useCart } from '@src/hooks/useCart'
 import { getCart } from '@actions/cart/cart.actions'
+import { useCredit } from '@src/hooks/useCredits'
 
 interface RegisterCardProps {
   toggleCard: () => void
@@ -23,6 +24,7 @@ interface RegisterCardProps {
 const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
   const router = useRouter()
   const { setCart } = useCart()
+  const { setCredit } = useCredit()
 
   const [isVisibleSignup, setIsVisibleSignup] = React.useState(false)
   const toggleVisibilitySignup = () => setIsVisibleSignup(!isVisibleSignup)
@@ -87,6 +89,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
         if (customer) {
           customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
           setCart(cart)
+          setCredit(customer.credits || 0)
           router.push('/')
           console.log('Login success')
           return
@@ -108,6 +111,7 @@ const RegisterCard = ({ toggleCard }: RegisterCardProps) => {
       if (customer) {
         customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
         setCart(cart)
+        setCredit(customer.credits || 0)
         router.push('/')
         console.log('Login success')
         return
