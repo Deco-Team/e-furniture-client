@@ -1,6 +1,7 @@
 'use server'
 
 import { callApi, callAuthApi } from '@actions/actions'
+import { IAIOrder } from '@app/(customer)/order/order.interface'
 import { TaskModel } from '@data/ai/ai.dto'
 import { cookies } from 'next/headers'
 
@@ -38,6 +39,31 @@ export const createTextToImage = async (payload: ICreateImagePayload) => {
     const data = await callAuthApi<ICreateImageResponse>({ method: 'post', endpoint, body: payload }, cookieStore)
     return data
   } catch (error) {
+    return null
+  }
+}
+
+export const createAiCreditOrder = async (data: IAIOrder) => {
+  const endpoint = `${ROOT_ENDPOINT}/pricing`
+  const cookieStore = cookies()
+  try {
+    const response = await callAuthApi<{
+      bin: string
+      accountNumber: string
+      accountName: string
+      amount: number
+      description: string
+      orderCode: number
+      currency: string
+      paymentLinkId: string
+      status: string
+      checkoutUrl: string
+      qrCode: string
+    }>({ method: 'post', endpoint, body: data }, cookieStore)
+    console.log(response)
+    return response.data
+  } catch (error) {
+    console.log(error)
     return null
   }
 }
