@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 'use client'
@@ -7,7 +8,7 @@ import { getCustomer } from '@actions/customers/customer.actions'
 import ARModal from '@components/product/ARModal'
 import { Button, ButtonGroup, Image, Textarea, useDisclosure } from '@nextui-org/react'
 import { useCredit } from '@src/hooks/useCredits'
-import { notifyLoading, notifySuccess } from '@utils/toastify'
+import { notifySuccess } from '@utils/toastify'
 import React, { useEffect, useState } from 'react'
 import { MdViewInAr } from 'react-icons/md'
 import NextLink from 'next/link'

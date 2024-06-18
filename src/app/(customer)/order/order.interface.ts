@@ -31,6 +31,11 @@ export interface IOrder {
   notes: string
 }
 
+export interface IAIOrder {
+  plan: 'PERSONAL' | 'PREMIUM'
+  paymentMethod: 'PAY_OS' | 'MOMO'
+}
+
 export interface IOrderResponse {
   _id: string
   orderId: string
