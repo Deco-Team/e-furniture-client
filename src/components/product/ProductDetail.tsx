@@ -8,6 +8,7 @@ import {
   Divider,
   Image,
   Input,
+  Link,
   Pagination,
   Skeleton,
   Tab,
@@ -30,6 +31,7 @@ import { useCart } from '@src/hooks/useCart'
 import Rating from '@components/starRating/StartRating'
 import { getReviews } from '@actions/products/products.actions'
 import moment from 'moment'
+import NextLink from 'next/link'
 
 interface ProductDetailProps {
   product: IProduct
@@ -238,9 +240,19 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
         </div>
         <div className='sm:col-span-3 flex flex-col gap-4'>
           <div className='sm:pt-4 '>
-            <p className='text-base font-semibold text-gray-400'>
-              {product.categories.map((category) => category.name).join(', ')}
-            </p>
+            {product.categories.map((category, index) => (
+              <span key={category._id} className='text-base font-semibold text-gray-400'>
+                <Link
+                  as={NextLink}
+                  underline='hover'
+                  href={`/products?category=${category._id}`}
+                  className='text-base font-semibold text-gray-400'
+                >
+                  {category.name}
+                </Link>
+                {index < product.categories.length - 1 && ', '}
+              </span>
+            ))}
             <div className='flex justify-between flex-wrap'>
               <h3 className='font-bold text-2xl'>{product.name}</h3>
               <h3 className='font-bold text-2xl text-nowrap whitespace-nowrap'>{price}</h3>
