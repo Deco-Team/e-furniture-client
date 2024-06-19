@@ -61,7 +61,7 @@ const CartPage = () => {
                 return (
                   <CartItemCard
                     onUpdate={() => getData()}
-                    key={value.productId}
+                    key={value.sku}
                     productId={value.productId}
                     imageURL={value.product.images[0]}
                     name={value.product.name}
