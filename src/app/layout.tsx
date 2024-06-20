@@ -10,8 +10,10 @@ import AuthProvider from '@src/contexts/AuthContext'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.furnique.tech'),
-  title: 'Furnique - Elegant Home & Office Furniture | Shop Online',
-  description: `Discover Furnique's premium range of home and office furniture. Explore our stylish sofas, ergonomic chairs, decorative items, and more. Exceptional quality at great prices.`
+  title: 'Furnique - Nội thất Nhà & Văn phòng Sang trọng | Mua Sắm Trực Tuyến',
+  description: `Khám phá dải sản phẩm nội thất nhà và văn phòng cao cấp của Furnique. Trải nghiệm các dòng sofa thanh lịch, ghế văn phòng tiện lợi, đồ trang trí, và nhiều hơn nữa. Chất lượng xuất sắc với giá cả hợp lý.`,
+  keywords:
+    'Furnique, nội thất văn phòng, đồ trang trí, ghế công thái học, kệ treo, bàn mặt vân đá, đèn cây BARLAST, tủ ngăn kéo, khung tranh, ghế bar'
 }
 
 const inter = Inter({ subsets: ['latin'] })
