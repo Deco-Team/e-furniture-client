@@ -1,8 +1,8 @@
 import type { Metadata } from 'next/types'
 
 export const metadata: Metadata = {
-  title: 'Furnique | Contact Us for Furniture Inquiries',
-  description: `Have questions or need assistance? Reach out to Furnique's friendly team. We're here to help with furniture recommendations, orders, and more.`
+  title: 'Furnique | Liên Hệ Chúng Tôi Để Đặt Câu Hỏi Về Nội Thất',
+  description: `Bạn có câu hỏi hoặc cần hỗ trợ? Hãy liên hệ với đội ngũ thân thiện của Furnique. Chúng tôi ở đây để giúp đỡ với các gợi ý nội thất, đơn hàng, và nhiều hơn nữa.`
 }
 
 export default function ContactPageLayout({

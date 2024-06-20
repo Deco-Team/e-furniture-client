@@ -22,10 +22,10 @@ export async function generateMetadata(
   const productImages = product ? product.images : []
 
   return {
-    title: product ? `Furnique | Product Details: ${product.name}` : 'Not Found',
+    title: product ? `Furnique | Chi Tiết Sản Phẩm: ${product.name}` : 'Không Tìm Thấy',
     description: product
-      ? `Get in-depth information about our ${product.description}. From dimensions to materials, explore every detail. Furnique ensures top-notch craftsmanship and comfort.`
-      : 'Product not found',
+      ? `Nhận thông tin chi tiết về ${product.description} của chúng tôi. Từ kích thước đến chất liệu, khám phá mọi chi tiết. Furnique đảm bảo tay nghề xuất sắc và sự thoải mái.`
+      : 'Không tìm thấy sản phẩm',
     openGraph: {
       images: [...productImages, ...previousImages]
     }
@@ -33,7 +33,7 @@ export async function generateMetadata(
 }
 
 export const generateStaticParams = async () => {
-  const response = await getProductList(1, 100, undefined, 'rate.desc_createdAt.desc')
+  const response = await getProductList(1, 99, undefined, 'rate.desc_createdAt.desc')
 
   return response ? response.docs.map((product) => ({ slug: product.slug })) : []
 }
