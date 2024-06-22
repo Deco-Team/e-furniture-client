@@ -15,6 +15,7 @@ import { CustomerAuthActionTypes } from '@src/contexts/AuthContext'
 import { getCustomer } from '@actions/customers/customer.actions'
 import { getCart } from '@actions/cart/cart.actions'
 import { useCart } from '@src/hooks/useCart'
+import { useCredit } from '@src/hooks/useCredits'
 
 interface LoginCardProps {
   toggleCard: () => void
@@ -24,6 +25,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
   const router = useRouter()
   const { customerDispatch } = useAuth()
   const { setCart } = useCart()
+  const { setCredit } = useCredit()
 
   const [isVisibleLogin, setIsVisibleLogin] = useState(false)
   const toggleVisibilityLogin = () => setIsVisibleLogin(!isVisibleLogin)
@@ -64,6 +66,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
       } else {
         customerDispatch({ type: CustomerAuthActionTypes.LOGIN, payload: customer })
         setCart(cart)
+        setCredit(customer.credits || 0)
         router.push('/')
         console.log('Login success')
       }
@@ -80,6 +83,7 @@ const LoginCard = ({ toggleCard }: LoginCardProps) => {
       if (customer) {
         customerDispatch({ type: CustomerAuthActionTypes.GOOGLE_LOGIN, payload: customer })
         setCart(cart)
+        setCredit(customer.credits || 0)
         router.push('/')
         console.log('Login success')
         return

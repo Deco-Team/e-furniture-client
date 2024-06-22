@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Image, Input } from '@nextui-org/react'
+import { Button, Card, Image, Input, Link } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
@@ -15,6 +15,7 @@ export interface ICartItemCard {
   availableQuantity: number
   productId: string
   sku: string
+  slug: string
   onUpdate: () => void
 }
 
@@ -27,6 +28,7 @@ const CartItemCard = ({
   quantity,
   productId,
   sku,
+  slug,
   onUpdate
 }: ICartItemCard) => {
   const [fixQuantity, setFixQuantity] = useState(quantity)
@@ -99,7 +101,9 @@ const CartItemCard = ({
       <div className='md:py-6 w-full flex flex-col justify-between max-h-full'>
         <div className='flex flex-row justify-between'>
           <div>
-            <p className='text-base font-semibold'>{name}</p>
+            <Link className='text-base font-semibold text-black' href={`/products/${slug}`}>
+              {name}
+            </Link>
             <p className='text-gray-500'>Sku: {description}</p>
           </div>
           <Button size='sm' isIconOnly onClick={handleDeleteCartItem}>

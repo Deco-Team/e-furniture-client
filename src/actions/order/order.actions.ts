@@ -6,6 +6,7 @@ import { cookies } from 'next/headers'
 import { IPagination } from '@global/interface'
 
 const ROOT_ENDPOINT = '/orders'
+const ROOT_REVIEW_ENDPOINT = '/reviews/customer'
 
 export const createOrder = async (data: IOrder) => {
   const endpoint = `${ROOT_ENDPOINT}/customer`
@@ -70,5 +71,20 @@ export const getStatusHistory = async (id: string) => {
   } catch (error) {
     console.log(error)
     return null
+  }
+}
+
+export const createReviews = async (productId: string, orderId: string, rate: number, comment: string) => {
+  const endpoint = ROOT_REVIEW_ENDPOINT
+  const cookieStore = cookies()
+  try {
+    const response = await callAuthApi(
+      { method: 'post', endpoint, body: { productId, orderId, rate, comment } },
+      cookieStore
+    )
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return false
   }
 }

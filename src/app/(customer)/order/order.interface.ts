@@ -31,6 +31,11 @@ export interface IOrder {
   notes: string
 }
 
+export interface IAIOrder {
+  plan: 'PERSONAL' | 'PREMIUM'
+  paymentMethod: 'PAY_OS' | 'MOMO'
+}
+
 export interface IOrderResponse {
   _id: string
   orderId: string
@@ -72,6 +77,12 @@ export interface IOrderDetail {
     sku: string
     quantity: number
     product: IProduct
+    review?: {
+      _id: string
+      rate: number
+      comment: string
+      createdAt: Date
+    }
   }[]
   orderDate: string
   orderStatus: string

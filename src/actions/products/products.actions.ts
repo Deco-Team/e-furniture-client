@@ -1,11 +1,12 @@
 'use server'
 
 import { callApi } from '@actions/actions'
-import { IPagination, IProduct, IProductResponse } from '@global/interface'
+import { IPagination, IProduct, IProductResponse, IReview } from '@global/interface'
 import { Key } from 'react'
 
 const ROOT_ENDPOINT_PRODUCT = '/products/public'
 const ROOT_ENDPOINT_PRODUCT_DETAIL = '/products/public/slug'
+const ROOT_ENDPONT_REVIEWS = '/reviews/customer'
 
 export const getProductList = async (page: number, limit: number, categories?: Key[], sort?: string) => {
   const endpoint = `${ROOT_ENDPOINT_PRODUCT}?${categories?.length ? 'categories=' + Array.from(categories).join('&categories=') + '&' : ''}page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ''}`
@@ -47,5 +48,18 @@ export const getProduct = async (slug: string) => {
   } catch (error) {
     console.log(error)
     return null
+  }
+}
+
+export const getReviews = async (id: string, page: number, limit: number, rate: number) => {
+  const endpoint = `${ROOT_ENDPONT_REVIEWS}?productId=${id}${rate > 0 ? '&rate=' + rate : ''}&page=${page}&limit=${limit}`
+
+  try {
+    const response = await callApi<IPagination<IReview>>({ method: 'get', endpoint })
+
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return error as Error
   }
 }

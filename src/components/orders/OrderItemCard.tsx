@@ -1,4 +1,4 @@
-import { Card, CardBody, Image } from '@nextui-org/react'
+import { Card, CardBody, Image, Link } from '@nextui-org/react'
 import React from 'react'
 
 export interface IOrderItemCard {
@@ -7,9 +7,10 @@ export interface IOrderItemCard {
   description: string
   quantity: number
   price: number
+  slug: string
 }
 
-const OrderItemCard = ({ imageURL, name, description, quantity, price }: IOrderItemCard) => {
+const OrderItemCard = ({ imageURL, name, description, quantity, price, slug }: IOrderItemCard) => {
   return (
     <>
       <Card className='w-full shadow-none mb-4'>
@@ -24,7 +25,9 @@ const OrderItemCard = ({ imageURL, name, description, quantity, price }: IOrderI
             />
             <div className='w-full flex flex-col justify-between'>
               <div>
-                <p className='text-xl font-semibold'>{name}</p>
+                <Link className='text-xl font-semibold text-black' href={`/products/${slug}`}>
+                  {name}
+                </Link>
                 <p className='text-gray-500'>SKU: {description}</p>
               </div>
               <div className='flex flex-row justify-between'>
