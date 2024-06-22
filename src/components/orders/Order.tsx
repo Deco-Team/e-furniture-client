@@ -394,6 +394,7 @@ const OrderDisplay = ({ cart, customer }: OrderDisplayProps) => {
                 {cart?.items.map((value) => (
                   <OrderItemCard
                     key={value.productId}
+                    slug={value.product.slug}
                     imageURL={value.product.images[0]}
                     name={value.product.name}
                     description={value.sku}

@@ -28,9 +28,13 @@ const SIZES = {
 
 const OUT_OF_VALUE = 5
 
-const Rating: React.FC<RatingProps> = (props) => {
-  const { iconSize, ratingInPercent, showOutOf, enableUserInteraction, onClick } = props
-
+const Rating: React.FC<RatingProps> = ({
+  iconSize = SIZES.LARGE.key,
+  ratingInPercent = 50,
+  showOutOf = false,
+  enableUserInteraction = false,
+  onClick = () => null
+}) => {
   const [activeStar, setActiveStar] = useState<number>(-1)
   const decimal = ratingInPercent / 20
   const nonFraction = Math.trunc(decimal)
@@ -101,9 +105,6 @@ const Rating: React.FC<RatingProps> = (props) => {
         >
           {RatingHighlighted}
         </div>
-        {/* {showDefaultStar(
-          showOutOf ? (nonFraction === 0 ? index < nonFraction : index <= nonFraction) : index <= numberOfStar
-        )} */}
         {showDefaultStar()}
       </div>
     ) : null
@@ -141,14 +142,6 @@ Rating.propTypes = {
   showOutOf: bool.isRequired,
   enableUserInteraction: bool.isRequired,
   onClick: func
-}
-
-Rating.defaultProps = {
-  ratingInPercent: 50,
-  iconSize: SIZES.LARGE.key,
-  onClick: () => null,
-  showOutOf: false,
-  enableUserInteraction: false
 }
 
 export default Rating

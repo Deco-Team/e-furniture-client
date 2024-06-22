@@ -77,6 +77,12 @@ export interface IOrderDetail {
     sku: string
     quantity: number
     product: IProduct
+    review?: {
+      _id: string
+      rate: number
+      comment: string
+      createdAt: Date
+    }
   }[]
   orderDate: string
   orderStatus: string

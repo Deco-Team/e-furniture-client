@@ -61,11 +61,12 @@ const CartPage = () => {
                 return (
                   <CartItemCard
                     onUpdate={() => getData()}
-                    key={value.productId}
+                    key={value.sku}
                     productId={value.productId}
                     imageURL={value.product.images[0]}
                     name={value.product.name}
                     sku={value.sku}
+                    slug={value.product.slug}
                     price={value.product.variants.find((variant) => value.sku === variant.sku)?.price ?? 0}
                     quantity={value.quantity.toString()}
                     availableQuantity={
