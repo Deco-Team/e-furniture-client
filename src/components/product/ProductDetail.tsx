@@ -483,7 +483,7 @@ const ProductDetail = ({ product, isLogin }: ProductDetailProps) => {
                               <Avatar
                                 src={comment.customer.avatar}
                                 showFallback
-                                classNames={{ base: '!aspect-square min-w-fit' }}
+                                classNames={{ base: '!aspect-square min-w-[40px] max-w-[40px]' }}
                               />
                               <div className='flex flex-col gap-1 w-full'>
                                 <div className='flex justify-between flex-wrap items-center'>
